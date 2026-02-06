@@ -1,0 +1,71 @@
+[
+  {
+    "code": "Cha",
+    "smiles": "O=C([C@H](CC1CCCCC1)N[H:1])[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "cycle_hex"
+    ]
+  },
+  {
+    "code": "D_hPhe_3Cl_4CF3",
+    "smiles": "O=C([C@H](CCc1ccc(C(F)(F)F)c(Cl)c1)N[H:1])[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(S)-2-Amino-4-(3-chloro-4-(trifluoromethyl)phenyl)butanoic acid"
+    ]
+  },
+  {
+    "code": "Lys_Me2",
+    "smiles": "CN(C)CCCC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "LyS_Dimethyl",
+      "LyS_Dimethyl22",
+      "LyS_Dimethyl223"
+    ],
+    "components": [
+      "Lys",
+      "Me"
+    ]
+  },
+  {
+    "code": "Oic",
+    "smiles": "O=C([C@@H]1CC2CCCCC2N1)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Oic_3axi-7axi"
+    ]
+  },
+  {
+    "code": "cpr",
+    "smiles": "O=C([C@H](CC1CC1)N[H:1])[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "triple_cycle"
+    ]
+  },
+  {
+    "code": "meCha",
+    "smiles": "CN([C@@H](CC1CCCCC1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "me-Cha"
+    ]
+  },
+  {
+    "code": "meF_4Cl",
+    "smiles": "CN([C@@H](Cc1ccc(Cl)cc1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "mePhe_4Cl"
+    ]
+  }
+]

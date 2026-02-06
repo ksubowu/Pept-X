@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "name": "tri_indole_staple",
+      "pattern_smarts": "C12=CN(C3=CN=CC=C3)=C1C=CC=C2",
+      "mapped": "[*:1]C1=CC(C(C=C1)=C2[*:3])=C(N2[*:2])C3=CN=CC=C3",
+      "keys": [
+        "C12=CN(C3=CN=CC=C3)=C1C=CC=C2",
+        "C1=CC(C(C=C1)=C2)C(=N2)C3=CN=CC=C3"
+      ]
+    },
+    {
+      "name": "user_linker_2",
+      "mapped": "C12=C[N]C=C1C=CC=C2",
+      "keys": [
+        "C12=C[N]C=C1C=CC=C2",
+        "C1=c2ccccc2=C[N]1"
+      ]
+    }
+  ]
+}

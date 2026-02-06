@@ -1,0 +1,10 @@
+rdkit
+pandas
+numpy==1.26.4
+pandas
+flask
+gunicorn
+uvicorn==0.38.0
+fastapi==0.120.4
+omegaconf==2.3.0
+openpyxl==3.1.5

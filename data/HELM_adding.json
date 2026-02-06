@@ -1,0 +1,4188 @@
+[
+  {
+    "code": "A",
+    "smiles": "C[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Alanine",
+      "Mono6",
+      "Mono14",
+      "Mono30",
+      "Mono31",
+      "Me_dAbu",
+      "Lys(Me2)",
+      "Mono86",
+      "Ile(O->S)",
+      "Pro(O->S)"
+    ]
+  },
+  {
+    "code": "C",
+    "smiles": "[H:1]N[C@@H](CS[H:3])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Cysteine"
+    ]
+  },
+  {
+    "code": "D",
+    "smiles": "[H:1]N[C@@H](CC([OH:3])=O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Aspartic acid"
+    ]
+  },
+  {
+    "code": "E",
+    "smiles": "[H:1]N[C@@H](CCC([OH:3])=O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Glutamic acid"
+    ]
+  },
+  {
+    "code": "F",
+    "smiles": "[H:1]N[C@@H](Cc1ccccc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Phenylalanine",
+      "Me_Bal",
+      "Me_Ala(indol-2-yl)",
+      "Ser(Me)",
+      "Mono102",
+      "Ala(O->S)",
+      "Lys(O->S)",
+      "Thr(O->S)",
+      "Mono6",
+      "dCha"
+    ]
+  },
+  {
+    "code": "G",
+    "smiles": "[H:1]NCC([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Glycine",
+      "Me_Phe(a,b-dehydro)",
+      "Hph",
+      "Mono22-",
+      "dSer(Me)"
+    ]
+  },
+  {
+    "code": "H",
+    "smiles": "[H:1]N[C@@H](Cc1cnc[nH]1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Histidine"
+    ]
+  },
+  {
+    "code": "I",
+    "smiles": "CC[C@H](C)[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Isoleucine",
+      "(N->O)xiIle",
+      "Phe(O->S)"
+    ]
+  },
+  {
+    "code": "K",
+    "smiles": "[H:1]N[C@@H](CCCCN[H:3])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Lysine",
+      "Lys(Ac)",
+      "dTrp(O->S)"
+    ]
+  },
+  
+  {
+    "code": "L",
+    "smiles": "CC(C)C[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Leucine",
+      "iBu_Gly",
+      "(N->O)Leu",
+      "H2NEt_Phe",
+      "Mono75",
+      "Mono76",
+      "Mono77",
+      "Mono78",
+      "Mono79",
+      "Mono80",
+      "Mono81",
+      "Mono82",
+      "Mono84",
+      "Mono87",
+      "Mono88",
+      "Mono89",
+      "Mono90",
+      "Mono85",
+      "Mono103",
+      "dPye",
+      "dCha",
+      "dGlu(OMe)",
+      "dGln(Me2)",
+      "dAsp(pyrrol-1-yl)",
+      "dAsn(Me2)",
+      "dLeu(O->S)",
+      "dPro(O->S)",
+      "Mono117",
+      "Mono118",
+      "Mono119",
+      "Mono120",
+      "Mono121",
+      "Mono122",
+      "Mono123",
+      "Mono124",
+      "Mono125",
+      "Me_Bal",
+      "medl-",
+      "dNva"
+    ]
+  },
+  {
+    "code": "M",
+    "smiles": "CSCC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Methionine"
+    ]
+  },
+  {
+    "code": "N",
+    "smiles": "NC(=O)C[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Asparagine"
+    ]
+  },
+   {
+    "code": "d(N->O)Leu",
+    "smiles": "CC(C[C@@H](C(O)=O)[OH:1])C",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": []},
+
+  {
+    "code": "P",
+    "smiles": "[H:1]N1CCC[C@H]1C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Proline",
+      "d(N->O)Gly(allyl)",
+      "Mono16",
+      "Mono28",
+      "Mono29",
+      "Mono35",
+      "Mono36",
+      "Mono37",
+      "glyco-",
+      "ac-"
+    ]
+  },
+  {
+    "code": "Q",
+    "smiles": "NC(=O)CC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Glutamine"
+    ]
+  },
+  {
+    "code": "R",
+    "smiles": "NC(=N)NCCC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Arginine",
+      "Mono108",
+      "Mono109",
+      "Mono110",
+      "Mono111",
+      "Mono112",
+      "Glu_NH2",
+      "Cys(EtO2H)_NH2"
+    ]
+  },
+  {
+    "code": "S",
+    "smiles": "OC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Serine"
+    ]
+  },
+  {
+    "code": "T",
+    "smiles": "C[C@@H](O)[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Threonine",
+      "Me_dW",
+      "dAla(indol-2-yl)"
+    ]
+  },
+  {
+    "code": "V",
+    "smiles": "CC(C)[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Valine",
+      "Me_dF",
+      "Mono83"
+    ]
+  },
+  {
+    "code": "W",
+    "smiles": "[H:1]N[C@@H](Cc1c[nH]c2ccccc12)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Tryptophan",
+      "deca-"
+    ]
+  },
+  {
+    "code": "Y",
+    "smiles": "Oc1ccc(C[C@H](N[H:1])C([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Tyrosine"
+    ]
+  },
+  {
+    "code": "dA",
+    "smiles": "C[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Alanine",
+      "Me_dA"
+    ]
+  },
+  {
+    "code": "dC",
+    "smiles": "[H:1]N[C@H](CS[H:3])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Cysteine"
+    ]
+  },
+  {
+    "code": "dD",
+    "smiles": "[H:1]N[C@H](CC([OH:3])=O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Aspartic acid"
+    ]
+  },
+  {
+    "code": "dE",
+    "smiles": "[H:1]N[C@H](CCC([OH:3])=O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Glutamic acid"
+    ]
+  },
+  {
+    "code": "dF",
+    "smiles": "[H:1]N[C@H](Cc1ccccc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Phenylalanine"
+    ]
+  },
+  {
+    "code": "dH",
+    "smiles": "[H:1]N[C@H](Cc1cnc[nH]1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Histidine"
+    ]
+  },
+  {
+    "code": "dI",
+    "smiles": "CC[C@@H](C)[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Isoleucine"
+    ]
+  },
+  {
+    "code": "dK",
+    "smiles": "[H:1]N[C@H](CCCCN[H:3])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Lysine"
+    ]
+  },
+  {
+    "code": "dL",
+    "smiles": "CC(C)C[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Leucine",
+      "bHph",
+      "Pye",
+      "dAla(O->S)",
+      "Tyr(Me)"
+    ]
+  },
+  {
+    "code": "dM",
+    "smiles": "CSCC[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Methionine"
+    ]
+  },
+  {
+    "code": "dN",
+    "smiles": "NC(=O)C[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Asparagine"
+    ]
+  },
+  {
+    "code": "dP",
+    "smiles": "[H:1]N1CCC[C@@H]1C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Proline",
+      "Sta",
+      "MeOEt_Gly",
+      "Bn_Gly",
+      "cHexCH2_Gly",
+      "Mono38",
+      "3-pyridylethyl_Gly",
+      "PhPr_Gly",
+      "Mono39",
+      "Mono40",
+      "Mono41",
+      "Me_dNva",
+      "dHyp",
+      "Me_dI",
+      "Leu(O->S)",
+      "Tyr(O->S)"
+    ]
+  },
+  {
+    "code": "dQ",
+    "smiles": "NC(=O)CC[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Glutamine"
+    ]
+  },
+  {
+    "code": "dR",
+    "smiles": "NC(=N)NCCC[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Arginine"
+    ]
+  },
+  {
+    "code": "dS",
+    "smiles": "OC[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Serine"
+    ]
+  },
+  {
+    "code": "dT",
+    "smiles": "C[C@H](O)[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Threonine"
+    ]
+  },
+  {
+    "code": "dV",
+    "smiles": "CC(C)[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Valine"
+    ]
+  },
+  {
+    "code": "dW",
+    "smiles": "[H:1]N[C@H](Cc1c[nH]c2ccccc12)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Tryptophan"
+    ]
+  },
+  {
+    "code": "dY",
+    "smiles": "Oc1ccc(C[C@@H](N[H:1])C([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Tyrosine"
+    ]
+  },
+  {
+    "code": "ac",
+    "smiles": "CC([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Terminal acetic acid"
+    ]
+  },
+  {
+    "code": "am",
+    "smiles": "N[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "C-Terminal amine"
+    ]
+  },
+  {
+    "code": "-Me",
+    "smiles": "C[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "C-Terminal methyl"
+    ]
+  },
+  {
+    "code": "meA",
+    "smiles": "C[C@H](N(C)[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Methyl-Alanine"
+    ]
+  },
+  {
+    "code": "meD",
+    "smiles": "CN([H:1])[C@@H](CC([OH:3])=O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Methyl-Aspartic acid"
+    ]
+  },
+  {
+    "code": "meS",
+    "smiles": "CN([H:1])[C@@H](CO)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Methyl-Serine"
+    ]
+  },
+  {
+    "code": "meT",
+    "smiles": "C[C@@H](O)[C@H](N(C)[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Methyl-Threonine"
+    ]
+  },
+  {
+    "code": "meV",
+    "smiles": "CC(C)[C@H](N(C)[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Methyl-Valine"
+    ]
+  },
+  {
+    "code": "meY",
+    "smiles": "CN([H:1])[C@@H](Cc1ccc(O)cc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Methyl-Tyrosine",
+      "Me_Cha",
+      "Mono3",
+      "Mono4",
+      "Me_Abu(morpholino)",
+      "Mono5",
+      "Me_dNle"
+    ]
+  },
+  {
+    "code": "meE",
+    "smiles": "CN([H:1])[C@@H](CCC([OH:3])=O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Methyl-Glutamic acid"
+    ]
+  },
+  {
+    "code": "meG",
+    "smiles": "CN([H:1])CC([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Sarcosine (N-Methyl-Glycine)",
+      "Sar",
+      "d(N->O)aIle",
+      "Mono113"
+    ]
+  },
+  {
+    "code": "meI",
+    "smiles": "CC[C@H](C)[C@H](N(C)[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Methyl-Isoleucine"
+    ]
+  },
+  {
+    "code": "meK",
+    "smiles": "CN([H:1])[C@@H](CCCCN[H:3])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Methyl-Lysine"
+    ]
+  },
+  {
+    "code": "meM",
+    "smiles": "CSCC[C@H](N(C)[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Methyl-Methionine"
+    ]
+  },
+  {
+    "code": "meN",
+    "smiles": "CN([H:1])[C@@H](CC(N)=O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Methyl-Asparagine"
+    ]
+  },
+  {
+    "code": "meQ",
+    "smiles": "CN([H:1])[C@@H](CCC(N)=O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Methyl-Glutamine"
+    ]
+  },
+  {
+    "code": "meC",
+    "smiles": "CN([H:1])[C@@H](CS[H:3])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Methyl-Cysteine"
+    ]
+  },
+  {
+    "code": "meR",
+    "smiles": "CN([H:1])[C@@H](CCCNC(N)=N)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Methyl-Arginine"
+    ]
+  },
+  {
+    "code": "meW",
+    "smiles": "CN([H:1])[C@@H](Cc1c[nH]c2ccccc12)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Methyl-Tryptophan"
+    ]
+  },
+  {
+    "code": "meF",
+    "smiles": "CN([H:1])[C@@H](Cc1ccccc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Methyl-Phenylalanine",
+      "Tle",
+      "Mono2"
+    ]
+  },
+  {
+    "code": "meH",
+    "smiles": "CN([H:1])[C@@H](Cc1cnc[nH]1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Methyl-Histidine",
+      "NMe_His"
+    ]
+  },
+  {
+    "code": "meL",
+    "smiles": "CC(C)C[C@H](N(C)[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Methyl-Leucine",
+      "Sta(3R,4R)",
+      "Me_dY",
+      "Et_Gly",
+      "Pr_Gly",
+      "Mono42",
+      "Bn(4-Cl)_Gly",
+      "Mono43",
+      "Mono1",
+      "Mono44",
+      "Mono45",
+      "Nle(OH)",
+      "Ser(EtOH)",
+      "Mono114"
+    ]
+  },
+  {
+    "code": "Nle",
+    "smiles": "CCCC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Norleucine",
+      "O4S_Reduced",
+      "pentyl_Gly",
+      "Nal"
+    ]
+  },
+  {
+    "code": "Nva",
+    "smiles": "CCC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Norvaline",
+      "O3S_reduced"
+    ]
+  },
+  {
+    "code": "Orn",
+    "smiles": "[H:1]N[C@@H](CCCN[H:3])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "L-ornithine",
+      "Mono21-"
+    ]
+  },
+  {
+    "code": "Iva",
+    "smiles": "CC[C@](C)(N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Isovaline"
+    ]
+  },
+  {
+    "code": "aIle",
+    "smiles": "CC[C@@H](C)[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "L-allo-Isoleucine"
+    ]
+  },
+  {
+    "code": "gGlu",
+    "smiles": "[H:1]N[C@@H](CCC([OH:2])=O)C([OH:3])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Gamma glutamic acid"
+    ]
+  },
+  {
+    "code": "Hcy",
+    "smiles": "[H:1]N[C@@H](CCS[H:3])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Homocysteine",
+      "Hcy(1:R3)"
+    ]
+  },
+  {
+    "code": "Hse",
+    "smiles": "OCC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Homoserine"
+    ]
+  },
+  {
+    "code": "Hyp",
+    "smiles": "O[C@@H]1C[C@H](N([H:1])C1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "4-Hydroxyproline"
+    ]
+  },
+  {
+    "code": "D-gGlu",
+    "smiles": "[H:1]N[C@H](CCC([OH:2])=O)C([OH:3])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Gamma glutamic acid"
+    ]
+  },
+  {
+    "code": "D-Nle",
+    "smiles": "CCCC[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Norleucine"
+    ]
+  },
+  {
+    "code": "D-hPhe",
+    "smiles": "[H:1]N[C@H](CCc1ccccc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Homophenylalanine"
+    ]
+  },
+  {
+    "code": "D-Hyp",
+    "smiles": "O[C@H]1C[C@@H](N([H:1])C1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-4-Hydroxyproline"
+    ]
+  },
+  {
+    "code": "D-Nva",
+    "smiles": "CCC[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Norvaline"
+    ]
+  },
+  {
+    "code": "D-Orn",
+    "smiles": "[H:1]N[C@H](CCCN[H:3])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Ornithine"
+    ]
+  },
+  {
+    "code": "Pyr",
+    "smiles": "[H:1]N1[C@@H](CCC1=O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Pyroglutamic acid"
+    ]
+  },
+  {
+    "code": "D-Pyr",
+    "smiles": "[OH:2]C(=O)[C@H]1CCC(=O)N1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Pyroglutamic acid"
+    ]
+  },
+  {
+    "code": "Phe_3Cl",
+    "smiles": "Clc1cccc(C[C@H](N[H:1])C([OH:2])=O)c1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "3-Chloro-L-phenylalanine",
+      "Phe(3-Cl)"
+    ]
+  },
+  {
+    "code": "Phe_4Cl",
+    "smiles": "Clc1ccc(C[C@H](N[H:1])C([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "4-Chloro-L-phenylalanine",
+      "Phe(4-Cl)"
+    ]
+  },
+  {
+    "code": "Phe_4NH2",
+    "smiles": "Nc1ccc(C[C@H](N[H:1])C([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "p-Aminophenylalanine"
+    ]
+  },
+  {
+    "code": "Phg",
+    "smiles": "[H:1]N[C@H](C([OH:2])=O)c1ccccc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-Phenylglycine"
+    ]
+  },
+  {
+    "code": "Ser_tBu",
+    "smiles": "CC(C)(C)OC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "O-tert-Butyl-L-serine",
+      "Ser(tBu)"
+    ]
+  },
+  {
+    "code": "Tyr_Bn",
+    "smiles": "[H:1]N[C@@H](Cc1ccc(OCc2ccccc2)cc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "O-Benzyl-L-tyrosine"
+    ]
+  },
+  {
+    "code": "Tza",
+    "smiles": "[H:1]N[C@@H](Cc1cscn1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "3-Thiazolylalanine",
+      "Me_Tza"
+    ]
+  },
+  {
+    "code": "1Nal",
+    "smiles": "[H:1]N[C@@H](Cc1cccc2ccccc12)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "3-(1-naphthyl)-alanine"
+    ]
+  },
+  {
+    "code": "Cha",
+    "smiles": "[H:1]N[C@@H](CC1CCCCC1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "3-Cyclohexylalanine",
+      "dNva"
+    ]
+  },
+  {
+    "code": "Lys_Boc",
+    "smiles": "CC(C)(C)OC(=O)NCCCC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-epsilon-tert-Boc-L-lysine"
+    ]
+  },
+  {
+    "code": "aThr",
+    "smiles": "C[C@H](O)[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "L-allo-Threonine"
+    ]
+  },
+  {
+    "code": "D-2Nal",
+    "smiles": "[H:1]N[C@H](Cc1ccc2ccccc2c1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-3-naphthylalanine"
+    ]
+  },
+  {
+    "code": "D-2Thi",
+    "smiles": "[H:1]N[C@H](Cc1cccs1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-3-thienylalanine"
+    ]
+  },
+  {
+    "code": "D-aHyp",
+    "smiles": "O[C@@H]1C[C@@H](N([H:1])C1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-allo-4-hydroxyproline"
+    ]
+  },
+  {
+    "code": "D-aIle",
+    "smiles": "CC[C@H](C)[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-allo-Isoleucine"
+    ]
+  },
+  {
+    "code": "D-Phg",
+    "smiles": "[H:1]N[C@@H](C([OH:2])=O)c1ccccc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-2-phenylglycine"
+    ]
+  },
+  {
+    "code": "D-Ser_tBu",
+    "smiles": "CC(C)(C)OC[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "O-tert-Butyl-D-serine"
+    ]
+  },
+  {
+    "code": "Cya",
+    "smiles": "OS(=O)(=O)C[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "3-Sulfoalanine"
+    ]
+  },
+  {
+    "code": "Lys_Me3",
+    "smiles": "C[N+](C)(C)CCCC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Epsilon-N-trimethyllysine"
+    ]
+  },
+  {
+    "code": "Pen",
+    "smiles": "CC(C)(S[H:3])[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Penicillamine (3-mercaptovaline)"
+    ]
+  },
+  {
+    "code": "Phe_4Me",
+    "smiles": "Cc1ccc(C[C@H](N[H:1])C([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "p-Methylphenylalanine"
+    ]
+  },
+  {
+    "code": "Ser_Bn",
+    "smiles": "[H:1]N[C@@H](COCc1ccccc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "O-Benzyl-L-serine",
+      "Ser(Bn)"
+    ]
+  },
+  {
+    "code": "Tyr_tBu",
+    "smiles": "CC(C)(C)Oc1ccc(C[C@H](N[H:1])C([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "O-tert-Butyl-L-tyrosine"
+    ]
+  },
+  {
+    "code": "2Nal",
+    "smiles": "[H:1]N[C@@H](Cc1ccc2ccccc2c1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "3-Naphthylalanine"
+    ]
+  },
+  {
+    "code": "Thi",
+    "smiles": "[H:1]N[C@@H](Cc1cccs1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "3-thienylalanine"
+    ]
+  },
+  {
+    "code": "aHyp",
+    "smiles": "O[C@H]1C[C@H](N([H:1])C1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "L-allo-4-hydroxyproline"
+    ]
+  },
+  {
+    "code": "Ala_tBu",
+    "smiles": "CC(C)(C)[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "3-Methylvaline"
+    ]
+  },
+  {
+    "code": "hPhe",
+    "smiles": "[H:1]N[C@@H](CCc1ccccc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Homophenylalanine",
+      "hF",
+      "Hph",
+      "dPhe(4-F)"
+    ]
+  },
+  {
+    "code": "D-1Nal",
+    "smiles": "[H:1]N[C@H](Cc1cccc2ccccc12)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-3-(1-naphthyl)-alanine",
+      "Phe(4-NO2)",
+      "Phe(4-F)"
+    ]
+  },
+  {
+    "code": "D-aThr",
+    "smiles": "C[C@@H](O)[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-allo-Threonine"
+    ]
+  },
+  {
+    "code": "D-Cha",
+    "smiles": "[H:1]N[C@H](CC1CCCCC1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-2-Amino-3-cyclohexyl-propionic acid"
+    ]
+  },
+  {
+    "code": "D-Pen",
+    "smiles": "CC(C)(S[H:3])[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-penicillamine (3-mercaptovaline)"
+    ]
+  },
+  {
+    "code": "D-Phe_4Cl",
+    "smiles": "Clc1ccc(C[C@@H](N[H:1])C([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "4-Chloro-D-phenylalanine"
+    ]
+  },
+  {
+    "code": "D-Ser_Bn",
+    "smiles": "[H:1]N[C@H](COCc1ccccc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "O-Benzyl-D-serine"
+    ]
+  },
+  {
+    "code": "Wil",
+    "smiles": "[H:1]N[C@@H](Cn1ccc(=O)[nH]c1=O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Alpha-amino-2,4-dioxopyrimidinepropanoic acid"
+    ]
+  },
+  {
+    "code": "MsO",
+    "smiles": "CS([OH:2])(=O)=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Mesylate"
+    ]
+  },
+  {
+    "code": "Oic_3aS-7aS",
+    "smiles": "[H:1]N1[C@H]2CCCC[C@H]2C[C@H]1C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Perhydroindolic acid",
+      "Oic"
+    ]
+  },
+  {
+    "code": "Pip",
+    "smiles": "[H:1]N1CCCC[C@H]1C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Pipecolic acid"
+    ]
+  },
+  {
+    "code": "3Pal",
+    "smiles": "[H:1]N[C@@H](Cc1cccnc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "3-(2-pyridyl)-alanine",
+      "Nva(Ph)"
+    ]
+  },
+  {
+    "code": "4Pal",
+    "smiles": "[H:1]N[C@@H](Cc1ccncc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "3-(4-Pyridyl)-alanine"
+    ]
+  },
+  {
+    "code": "Abu",
+    "smiles": "CC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-Aminobutanoic acid"
+    ]
+  },
+  {
+    "code": "Apm",
+    "smiles": "[H:1]N[C@@H](CCCCC([OH:3])=O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-Aminopimelic acid"
+    ]
+  },
+  {
+    "code": "Chg",
+    "smiles": "[H:1]N[C@@H](C1CCCCC1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Alpha-cyclohexylglycine"
+    ]
+  },
+  {
+    "code": "Dab",
+    "smiles": "[H:1]N[C@@H](CCN[H:3])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2,4-diaminobutanoic acid"
+    ]
+  },
+  {
+    "code": "Dap",
+    "smiles": "[H:1]N[C@@H](CN[H:3])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2,3-diaminopropanoic acid"
+    ]
+  },
+  {
+    "code": "D-3Pal",
+    "smiles": "[H:1]N[C@H](Cc1cccnc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-3-(2-pyridyl)-alanine",
+      "d3Pal"
+    ]
+  },
+  {
+    "code": "D-aMeAbu",
+    "smiles": "CC[C@@](C)(N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Isovaline"
+    ]
+  },
+  {
+    "code": "D-Chg",
+    "smiles": "[H:1]N[C@H](C1CCCCC1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Alpha-cyclohexylglycine"
+    ]
+  },
+  {
+    "code": "D-Cit",
+    "smiles": "NC(=O)NCCC[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Citrullin"
+    ]
+  },
+  {
+    "code": "D-Dab",
+    "smiles": "[H:1]N[C@H](CCN[H:3])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-2,4-diaminobutanoic acid"
+    ]
+  },
+  {
+    "code": "D-Pip",
+    "smiles": "[H:1]N1CCCC[C@@H]1C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-Pipecolic acid",
+      "Hpr",
+      "dPip"
+    ]
+  },
+  {
+    "code": "D-Tic",
+    "smiles": "[H:1]N1Cc2ccccc2C[C@@H]1C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-1,2,3,4-tetrahydro-3-isoquinolinecarboxylic acid"
+    ]
+  },
+  {
+    "code": "Aca",
+    "smiles": "CCCCCCCC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-Aminocapric acid",
+      "Ogl",
+      "Oql"
+    ]
+  },
+  {
+    "code": "Tic",
+    "smiles": "[H:1]N1Cc2ccccc2C[C@H]1C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "1,2,3,4-tetrahydro-3-isoquinolinecarboxylic acid"
+    ]
+  },
+  {
+    "code": "Aad",
+    "smiles": "[H:1]N[C@@H](CCCC([OH:3])=O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-Aminoadipic acid"
+    ]
+  },
+  {
+    "code": "Cit",
+    "smiles": "NC(=O)NCCC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Citrullin"
+    ]
+  },
+  {
+    "code": "Aze",
+    "smiles": "[H:1]N1CC[C@H]1C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-Carboxyazetidine",
+      "AzetidinOne"
+    ]
+  },
+  {
+    "code": "Ac5c",
+    "smiles": "[H:1]NC1(CCCC1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "1-Amino-1-carboxycyclopentane"
+    ]
+  },
+  {
+    "code": "Aib",
+    "smiles": "CC(C)(N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Alpha-aminoisobutyric acid (2-aminoalanine)"
+    ]
+  },
+  {
+    "code": "D-2Pal",
+    "smiles": "[H:1]N[C@H](Cc1ccccn1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-3-(2-Pyridyl)-alanine",
+      "d2Pal"
+    ]
+  },
+  {
+    "code": "D-Abu",
+    "smiles": "CC[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-2-aminobutanoic acid"
+    ]
+  },
+  {
+    "code": "D-Dap",
+    "smiles": "[H:1]N[C@H](CN[H:3])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "D-2,3-diaminopropanoic acid"
+    ]
+  },
+  {
+    "code": "Asu",
+    "smiles": "[H:1]N[C@@H](CCCCCC([OH:3])=O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-Aminosuberic acid"
+    ]
+  },
+  {
+    "code": "Cbz",
+    "smiles": "[OH:2]C(=O)OCc1ccccc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Carboxybenzyl"
+    ]
+  },
+  {
+    "code": "-Et",
+    "smiles": "CC[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "C-Terminal ethyl"
+    ]
+  },
+  {
+    "code": "NHEt",
+    "smiles": "CCN[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Ethanamine"
+    ]
+  },
+  {
+    "code": "OEt",
+    "smiles": "CCO[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Ethanol"
+    ]
+  },
+  {
+    "code": "-OMe",
+    "smiles": "CO[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "C-Terminal methanol"
+    ]
+  },
+  {
+    "code": "OtBu",
+    "smiles": "CC(C)(C)O[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "O-tert-Butyl"
+    ]
+  },
+  {
+    "code": "Tos",
+    "smiles": "Cc1ccc(cc1)S([OH:2])(=O)=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Tosyl"
+    ]
+  },
+  {
+    "code": "D-Thz",
+    "smiles": "[H:1]N1CSC[C@@H]1C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(4S)-1,3-thiazolidine-4-carboxylic acid"
+    ]
+  },
+  {
+    "code": "fmoc",
+    "smiles": "[OH:2]C(=O)OCC1c2ccccc2-c2ccccc12",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Fluorenylmethoxycarbonyl"
+    ]
+  },
+  {
+    "code": "Mpa",
+    "smiles": "C[C@H](S[H:3])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(S)-2-Mercaptopropanoic acid"
+    ]
+  },
+  {
+    "code": "Bua",
+    "smiles": "CCCC([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Butanoic acid"
+    ]
+  },
+  {
+    "code": "Glc",
+    "smiles": "OCC([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Glycolic acid",
+      "GlycolicAcid"
+    ]
+  },
+  {
+    "code": "deamino-Cys",
+    "smiles": "SCCC([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Deamino-Cysteine"
+    ]
+  },
+  {
+    "code": "deamino-Dab",
+    "smiles": "OC(=O)CCCN[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "4-aminobutanoic acid"
+    ]
+  },
+  {
+    "code": "deamino-Gly_CN",
+    "smiles": "[OH:2]C(=O)CC#N",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-cyanoacetic acid"
+    ]
+  },
+  {
+    "code": "deamino-Gly_cPent",
+    "smiles": "[OH:2]C(=O)CC1CCCC1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-cyclopentylacetic acid"
+    ]
+  },
+  {
+    "code": "deamino-Gly_OH",
+    "smiles": "OC(=O)CO[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-hydroxyacetic acid"
+    ]
+  },
+  {
+    "code": "deamino-Gly_thien2yl",
+    "smiles": "[OH:2]C(=O)Cc1cccs1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-(thiophen-2-yl)acetic acid"
+    ]
+  },
+  {
+    "code": "D-Trp_For",
+    "smiles": "[H:1]N[C@H](Cc1cn(C=O)c2ccccc12)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-amino-3-(1-formyl-1H-indol-3-yl)propanoic acid"
+    ]
+  },
+  {
+    "code": "deamino-Ncy",
+    "smiles": "SCC([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-sulfanylacetic acid"
+    ]
+  },
+  {
+    "code": "deamino-Phe",
+    "smiles": "OC(=O)C([OH:2])Cc1ccccc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Deamino-Phenylalanine"
+    ]
+  },
+  {
+    "code": "deamino-Phg_35diMe",
+    "smiles": "Cc1cc(C)cc(CC([OH:2])=O)c1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-(3,5-dimethylphenyl)acetic acid"
+    ]
+  },
+  {
+    "code": "deamino-Leu",
+    "smiles": "CC(C)CCC([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Deamino-Leucine"
+    ]
+  },
+  {
+    "code": "D-OAla",
+    "smiles": "C[C@@H](O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-hydroxypropanoic acid"
+    ]
+  },
+  {
+    "code": "L-OAla",
+    "smiles": "C[C@H](O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-hydroxypropanoic acid"
+    ]
+  },
+  {
+    "code": "L-OVal",
+    "smiles": "CC(C)[C@H](O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-hydroxy-3-methylbutanoic acid"
+    ]
+  },
+  {
+    "code": "NHBn-",
+    "smiles": "[OH:2]NCc1ccccc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Terminal 1-phenylmethanamine"
+    ]
+  },
+  {
+    "code": "Bz",
+    "smiles": "[OH:2]C(=O)c1ccccc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Benzaldehyde"
+    ]
+  },
+  {
+    "code": "Et-",
+    "smiles": "CC[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Terminal ethyl"
+    ]
+  },
+  {
+    "code": "Me-",
+    "smiles": "C[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Terminal methyl"
+    ]
+  },
+  {
+    "code": "D-Tyr_Et",
+    "smiles": "CCOc1ccc(C[C@@H](N[H:1])C([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-amino-3-(4-ethoxyphenyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Lys_Ac",
+    "smiles": "CC(=O)NCCCC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-6-acetamidohexanoic acid"
+    ]
+  },
+  {
+    "code": "OMe-",
+    "smiles": "CO[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Terminal methanol"
+    ]
+  },
+  {
+    "code": "Asp_OMe",
+    "smiles": "COC(=O)C[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-4-methoxy-4-oxobutanoic acid",
+      "Asp(OMe)"
+    ]
+  },
+  {
+    "code": "NMe23Abz",
+    "smiles": "CN(C)c1cccc(c1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "3-(dimethylamino)benzoic acid"
+    ]
+  },
+  {
+    "code": "Phe_ab-dehydro",
+    "smiles": "[H:1]N=C(Cc1ccccc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-amino-3-phenylprop-2-enoic acid"
+    ]
+  },
+  {
+    "code": "Sta_3xi4xi",
+    "smiles": "CC(C)CC(N[H:1])C(O)CC([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "4-amino-3-hydroxy-6-methylheptanoic acid"
+    ]
+  },
+  {
+    "code": "Tyr_ab-dehydroMe",
+    "smiles": "COc1ccc(C=C(N[H:1])C([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-amino-3-(4-methoxyphenyl)prop-2-enoic acid"
+    ]
+  },
+  {
+    "code": "App",
+    "smiles": "O[C@H](CC([OH:2])=O)[C@H](Cc1ccccc1)N[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "gamma-amino-beta-hydroxybenzenepentanoic acid"
+    ]
+  },
+  {
+    "code": "Cap",
+    "smiles": "O[C@H]([C@H](CCC1CCCCC1)N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R,3S)-3-amino-5-cyclohexyl-2-hydroxypentanoic acid"
+    ]
+  },
+  {
+    "code": "Cys_SEt",
+    "smiles": "CCSSC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-amino-3-(ethyldisulfanyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Dsu",
+    "smiles": "NC(CCCC[C@H](N[H:1])C([OH:2])=O)C(O)=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2,7-Diaminosuberic acid"
+    ]
+  },
+  {
+    "code": "pnC",
+    "smiles": "Nc1ccn(CC(=O)N(CCN[H:1])CC([OH:2])=O)c(=O)n1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "PNA Cytosine"
+    ]
+  },
+  {
+    "code": "pnG",
+    "smiles": "Nc1nc2n(CC(=O)N(CCN[H:1])CC([OH:2])=O)cnc2c(=O)[nH]1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "PNA Guanine"
+    ]
+  },
+  {
+    "code": "Pqa",
+    "smiles": "[H:1]N1CCN(CC1)c1ccc2ccn(CC([OH:2])=O)c(=O)c2c1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-[1-oxo-7-(piperazin-1-yl)-1,2-dihydroisoquinolin-2-yl]acetic acid"
+    ]
+  },
+  {
+    "code": "Pro_4Me3OH",
+    "smiles": "CC1CN([H:1])[C@@H](C1O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-3-hydroxy-4-methylpyrrolidine-2-carboxylic acid"
+    ]
+  },
+  {
+    "code": "D-Ala-ol",
+    "smiles": "N[C@@H](CO)C[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-aminopropan-1-ol"
+    ]
+  },
+  {
+    "code": "D-Phg-ol",
+    "smiles": "[H:1]NC(CO)c1ccccc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-amino-2-methylpropan-1-ol"
+    ]
+  },
+  {
+    "code": "D-Thr-ol",
+    "smiles": "C[C@@H](O)[C@@H](CO)N[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R,3R)-2-aminobutane-1,3-diol"
+    ]
+  },
+  {
+    "code": "Gly-ol",
+    "smiles": "OCN[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "aminomethanol"
+    ]
+  },
+  {
+    "code": "Ala-ol",
+    "smiles": "C[C@@H](CO)N[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-aminopropan-1-ol"
+    ]
+  },
+  {
+    "code": "Lys-ol",
+    "smiles": "NCCCC[C@@H](CO)N[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2,6-diaminohexan-1-ol"
+    ]
+  },
+  {
+    "code": "Phg-ol",
+    "smiles": "OC[C@@H](N[H:1])c1ccccc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-2-phenylethan-1-ol"
+    ]
+  },
+  {
+    "code": "Pro-ol",
+    "smiles": "OC[C@@H]1CCCN1[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "[(2S)-pyrrolidin-2-yl]methanol"
+    ]
+  },
+  {
+    "code": "Val-ol",
+    "smiles": "CC(C)[C@@H](CO)N[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-methylbutan-1-ol"
+    ]
+  },
+  {
+    "code": "Ala-al",
+    "smiles": "C[C@H](N[H:1])C=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-aminopropanal"
+    ]
+  },
+  {
+    "code": "Arg-al",
+    "smiles": "NC(=N)NCCC[C@H](N[H:1])C=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N''-[(4S)-4-amino-5-oxopentyl]guanidine"
+    ]
+  },
+  {
+    "code": "Asp-al",
+    "smiles": "OC(=O)C[C@H](N[H:1])C=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(3S)-3-amino-4-oxobutanoic acid"
+    ]
+  },
+  {
+    "code": "Lys-al",
+    "smiles": "NCCCC[C@H](N[H:1])C=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2,6-diaminohexanal"
+    ]
+  },
+  {
+    "code": "Pro-al",
+    "smiles": "[H:1]N1CCC[C@H]1C=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-pyrrolidine-2-carbaldehyde"
+    ]
+  },
+  {
+    "code": "-NHBn",
+    "smiles": "[H:1]NCc1ccccc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "C-Terminal 1-phenylmethanamine"
+    ]
+  },
+  {
+    "code": "NHMe",
+    "smiles": "CN[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Methanamine"
+    ]
+  },
+  {
+    "code": "Met_O2",
+    "smiles": "CS(=O)(=O)CC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-4-methanesulfonylbutanoic acid",
+      "Met(O2)"
+    ]
+  },
+  {
+    "code": "Phe_2Me",
+    "smiles": "Cc1ccccc1C[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(2-methylphenyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Phe_34diCl",
+    "smiles": "Clc1ccc(C[C@H](N[H:1])C([OH:2])=O)cc1Cl",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(3,4-dichlorophenyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Phe_4Br",
+    "smiles": "Brc1ccc(C[C@H](N[H:1])C([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(4-bromophenyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Phe_4I",
+    "smiles": "Ic1ccc(C[C@H](N[H:1])C([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(4-iodophenyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Phe_4Sdihydroorotamido",
+    "smiles": "[H:1]N[C@@H](Cc1ccc(NC(=O)[C@@H]2CC(=O)NC(=O)N2)cc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-{4-[(4S)-2,6-dioxo-1,3-diazinane-4-amido]phenyl}propanoic acid"
+    ]
+  },
+  {
+    "code": "Pyl",
+    "smiles": "C[C@@H]1CC=N[C@H]1C(=O)NCCCC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Pyrrolysine"
+    ]
+  },
+  {
+    "code": "Ser_PO3H2",
+    "smiles": "OP(O)(=O)OC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(phosphonooxy)propanoic acid"
+    ]
+  },
+  {
+    "code": "Thr_PO3H2",
+    "smiles": "C[C@@H](OP(O)(O)=O)[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S,3R)-2-amino-3-(phosphonooxy)butanoic acid"
+    ]
+  },
+  {
+    "code": "Thz",
+    "smiles": "[H:1]N1CSC[C@H]1C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(4R)-1,3-thiazolidine-4-carboxylic acid"
+    ]
+  },
+  {
+    "code": "Trp_Me",
+    "smiles": "Cn1cc(C[C@H](N[H:1])C([OH:2])=O)c2ccccc12",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(1-methyl-1H-indol-3-yl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Tyr_26diMe",
+    "smiles": "Cc1cc(O)cc(C)c1C[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(4-hydroxy-2,6-dimethylphenyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Tyr_3I",
+    "smiles": "Oc1ccc(C[C@H](N[H:1])C([OH:2])=O)cc1I",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(4-hydroxy-3-iodophenyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Tyr_3NO2",
+    "smiles": "Oc1ccc(C[C@H](N[H:1])C([OH:2])=O)cc1N(=O)=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(4-hydroxy-3-nitrophenyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Tyr_Ph4OH",
+    "smiles": "Oc1ccc(Oc2ccc(C[C@H](N[H:1])C([OH:2])=O)cc2)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-[4-(4-hydroxyphenoxy)phenyl]propanoic acid"
+    ]
+  },
+  {
+    "code": "Tyr_SO3H",
+    "smiles": "OS(=O)(=O)Oc1ccc(C[C@H](N[H:1])C([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-[4-(sulfooxy)phenyl]propanoic acid"
+    ]
+  },
+  {
+    "code": "Val_3OH",
+    "smiles": "CC(C)(O)[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-hydroxy-3-methylbutanoic acid",
+      "Val(3-OH)"
+    ]
+  },
+  {
+    "code": "xiIle",
+    "smiles": "CCC(C)[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-methylpentanoic acid"
+    ]
+  },
+  {
+    "code": "NMe2Abz",
+    "smiles": "CN([H:1])c1ccccc1C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-(methylamino)benzoic acid"
+    ]
+  },
+  {
+    "code": "NMebAla",
+    "smiles": "CN([H:1])CCC([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "3-(methylamino)propanoic acid"
+    ]
+  },
+  {
+    "code": "aMePhe",
+    "smiles": "C[C@@](Cc1ccccc1)(N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-2-methyl-3-phenylpropanoic acid",
+      "aMe_Phe"
+    ]
+  },
+  {
+    "code": "aMePro",
+    "smiles": "C[C@]1(CCCN1[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-methylpyrrolidine-2-carboxylic acid"
+    ]
+  },
+  {
+    "code": "aMeTyr_3OH",
+    "smiles": "C[C@@](Cc1ccc(O)c(O)c1)(N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(3,4-dihydroxyphenyl)-2-methylpropanoic acid"
+    ]
+  },
+  {
+    "code": "Bmt",
+    "smiles": "CC=CC[C@@H](C)[C@@H](O)[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S,3R,4R)-2-amino-3-hydroxy-4-methyloct-6-enoic acid"
+    ]
+  },
+  {
+    "code": "Bmt_E",
+    "smiles": "CC=CC[C@@H](C)[C@@H](O)[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S,3R,4R,6E)-2-amino-3-hydroxy-4-methyloct-6-enoic acid"
+    ]
+  },
+  {
+    "code": "Cys_Bn",
+    "smiles": "[H:1]N[C@@H](CSCc1ccccc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-amino-3-(benzylsulfanyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Gla",
+    "smiles": "OC(=O)C(C[C@H](N[H:1])C([H:3])=O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Carboxyglutamic acid"
+    ]
+  },
+  {
+    "code": "hHis",
+    "smiles": "[H:1]N[C@@H](CCc1cnc[nH]1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-4-(1H-imidazol-4-yl)butanoic acid"
+    ]
+  },
+  {
+    "code": "His_1Me",
+    "smiles": "Cn1cnc(C[C@H](N[H:1])C([OH:2])=O)c1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(1-methyl-1H-imidazol-4-yl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Gly_allyl",
+    "smiles": "[H:1]N[C@@H](CC=C)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-aminopent-4-enoic acid",
+      "Gly(allyl)"
+    ]
+  },
+  {
+    "code": "Gly_cPr",
+    "smiles": "[H:1]N[C@@H](C1CC1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-2-cyclopropylacetic acid",
+      "Gly(cPr)"
+    ]
+  },
+  {
+    "code": "Hsl",
+    "smiles": "[H:1]N[C@H]1CCOC1=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(3S)-3-aminooxolan-2-one"
+    ]
+  },
+  {
+    "code": "Asp_Ph2NH2",
+    "smiles": "Nc1ccccc1C(=O)C[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-4-(2-aminophenyl)-4-oxobutanoic acid",
+      "Glu(3R-Me)"
+    ]
+  },
+  {
+    "code": "Azi",
+    "smiles": "[H:1]N1C[C@H]1C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-aziridine-2-carboxylic acid"
+    ]
+  },
+  {
+    "code": "2Abz",
+    "smiles": "[H:1]Nc1ccccc1C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-Aminobenzoic acid"
+    ]
+  },
+  {
+    "code": "3Abz",
+    "smiles": "[H:1]Nc1cccc(c1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "3-Aminobenzoic acid"
+    ]
+  },
+  {
+    "code": "4Abz",
+    "smiles": "[H:1]Nc1ccc(cc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "4-Aminobenzoic acid"
+    ]
+  },
+  {
+    "code": "Ac3c",
+    "smiles": "[H:1]NC1(CC1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "1-aminocyclopropane-1-carboxylic acid"
+    ]
+  },
+  {
+    "code": "Ac6c",
+    "smiles": "[H:1]NC1(CCCCC1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "1-aminocyclohexane-1-carboxylic acid"
+    ]
+  },
+  {
+    "code": "bAla",
+    "smiles": "[H:1]NCCC([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "3-aminopropanoic acid",
+      "bA"
+    ]
+  },
+  {
+    "code": "D-Bmt",
+    "smiles": "CC=CC[C@H](C)[C@H](O)[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R,3S,4S)-2-amino-3-hydroxy-4-methyloct-6-enoic acid"
+    ]
+  },
+  {
+    "code": "D-Bmt_E",
+    "smiles": "CC=CC[C@H](C)[C@H](O)[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R,3S,4S,6E)-2-amino-3-hydroxy-4-methyloct-6-enoic acid"
+    ]
+  },
+  {
+    "code": "D-hArg",
+    "smiles": "NC(=N)NCCCC[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-amino-6-[(diaminomethylidene)amino]hexanoic acid"
+    ]
+  },
+  {
+    "code": "D-Phe_4F",
+    "smiles": "Fc1ccc(C[C@@H](N[H:1])C([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-amino-3-(4-fluorophenyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "D-Trp_2Me",
+    "smiles": "Cc1[nH]c2ccccc2c1C[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-amino-3-(2-methyl-1H-indol-3-yl)propanoic acid"
+    ]
+  },
+  {
+    "code": "D-Tyr_3OH",
+    "smiles": "OC(=O)[C@@H](Cc1ccc(O)c(O)c1)N[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-amino-3-(3,4-dihydroxyphenyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "D-Tyr_Me",
+    "smiles": "COc1ccc(C[C@@H](N[H:1])C([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-amino-3-(4-methoxyphenyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "D-xiIle",
+    "smiles": "CCC(C)[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-amino-3-methylpentanoic acid"
+    ]
+  },
+  {
+    "code": "Lys_iPr",
+    "smiles": "CC(C)NCCCC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-6-[(propan-2-yl)amino]hexanoic acid",
+      "Lys(iPr)"
+    ]
+  },
+  {
+    "code": "-Bn",
+    "smiles": "[H:1]Cc1ccccc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "C-Terminal toluene"
+    ]
+  },
+  {
+    "code": "-OBn",
+    "smiles": "[H:1]OCc1ccccc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "C-Terminal phenylmethanol"
+    ]
+  },
+  {
+    "code": "Ph",
+    "smiles": "[H:1]c1ccccc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Phenyl"
+    ]
+  },
+  {
+    "code": "Boc",
+    "smiles": "CC(C)(C)OC([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Tert-butyloxycarbonyl"
+    ]
+  },
+  {
+    "code": "Mba",
+    "smiles": "CC[C@H](S[H:3])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Mercaptobutanoic acid"
+    ]
+  },
+  {
+    "code": "Hva",
+    "smiles": "CCC[C@H](O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-Hydroxypentanoic acid"
+    ]
+  },
+  {
+    "code": "deamino-Chg",
+    "smiles": "[OH:2]C(=O)CC1CCCCC1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-cyclohexylacetic acid"
+    ]
+  },
+  {
+    "code": "deamino-Dip",
+    "smiles": "[OH:2]C(=O)CC(c1ccccc1)c1ccccc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "3,3-diphenylpropanoic acid"
+    ]
+  },
+  {
+    "code": "deamino-Gly_tBu",
+    "smiles": "CC(C)(C)CC([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "3,3-dimethylbutanoic acid"
+    ]
+  },
+  {
+    "code": "deamino-hPhe",
+    "smiles": "[OH:2]C(=O)CCCc1ccccc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "4-phenylbutanoic acid"
+    ]
+  },
+  {
+    "code": "deamino-nTyr_Me",
+    "smiles": "COc1ccc(CC([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-(4-methoxyphenyl)acetic acid"
+    ]
+  },
+  {
+    "code": "deamino-Phg_4Cl",
+    "smiles": "Clc1ccc(CC([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-(4-chlorophenyl)acetic acid"
+    ]
+  },
+  {
+    "code": "D-OVal",
+    "smiles": "CC(C)[C@@H](O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-hydroxy-3-methylbutanoic acid"
+    ]
+  },
+  {
+    "code": "OLeu",
+    "smiles": "CC(C)C[C@H](O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-hydroxy-4-methylpentanoic acid"
+    ]
+  },
+  {
+    "code": "Bn-",
+    "smiles": "[OH:2]Cc1ccccc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Terminal toluene"
+    ]
+  },
+  {
+    "code": "OBn-",
+    "smiles": "[OH:2]OCc1ccccc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "N-Terminal phenylmethanol"
+    ]
+  },
+  {
+    "code": "deamino-Lys",
+    "smiles": "NCCCCC([OH:2])C(O)=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Deamino-Lysine"
+    ]
+  },
+  {
+    "code": "NMe24Abz",
+    "smiles": "CN(C)c1ccc(cc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "4-(dimethylamino)benzoic acid"
+    ]
+  },
+  {
+    "code": "Phe_ab-dehydro_3NO2",
+    "smiles": "[O-][N+](=O)c1cccc(C=C(N[H:1])C([OH:2])=O)c1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-amino-3-(3-nitrophenyl)prop-2-enoic acid"
+    ]
+  },
+  {
+    "code": "Sta_3S4S",
+    "smiles": "CC(C)C[C@H](N[H:1])[C@@H](O)CC([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(3S,4S)-4-amino-3-hydroxy-6-methylheptanoic acid"
+    ]
+  },
+  {
+    "code": "Bux",
+    "smiles": "O[C@H](CN[H:1])CC([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(3S)-4-amino-3-hydroxybutanoic acid"
+    ]
+  },
+  {
+    "code": "Dpm",
+    "smiles": "NC(CCCCC(O)=O)(N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Diaminopimelic acid"
+    ]
+  },
+  {
+    "code": "pnA",
+    "smiles": "Nc1ncnc2n(CC(=O)N(CCN[H:1])CC([OH:2])=O)cnc12",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "PNA Adenine"
+    ]
+  },
+  {
+    "code": "pnT",
+    "smiles": "Cc1cn(CC(=O)N(CCN[H:1])CC([OH:2])=O)c(=O)[nH]c1=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "PNA Thymine"
+    ]
+  },
+  {
+    "code": "seC",
+    "smiles": "[SeH]C[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "SelenoCysteine"
+    ]
+  },
+  {
+    "code": "Aib-ol",
+    "smiles": "CC(C)(CO)N[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-amino-2-methylpropan-1-ol"
+    ]
+  },
+  {
+    "code": "D-Pro-ol",
+    "smiles": "OC[C@H]1CCCN1[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "[(2R)-pyrrolidin-2-yl]methanol"
+    ]
+  },
+  {
+    "code": "Leu-ol",
+    "smiles": "CC(C)C[C@@H](CO)N[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-4-methylpentan-1-ol"
+    ]
+  },
+  {
+    "code": "Phe-ol",
+    "smiles": "OC[C@H](Cc1ccccc1)N[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-phenylpropan-1-ol"
+    ]
+  },
+  {
+    "code": "Thr-ol",
+    "smiles": "C[C@H](O)[C@H](CO)N[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S,3S)-2-aminobutane-1,3-diol"
+    ]
+  },
+  {
+    "code": "Gly-al",
+    "smiles": "[H:1]NCC=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-aminoacetaldehyde"
+    ]
+  },
+  {
+    "code": "Leu-al",
+    "smiles": "CC(C)C[C@H](N[H:1])C=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-4-methylpentanal"
+    ]
+  },
+  {
+    "code": "Phe-al",
+    "smiles": "[H:1]N[C@@H](Cc1ccccc1)C=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-phenylpropanal"
+    ]
+  },
+  {
+    "code": "L-hArg_2Et",
+    "smiles": "CCNC(NCCCC[C@H](N[H:1])C([OH:2])=O)=NCC",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-6-{[bis(ethylamino)methylidene]amino}hexanoic acid"
+    ]
+  },
+  {
+    "code": "Met_O",
+    "smiles": "CS(=O)CC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-4-methanesulfinylbutanoic acid"
+    ]
+  },
+  {
+    "code": "nTyr",
+    "smiles": "Oc1ccc(cc1)[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-2-(4-hydroxyphenyl)acetic acid"
+    ]
+  },
+  {
+    "code": "Oic_3aR-7aS",
+    "smiles": "[H:1]N1[C@H]2CCCC[C@@H]2C[C@H]1C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S,3aR,7aS)-octahydro-1H-indole-2-carboxylic acid"
+    ]
+  },
+  {
+    "code": "Oic_3axi-7axi",
+    "smiles": "[H:1]N1C2CCCCC2C[C@H]1C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-octahydro-1H-indole-2-carboxylic acid"
+    ]
+  },
+  {
+    "code": "Phe_2F",
+    "smiles": "Fc1ccccc1C[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(2-fluorophenyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Phe_3F",
+    "smiles": "Fc1cccc(C[C@H](N[H:1])C([OH:2])=O)c1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(3-fluorophenyl)propanoic acid",
+      "Phe(3-F)"
+    ]
+  },
+  {
+    "code": "Phe_4F",
+    "smiles": "Fc1ccc(C[C@H](N[H:1])C([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(4-fluorophenyl)propanoic acid",
+      "Phe(4-F)"
+    ]
+  },
+  {
+    "code": "Phe_4NO2",
+    "smiles": "[H:1]N[C@@H](Cc1ccc(cc1)N(=O)=O)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(4-nitrophenyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Phe_bbdiMe",
+    "smiles": "CC(C)([C@H](N[H:1])C([OH:2])=O)c1ccccc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-methyl-3-phenylbutanoic acid"
+    ]
+  },
+  {
+    "code": "Trp_5OH",
+    "smiles": "Oc1ccc2[nH]cc(C[C@H](N[H:1])C([OH:2])=O)c2c1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(5-hydroxy-1H-indol-3-yl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Trp_Ome",
+    "smiles": "COn1cc(C[C@H](N[H:1])C([OH:2])=O)c2ccccc12",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(1-methoxy-1H-indol-3-yl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Tyr_35diI",
+    "smiles": "Oc1c(I)cc(C[C@H](N[H:1])C([OH:2])=O)cc1I",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(4-hydroxy-3,5-diiodophenyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Tyr_3OH",
+    "smiles": "Oc1ccc(C[C@H](N[H:1])C([OH:2])=O)cc1O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(3,4-dihydroxyphenyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Tyr_Me",
+    "smiles": "COc1ccc(C[C@H](N[H:1])C([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(4-methoxyphenyl)propanoic acid",
+      "Tyr(Me)"
+    ]
+  },
+  {
+    "code": "Tyr_PO3H2",
+    "smiles": "OP(O)(=O)Oc1ccc(C[C@H](N[H:1])C([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-[4-(phosphonooxy)phenyl]propanoic acid"
+    ]
+  },
+  {
+    "code": "xiHyp",
+    "smiles": "OC1C[C@H](N([H:1])C1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-4-hydroxypyrrolidine-2-carboxylic acid"
+    ]
+  },
+  {
+    "code": "xiThr",
+    "smiles": "CC(O)[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-hydroxybutanoic acid"
+    ]
+  },
+  {
+    "code": "NMe4Abz",
+    "smiles": "CN([H:1])c1ccc(cc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "4-(methylamino)benzoic acid"
+    ]
+  },
+  {
+    "code": "aMeTyr",
+    "smiles": "C[C@@](Cc1ccc(O)cc1)(N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(4-hydroxyphenyl)-2-methylpropanoic acid"
+    ]
+  },
+  {
+    "code": "Aoda",
+    "smiles": "CCC(=O)CCCCC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-8-oxodecanoic acid"
+    ]
+  },
+  {
+    "code": "Bpa",
+    "smiles": "[H:1]N[C@@H](Cc1ccc(cc1)C(=O)c1ccccc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(4-benzoylphenyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Cys_Me",
+    "smiles": "CSC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-amino-3-(methylsulfanyl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Dip",
+    "smiles": "[H:1]N[C@@H](C(c1ccccc1)c1ccccc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3,3-diphenylpropanoic acid"
+    ]
+  },
+  {
+    "code": "hArg",
+    "smiles": "NC(N)NCCCC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-6-[(diaminomethyl)amino]hexanoic acid"
+    ]
+  },
+  {
+    "code": "His_1Bn",
+    "smiles": "[H:1]N[C@@H](Cc1cn(Cc2ccccc2)cn1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(1-benzyl-1H-imidazol-4-yl)propanoic acid"
+    ]
+  },
+  {
+    "code": "His_3Me",
+    "smiles": "Cn1cncc1C[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-(1-methyl-1H-imidazol-5-yl)propanoic acid"
+    ]
+  },
+  {
+    "code": "Hyl_5xi",
+    "smiles": "NCC(O)CC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2,6-diamino-5-hydroxyhexanoic acid"
+    ]
+  },
+  {
+    "code": "Bip",
+    "smiles": "[H:1]N[C@@H](Cc1ccc(cc1)-c1ccccc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2S)-2-amino-3-{[1,1'-biphenyl]-4-yl}propanoic acid"
+    ]
+  },
+  {
+    "code": "Abu_23dehydro",
+    "smiles": "CCC(=N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-aminobut-2-enoic acid"
+    ]
+  },
+  {
+    "code": "D-Dip",
+    "smiles": "[H:1]N[C@H](C(c1ccccc1)c1ccccc1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-amino-3,3-diphenylpropanoic acid"
+    ]
+  },
+  {
+    "code": "Dha",
+    "smiles": "CC(=N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "2-aminoprop-2-enoic acid"
+    ]
+  },
+  {
+    "code": "D-hArg_Et2",
+    "smiles": "CCNC(NCCCC[C@@H](N[H:1])C([OH:2])=O)=NCC",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-amino-6-{[bis(ethylamino)methylidene]amino}hexanoic acid"
+    ]
+  },
+  {
+    "code": "D-Met_S-O",
+    "smiles": "C[S@](=O)CC[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-amino-4-[(S)-methanesulfinyl]butanoic acid"
+    ]
+  },
+  {
+    "code": "D-His_1Bn",
+    "smiles": "[H:1]N[C@H](Cc1cn(Cc2ccccc2)cn1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-amino-3-(1-benzyl-1H-imidazol-4-yl)propanoic acid"
+    ]
+  },
+  {
+    "code": "D-nTyr",
+    "smiles": "Oc1ccc(cc1)[C@@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-amino-2-(4-hydroxyphenyl)acetic acid"
+    ]
+  },
+  {
+    "code": "D-Phe_4ureido",
+    "smiles": "NC(=O)Nc1ccc(C[C@@H](N[H:1])C([OH:2])=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "(2R)-2-amino-3-[4-(carbamoylamino)phenyl]propanoic acid"
+    ]
+  },
+  {
+    "code": "hE",
+    "smiles": "O=C(O)CCC[C@@H](C([OH:2])=O)N[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "AOC",
+    "smiles": "CCCCCC[C@H](N[H:1])C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Aoc(2)"
+    ]
+  },
+  {
+    "code": "Aph",
+    "smiles": "[OH:1]C([C@@H](N[H:1])CCCCC1=CC=CC=C1)=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Cpg",
+    "smiles": "[OH:2]C([C@H](C1CCCC1)N[H:1])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Gly(cPent)"
+    ]
+  },
+  {
+    "code": "Dfp",
+    "smiles": "FC1(F)CN([H:1])[C@H](C([OH:2])=O)C1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Dgl",
+    "smiles": "O=C([OH:2])[C@H](CCCCCCCCCC)N[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Dql"
+    ]
+  },
+  {
+    "code": "Hhc",
+    "smiles": "SCCC[C@@H](C([OH:2])=O)N[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Hhc(1:R3)"
+    ]
+  },
+  {
+    "code": "HhF",
+    "smiles": "[OH:2]C([C@@H](N[H:1])CCCC1=CC=CC=C1)=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Nva(Ph)"
+    ]
+  },
+  {
+    "code": "Igl",
+    "smiles": "[OH:2]C([C@H](C1CC2=C(C=CC=C2)C1)N[H:1])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "O3S",
+    "smiles": "[H:1]N[C@H](C([OH:2])=O)CCCC=C",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "O4S",
+    "smiles": "[H:1]N[C@H](C([OH:2])=O)CCCCC=C",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "O5S",
+    "smiles": "[H:1]N[C@H](C([OH:2])=O)CCCCCC=C",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "O6S",
+    "smiles": "[H:1]N[C@H](C([OH:2])=O)CCCCCCC=C",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Tba",
+    "smiles": "CC(C)(C)C[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Ala(tBu)"
+    ]
+  },
+  {
+    "code": "2Pal",
+    "smiles": "[OH:2]C([C@@H](N[H:1])CC1=NC=CC=C1)=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "PEG4",
+    "smiles": "[H:1]NCCOCCOCCOCCOCCC(O)=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "hCha",
+    "smiles": "O=C([C@H](CCC1CCCCC1)N[H:1])[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Hch"
+    ]
+  },
+  {
+    "code": "DabMs",
+    "smiles": "[OH:2]C([C@@H](N[H:1])CCNS(C)(=O)=O)=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Orn_AC",
+    "smiles": "[OH:2]C([C@H](CCCNC(C)=O)N[H:1])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Orn_Acetyl"
+    ]
+  },
+  {
+    "code": "OrnMs",
+    "smiles": "[OH:2]C([C@@H](N[H:1])CCCNS(C)(=O)=O)=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "O3S_Me",
+    "smiles": "[H:1]N[C@](CCCC=C)(C)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Glu_OMe",
+    "smiles": "[OH:2]C([C@@H](N[H:1])CCC(OC)=O)=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Glu(OMe)"
+    ]
+  },
+  {
+    "code": "Phe_3Ad",
+    "smiles": "[H:1]N[C@H](C([OH:2)=O)Cc1cccc(C(N)=O)c1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Phe_4Ad",
+    "smiles": "[H:1]N[C@H](C([OH:2)=O)Cc1ccc(C(N)=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Trp_4Cl",
+    "smiles": "[H:1]N[C@H](C([OH:2])=O)Cc(c[nH]1)c2c1cccc2Cl",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Trp_4Me",
+    "smiles": "[H:1]N[C@H](C([OH:2])=O)Cc(c[nH]1)c2c1cccc2C",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Trp_5Br",
+    "smiles": "[H:1]N[C@H](C([OH:2])=O)Cc(c[nH]1)c2c1ccc(Br)c2",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Trp(5-Br)"
+    ]
+  },
+  {
+    "code": "Trp_5Cl",
+    "smiles": "[H:1]N[C@H](C([OH:2])=O)Cc(c[nH]1)c2c1ccc(Cl)c2",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Trp_5Me",
+    "smiles": "[H:1]N[C@H](C([OH:2])=O)Cc(c[nH]1)c2c1ccc(C)c2",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Trp_5F",
+    "smiles": "[H:1]N[C@H](C([OH:2])=O)Cc(c[nH]1)c2c1ccc(F)c2",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Trp_6Cl",
+    "smiles": "[H:1]N[C@@H](Cc1c2ccc(Cl)cc2[nH]c1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Trp_6Me",
+    "smiles": "[H:1]N[C@@H](Cc1c2ccc(C)cc2[nH]c1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Trp_7Cl",
+    "smiles": "[H:1]N[C@@H](Cc1c2cccc(Cl)c2[nH]c1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Trp_7Me",
+    "smiles": "[H:1]N[C@@H](Cc1c2cccc(C)c2[nH]c1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Trp_7F",
+    "smiles": "[H:1]N[C@@H](Cc1c2cccc(F)c2[nH]c1)C([OH:2])=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Trp_7Phe"
+    ]
+  },
+  {
+    "code": "aMe_Glu",
+    "smiles": "[H:1]N[C@@](C([OH:2])=O)(C)CCC(O)=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "aMe_Trp",
+    "smiles": "[H:1]N[C@@](C([OH:2])=O)(C)Cc(c[nH]1)c2c1cccc2",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Phe_4tBu",
+    "smiles": "[H:1]N[C@H](C([OH:2])=O)Cc1ccc(C(C)(C)C)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Ala_CyCBu",
+    "smiles": "[H:1]N[C@H](C([OH:2])=O)CC1CCC1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Ala(cBu)"
+    ]
+  },
+  {
+    "code": "Phe_4COOH",
+    "smiles": "[H:1]N[C@H](C([Oh:2])=O)Cc1ccc(C(O)=O)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Phe_4_2ae",
+    "smiles": "[H]N[C@H](C(O)=O)Cc1ccc(OCCN)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Phe_4guan",
+    "smiles": "[H]N[C@H](C(O)=O)Cc1ccc(NC(N)=N)cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "O5S_Reduced",
+    "smiles": "[OH:2]C([C@@H](N[H:1])CCCCC)=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "LyS_Dimethyl",
+    "smiles": "CN(C)CCCC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Lys(Me2)"
+    ]
+  },
+  {
+    "code": "GlutariC_Acid",
+    "smiles": "[OH:2]C(CCCC(O)=O)=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "ISOValeriCACid",
+    "smiles": "[OH:2]C(CC(C)C)=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Isovaleric_Acid"
+    ]
+  },
+  {
+    "code": "cyclopropyl_Ala",
+    "smiles": "O=C([OH:2])[C@H](CC1CC1)N[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Ala(cPr)"
+    ]
+  },
+  {
+    "code": "1PEG2_1PEG2_ISoGlu_C12",
+    "smiles": "OC([C@@H](NC(CCCCCCCCCCC)=O)CCC(NCCOCCOCC(NCCOCCOCC([OH:2])=O)=O)=O)=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Lys_1PEG2_1PEG2_IsoGlu_C12",
+    "smiles": "O=C([C@@H](N[H:1])CCCCNC(COCCOCCNC(COCCOCCNC(CC[C@@H](C(O)=O)NC(CCCCCCCCCCC)=O)=O)=O)=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "LyS_1PEG2_1PEG2_IsoGlu_Palm",
+    "smiles": "O=C([C@@H](N[H:1])CCCCNC(COCCOCCNC(COCCOCCNC(CC[C@@H](C(O)=O)NC(CCCCCCCCCCCCCCC)=O)=O)=O)=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_Bmt(E)",
+    "smiles": "C/C=C/C[C@@H](C)[C@@H](O)[C@H](N(C)[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_dL",
+    "smiles": "CN([C@H](CC(C)C)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_Lys(Me)",
+    "smiles": "CNCCCC[C@H](N(C)[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_Phe(3-Cl)",
+    "smiles": "CN([C@@H](Cc1cccc(Cl)c1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Phe(4-CF3)",
+    "smiles": "N([C@@H](Cc1ccc(C(F)(F)F)cc1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono13",
+    "smiles": "C[C@H](NC(=O)[C@@H](N)Cc1ccccc1)[C@@H](C(=O)O)N1CCC[C@H]1C(=O)O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_dV",
+    "smiles": "CN([C@@H](C(=O)[OH:2])C(C)C)[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono15",
+    "smiles": "C/C=C/C[C@@H](C)[C@@H](OC(C)=O)[C@H](N(C)[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "(N->O)Val",
+    "smiles": "CN[C@@H](C)C(=O)O[C@H](C(=O)O)C(C)C",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "(N->O)Val(3-OH)",
+    "smiles": "CN[C@@H](C)C(=O)O[C@H](C(=O)O)C(C)(C)O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono17",
+    "smiles": "CC[C@H](C)[C@H](N)C1=N[C@H](C(=O)N[C@H](Cc2ccccc2)c2nc(C(=O)N[C@H](C3=N[C@H](C(=O)O)[C@@H](C)O3)C(C)C)cs2)[C@@H](C)O1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_dK",
+    "smiles": "CN([C@H](Cc1ccccc1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Mono67",
+      "Mono68",
+      "Mono69"
+    ]
+  },
+  {
+    "code": "Bn(4-OH)_Gly",
+    "smiles": "O=C([OH:2])CN(Cc1ccc(O)cc1)[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "2-pyridylmethyl_Gly",
+    "smiles": "O=C([OH:2])CN(Cc1ccccn1)[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono32",
+    "smiles": "O=C([OH:2])CN(Cc1cccc(C(F)(F)F)c1)[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono33",
+    "smiles": "O=C([OH:2])CN(CN1CCOCC1)[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono34",
+    "smiles": "CC(C)OCCCN(CC(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Ala(indol-2-yl)",
+    "smiles": "N([C@@H](Cc1cc2ccccc2[nH]1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono46",
+    "smiles": "N[C@@H](Cc1ccccc1)C(=O)N[C@@H](CSc1ccccc1)[C@@H](C(=O)O)N1CCC[C@H]1C(=O)O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono47",
+    "smiles": "N[C@@H](Cc1ccccc1)C(=O)N1C[C@H]1[C@@H](C(=O)O)N1CCC[C@H]1C(=O)O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono48",
+    "smiles": "O=C([OH:2])CN(CCCc1ccc(F)cc1F)[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_Nle",
+    "smiles": "CN([C@H](C)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Me_dA",
+      "dPhe(3,4-diF)",
+      "d1-Nal"
+    ]
+  },
+  {
+    "code": "Me_Nva",
+    "smiles": "CCC[C@@H](N(C)[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_Abu",
+    "smiles": "CC[C@@H](N(C)[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Lys(Cbz)",
+    "smiles": "COC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Lys(Me)",
+    "smiles": "CNCCCC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Ser(EtNMe2)",
+    "smiles": "CN(C)CCOC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Asp_piperidide",
+    "smiles": "CC(C)[C@@H](NC(=O)C[C@H](N[H:1])C(=O)[OH:2])C(=O)O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Bu_Gly",
+    "smiles": "CCCCN(CC(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Ser(isoamyl)",
+    "smiles": "CC(C)CCOC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Gln(Mes)",
+    "smiles": "CS(=O)(=O)NC(=O)CC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Tyr(3-F)",
+    "smiles": "N([C@@H](Cc1ccc(O)c(F)c1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_Phe(4-Cl)",
+    "smiles": "CN([C@@H](Cc1ccc(Cl)cc1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono49",
+    "smiles": "N([C@@H](COCc1cncc(F)c1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_Hph",
+    "smiles": "CN([C@@H](CCc1ccccc1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Ser(Ph(3-Cl))",
+    "smiles": "N([C@@H](COc1cccc(Cl)c1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_Ser(isoamyl)",
+    "smiles": "CN([C@@H](COCCC(C)C)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Ser(Pr)",
+    "smiles": "CCCOC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Nle(CHF2)",
+    "smiles": "N([C@@H](CCCCC(F)F)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Ser(Ph(2-Cl))",
+    "smiles": "N([C@@H](COc1ccccc1Cl)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono50",
+    "smiles": "N([C@@H](COCC(F)(F)C(F)F)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Hph(2-Cl)",
+    "smiles": "N([C@@H](CCc1ccccc1Cl)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Hph(3-Cl)",
+    "smiles": "N([C@@H](CCc1cccc(Cl)c1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Hph(4-Cl)",
+    "smiles": "N([C@@H](CCc1ccc(Cl)cc1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Hyp(Et)",
+    "smiles": "CCO[C@H]1CN([H:1])[C@H](C(=O)[OH:2])C1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "dAbu",
+    "smiles": "CC[C@@H](NC(=O)C[C@H](N[H:1])C(=O)[OH:2])C(=O)O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono51",
+    "smiles": "CN([C@@H](CCC1CCCC(F)(F)C1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono52",
+    "smiles": "CN([C@@H](CCC1CCC(F)(F)CC1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono53",
+    "smiles": "CN(C)c1ccc(C[C@H](N[H:1])C(=O)[OH:2])cn1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "isoamyl_Gly",
+    "smiles": "CC(C)CCN(CC(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_Ser(Pr)",
+    "smiles": "CCCOC[C@H](N(C)[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "PhEt_Gly",
+    "smiles": "O=C([OH:2])CN(CCc1ccccc1)[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "EtOEt_Gly",
+    "smiles": "CCOCCN(CC(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono54",
+    "smiles": "C[C@H](O)COC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono55",
+    "smiles": "CC(C)(O)COC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "Ser(tBuOH)"
+    ]
+  },
+  {
+    "code": "Mono56",
+    "smiles": "CC(C)(O)CCOC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Gln(Me2)",
+    "smiles": "CN(C)C(=O)CC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono57",
+    "smiles": "CC(C)(C)NC(=O)COC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Hse(Et)",
+    "smiles": "CCOCC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono58",
+    "smiles": "O=C([OH:2])CN(CCN1CCC(F)(F)CC1)[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono59",
+    "smiles": "O=C([OH:2])[C@@H]1C[C@@H](N2CCC(F)(F)CC2)CN1[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono60",
+    "smiles": "N[C@@H](CC(=O)N1C[C@@H](N2CCC(F)(F)CC2)C[C@H]1C(=O)O)C(=O)O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Gln(Me)",
+    "smiles": "CNC(=O)CC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "aliases": [
+      "1-Nal"
+    ]
+  },
+  {
+    "code": "Mono61",
+    "smiles": "CCCC[C@@H](O)[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Phe(CHF2)",
+    "smiles": "N([C@@H](Cc1ccc(C(F)F)cc1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Tyr(CHF2)",
+    "smiles": "N([C@@H](Cc1ccc(OC(F)F)cc1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono62",
+    "smiles": "N([C@@H](COCCN1CCOCC1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono63",
+    "smiles": "N([C@@H](CCc1noc(=O)[nH]1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono64",
+    "smiles": "C[C@@H](O)COC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono65",
+    "smiles": "N([C@@H](CCCC(O)C(F)(F)F)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono66",
+    "smiles": "N([C@@H](COCC(O)C(F)(F)F)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Trp(6-Br)",
+    "smiles": "N([C@@H](Cc1c[nH]c2cc(Br)ccc12)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Trp(7-Br)",
+    "smiles": "N([C@@H](Cc1c[nH]c2c(Br)cccc12)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono70",
+    "smiles": "C/C=C/C[C@@H](C)C(=O)[C@H](N(C)[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono71",
+    "smiles": "N([C@@H](Cc1c[nH]cn1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Ser(Ac)",
+    "smiles": "CC(=O)OC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono72",
+    "smiles": "CCOC(=O)NC(=O)CC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono73",
+    "smiles": "CCOC(=O)NC(=O)C[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Lys(Tfa)",
+    "smiles": "N([C@@H](CCCCNC(=O)C(F)(F)F)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono74",
+    "smiles": "CCOC(=O)NC(=N)NCCC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono91",
+    "smiles": "CC(C)C[C@H](N)C(=O)NCCCCCCN([C@@H](Cc1ccccc1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "aMeLeu",
+    "smiles": "CC(C)C[C@](C)(N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono100",
+    "smiles": "N([C@@H](CSCC(=O)O)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono101",
+    "smiles": "CN([C@@H](CSCC(=O)O)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "NH2Bu_Gly",
+    "smiles": "NCCCCN(CC(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "HOCOCH2_Gly_ol",
+    "smiles": "O=C([OH:2])CN(CCO)[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "HOCOCH2_Bal",
+    "smiles": "O=C(O)CCN(CC(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Hph(4-CF3)",
+    "smiles": "N([C@@H](CCc1ccc(C(F)(F)F)cc1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Hph(4-CF3,3-Cl)",
+    "smiles": "N([C@@H](CCc1ccc(C(F)(F)F)c(Cl)c1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Hph(4-CF3,3,5-diF)",
+    "smiles": "N([C@@H](CCc1cc(F)c(C(F)(F)F)c(F)c1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Hph(4-tBu)",
+    "smiles": "CC(C)(C)c1ccc(CC[C@H](N[H:1])C(=O)[OH:2])cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Hph(3,4-diCl)",
+    "smiles": "N([C@@H](CCc1ccc(Cl)c(Cl)c1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_Phe(4-Me)",
+    "smiles": "CN([C@@H](Cc1ccc(C)cc1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono115",
+    "smiles": "CCOC(=O)[C@H](CSCC(=O)O)NC",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Pr_Gly",
+    "smiles": "CCCN(CC(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Et_Phe",
+    "smiles": "CCN([C@@H](Cc1ccccc1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Arg(Me,Me)",
+    "smiles": "C/N=C(\\NC)NCCC[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono9",
+    "smiles": "C=C(CCC(=O)O)c1ccc(C[C@H](N[H:1])C(=O)[OH:2])cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono10",
+    "smiles": "C=C(CCC(=O)O)c1cccc(C[C@H](N[H:1])C(=O)[OH:2])c1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono11",
+    "smiles": "N([C@@H](Cc1ccc(CCCCCC(=O)O)cc1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono12",
+    "smiles": "N([C@@H](Cc1cccc(CCCCC(=O)O)c1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Ala(5-Tet)",
+    "smiles": "N([C@@H](Cc1nnn[nH]1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono23",
+    "smiles": "C[C@H]([C@H](N[H:1])C(=O)[OH:2])[C@@H](C)C(N)=O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono24",
+    "smiles": "CC(C)[C@@H]([O])[C@@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "dLeu(3R-OH)",
+    "smiles": "COC[C@@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "dTyr(bR-OMe)",
+    "smiles": "O=C([OH:2])[C@@H]1C[C@@H](Cl)CCN1[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Mono26",
+    "smiles": "CN([C@@H](Cc1ccc(OC)cc1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Bal",
+    "smiles": "CC[C@H](C)[C@@H](C(=O)NCCC(=O)O)N(C)C(=O)[C@H](CC(C)C)N(C)C(=O)[C@@H](NC(=O)[C@@H](C)N(C)C(=O)C[C@H](N)C(=O)O)[C@@H](C)O",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Abu(5-Tet)",
+    "smiles": "N([C@@H](CCc1nn[nH]n1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_Cha",
+    "smiles": "CN([C@@H](CC1CCCCC1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Phe(3-CF3)",
+    "smiles": "N([C@@H](Cc1cccc(C(F)(F)F)c1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Phe(3-Cl,5-F)",
+    "smiles": "N([C@@H](Cc1cc(F)cc(Cl)c1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Phe(3,5-diCl)",
+    "smiles": "N([C@@H](Cc1cc(Cl)cc(Cl)c1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Hph(4-Me)",
+    "smiles": "Cc1ccc(CC[C@H](N[H:1])C(=O)[OH:2])cc1",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_Gly(cPent)",
+    "smiles": "CN([C@H](C(=O)[OH:2])C1CCCC1)[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Et_Phe(4-Me)",
+    "smiles": "CCN([C@@H](Cc1ccc(C)cc1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_Chg",
+    "smiles": "CN([C@H](C(=O)[OH:2])C1CCCCC1)[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_Hse(Me)",
+    "smiles": "CN([C@@H](CCOC)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_Ser(Me)",
+    "smiles": "CN([C@@H](COC)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Et_Leu",
+    "smiles": "CCN([C@@H](CC(C)C)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Gly(cBu)",
+    "smiles": "N([C@H](C(=O)[OH:2])C1CCC1)[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Ala(cPent)",
+    "smiles": "N([C@@H](CC1CCCC1)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_Nva(F2)",
+    "smiles": "CN([C@@H](CCC(F)F)C(=O)[OH:2])[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_Gly(cBu)",
+    "smiles": "CN([C@H](C(=O)[OH:2])C1CCC1)[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  },
+  {
+    "code": "Me_Gly(cPr)",
+    "smiles": "CN([C@H](C(=O)[OH:2])C1CC1)[H:1]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE"
+  }
+]
