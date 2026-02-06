@@ -107,10 +107,10 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 If you use this software in your research, please cite:
 
 ```bibtex
-@software{Pept-x2023,
+@software{Pept-x2026,
   author = {Your Name},
   title = {Pept-x: Bidirectional Converter for Peptide Sequences and SMILES},
-  year = {2023},
+  year = {2026},
   url = {https://github.com/ksubowu/Pept-x}
 }
 ```
