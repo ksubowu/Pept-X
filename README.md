@@ -15,7 +15,7 @@ A bidirectional converter between peptide sequences and SMILES representations, 
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/Pept-x.git
+git clone https://github.com/ksubowu/Pept-x.git
 cd Pept-x
 
 # Install dependencies
@@ -111,6 +111,6 @@ If you use this software in your research, please cite:
   author = {Your Name},
   title = {Pept-x: Bidirectional Converter for Peptide Sequences and SMILES},
   year = {2023},
-  url = {https://github.com/YOUR_USERNAME/Pept-x}
+  url = {https://github.com/ksubowu/Pept-x}
 }
 ```
