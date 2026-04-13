@@ -108,8 +108,8 @@ If you use this software in your research, please cite:
 
 ```bibtex
 @software{Pept-x2026,
-  author = {Your Name},
-  title = {Pept-x: Bidirectional Converter for Peptide Sequences and SMILES},
+  author = {Bowen Tang, et al},
+  title = {Pept-X: Chemically Lossless and Reversible Translation between Peptide Sequence Expressions and Molecular Graphs},
   year = {2026},
   url = {https://github.com/ksubowu/Pept-x}
 }
