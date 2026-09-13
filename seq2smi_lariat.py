@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
-"""Lariat peptide sequence -> SMILES (approximate linear reconstruction).
+"""Lariat peptide sequence -> SMILES.
 
-输入格式：A-A-L-...-D-[C-cap:*N1CCCCC1]|lariat
-当前实现：
-- 解析核心序列与可选 C-cap（占位符 * 连接终末羧基碳）；
-- 使用单体库酸式 SMILES 构建线性肽链（仅主链肽键）；
-- 若提供 C-cap，则用占位符 * 与末端羧基碳成键；
-- 暂不重建套索环的异肽键（缺少位点信息），输出为线性加 C-cap 的 SMILES。
+Supported metadata includes ``|lariat``, ``|lariat_1`` and explicit residue
+positions such as ``|lariat_3:2-5``. Explicit positions take precedence when
+they satisfy the selected lariat chemistry. Invalid explicit positions fall
+back deterministically to the compatible closure producing the largest ring.
 """
 
 from __future__ import annotations
 
 import argparse
 import re
+from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Union
 import ast
+import warnings
 
 from rdkit import Chem
 from rdkit.Chem import rdchem
@@ -28,6 +28,51 @@ from utils import get_backbone_atoms
 
 BASE_DIR = Path(__file__).resolve().parent
 DEFAULT_LIB = BASE_DIR / "data" / "monomersFromHELMCoreLibrary.json"
+
+
+LARIAT_RE = re.compile(
+    r"(?:^|\|)(lariat(?:_([123]))?)(?::(\d+)\s*-\s*(\d+))?(?=\||$)",
+    re.IGNORECASE,
+)
+
+
+@dataclass(frozen=True)
+class LariatSpec:
+    """Parsed lariat metadata; positions are one-based sequence positions."""
+
+    kind: Optional[int] = None
+    first: Optional[int] = None
+    second: Optional[int] = None
+    raw: Optional[str] = None
+
+    @property
+    def has_explicit_positions(self) -> bool:
+        return self.first is not None and self.second is not None
+
+    @property
+    def type_tag(self) -> str:
+        return f"lariat_{self.kind}" if self.kind else "lariat"
+
+    @property
+    def tag(self) -> str:
+        if self.has_explicit_positions:
+            return f"{self.type_tag}:{self.first}-{self.second}"
+        return self.type_tag
+
+
+def parse_lariat_spec(text: str) -> LariatSpec:
+    """Parse ``|lariat[_n][:n1-n2]`` metadata from a sequence string."""
+
+    match = LARIAT_RE.search(text or "")
+    if not match:
+        return LariatSpec()
+    raw, kind_text, first_text, second_text = match.groups()
+    return LariatSpec(
+        kind=int(kind_text) if kind_text else None,
+        first=int(first_text) if first_text else None,
+        second=int(second_text) if second_text else None,
+        raw=raw,
+    )
 
 
 def _parse_sequence(seq: str) -> Tuple[List[str], Optional[str]]:
@@ -275,8 +320,116 @@ def _find_atom_by_map(rw: Chem.RWMol, mapnum: int) -> Optional[int]:
     return None
 
 
-def build_smiles(seq: str, monomer_lib: Optional[MonomerLib] = None, lib_path: Path = DEFAULT_LIB) -> str:
+def _explicit_closure(
+    spec: LariatSpec,
+    mol: Chem.Mol,
+    matches: List[tuple],
+) -> Tuple[Optional[dict], Optional[str]]:
+    """Validate and resolve an explicit lariat closure."""
+
+    if not spec.has_explicit_positions:
+        return None, None
+    if spec.kind not in (1, 2, 3):
+        return None, "explicit residue positions require lariat_1, lariat_2, or lariat_3"
+    first = spec.first
+    second = spec.second
+    count = len(matches)
+    if first is None or second is None or not (1 <= first <= count and 1 <= second <= count):
+        return None, f"positions must both be within 1..{count}"
+    if first == second:
+        return None, "the two attachment residues must be different"
+
+    if spec.kind == 1:
+        # lariat_1:n1-n2 = residue n1 backbone N to residue n2 side-chain COOH.
+        if first != 1:
+            return None, "lariat_1 backbone-N endpoint must be the free N-terminal residue (position 1)"
+        atom_idx = _find_sidechain_carbonyl(mol, matches[second - 1])
+        if atom_idx is None:
+            return None, f"residue {second} has no compatible side-chain carboxyl carbon"
+        return {
+            "kind": 1,
+            "mode": "sidechain_carbonyl",
+            "closure_atom": atom_idx,
+            "sidechain_res_idx": second - 1,
+            "positions": [first, second],
+        }, None
+
+    # lariat_2/3:n1-n2 = residue n1 side chain to residue n2 backbone C.
+    if second != count:
+        return None, (
+            f"lariat_{spec.kind} backbone-carbonyl endpoint must be the free "
+            f"C-terminal residue (position {count})"
+        )
+    finder = _find_sidechain_amine if spec.kind == 2 else _find_sidechain_hydroxyl
+    atom_idx = finder(mol, matches[first - 1])
+    group = "amine nitrogen" if spec.kind == 2 else "hydroxyl oxygen"
+    if atom_idx is None:
+        return None, f"residue {first} has no compatible side-chain {group}"
+    return {
+        "kind": spec.kind,
+        "mode": "sidechain_amine" if spec.kind == 2 else "sidechain_hydroxyl",
+        "closure_atom": atom_idx,
+        "sidechain_res_idx": first - 1,
+        "positions": [first, second],
+    }, None
+
+
+def _default_closure(
+    requested_kind: Optional[int],
+    mol: Chem.Mol,
+    matches: List[tuple],
+) -> Optional[dict]:
+    """Choose a compatible closure by type priority and maximum ring size."""
+
+    count = len(matches)
+    kinds = [requested_kind] if requested_kind in (1, 2, 3) else [1, 2, 3]
+    for kind in kinds:
+        if kind == 1:
+            # N terminus is fixed; largest side-chain position gives largest ring.
+            for idx in range(count - 1, 0, -1):
+                atom_idx = _find_sidechain_carbonyl(mol, matches[idx])
+                if atom_idx is not None:
+                    return {
+                        "kind": 1,
+                        "mode": "sidechain_carbonyl",
+                        "closure_atom": atom_idx,
+                        "sidechain_res_idx": idx,
+                        "positions": [1, idx + 1],
+                    }
+        elif kind == 2:
+            # C terminus is fixed; smallest side-chain position gives largest ring.
+            for idx in range(0, count - 1):
+                atom_idx = _find_sidechain_amine(mol, matches[idx])
+                if atom_idx is not None:
+                    return {
+                        "kind": 2,
+                        "mode": "sidechain_amine",
+                        "closure_atom": atom_idx,
+                        "sidechain_res_idx": idx,
+                        "positions": [idx + 1, count],
+                    }
+        else:
+            for idx in range(0, count - 1):
+                atom_idx = _find_sidechain_hydroxyl(mol, matches[idx])
+                if atom_idx is not None:
+                    return {
+                        "kind": 3,
+                        "mode": "sidechain_hydroxyl",
+                        "closure_atom": atom_idx,
+                        "sidechain_res_idx": idx,
+                        "positions": [idx + 1, count],
+                    }
+    return None
+
+
+def build_smiles(
+    seq: str,
+    monomer_lib: Optional[MonomerLib] = None,
+    lib_path: Path = DEFAULT_LIB,
+    return_details: bool = False,
+) -> Union[str, Tuple[str, dict]]:
     tokens, c_cap = _parse_sequence(seq)
+    spec = parse_lariat_spec(seq)
     if not tokens:
         raise ValueError("Empty sequence")
     lib = monomer_lib if monomer_lib is not None else MonomerLib(str(lib_path))
@@ -310,47 +463,25 @@ def build_smiles(seq: str, monomer_lib: Optional[MonomerLib] = None, lib_path: P
         raise ValueError("Residue count mismatch after cap parsing.")
 
     head_n = matches[0][0]
-    closure_mode = "none"
-    closure_atom = None
-    closure_res_idx = None
+    closure, fallback_reason = _explicit_closure(spec, mol, matches)
+    fallback_used = spec.has_explicit_positions and closure is None
+    if closure is None:
+        closure = _default_closure(spec.kind, mol, matches)
+    if closure is None:
+        suffix = f" for {spec.type_tag}" if spec.kind else ""
+        reason = f" Explicit request invalid: {fallback_reason}." if fallback_reason else ""
+        raise ValueError(f"No compatible lariat closure site found{suffix}.{reason}")
+    if fallback_used:
+        warnings.warn(
+            f"Invalid explicit lariat specification '{spec.tag}': {fallback_reason}; "
+            f"using maximum-ring fallback {closure['positions'][0]}-{closure['positions'][1]}.",
+            RuntimeWarning,
+            stacklevel=2,
+        )
 
-    def _pick_indices(targets: set, reverse: bool = False) -> list:
-        ordered = list(range(len(core_tokens)))
-        if reverse:
-            ordered.reverse()
-        return [idx for idx in ordered if _base_code(core_tokens[idx]).upper() in targets]
-
-    # Priority 1: D/E sidechain COOH -> head backbone N.
-    for idx in _pick_indices({"D", "E"}, reverse=True):
-        side_c = _find_sidechain_carbonyl(mol, matches[idx])
-        if side_c is not None:
-            closure_mode = "sidechain_carbonyl"
-            closure_atom = side_c
-            closure_res_idx = idx
-            break
-
-    # Priority 2: tail backbone COOH -> K/R sidechain amine.
-    if closure_mode == "none":
-        for idx in _pick_indices({"K", "R"}):
-            side_n = _find_sidechain_amine(mol, matches[idx])
-            if side_n is not None:
-                closure_mode = "sidechain_amine"
-                closure_atom = side_n
-                closure_res_idx = idx
-                break
-
-    # Priority 3: tail backbone COOH -> S/T sidechain hydroxyl (ester).
-    if closure_mode == "none":
-        for idx in _pick_indices({"S", "T"}):
-            side_o = _find_sidechain_hydroxyl(mol, matches[idx])
-            if side_o is not None:
-                closure_mode = "sidechain_hydroxyl"
-                closure_atom = side_o
-                closure_res_idx = idx
-                break
-
-    if closure_mode == "none":
-        raise ValueError("No lariat closure site found for this sequence.")
+    closure_mode = closure["mode"]
+    closure_atom = closure["closure_atom"]
+    closure_res_idx = closure["sidechain_res_idx"]
 
     if c_cap and closure_mode != "sidechain_carbonyl":
         raise ValueError("C-cap present but no D/E sidechain closure site found for lariat.")
@@ -497,11 +628,24 @@ def build_smiles(seq: str, monomer_lib: Optional[MonomerLib] = None, lib_path: P
     _fix_overvalent_n(rw)
     final_mol = rw.GetMol()
     Chem.SanitizeMol(final_mol)
-    return Chem.MolToSmiles(final_mol, isomericSmiles=True)
+    final_smiles = Chem.MolToSmiles(final_mol, isomericSmiles=True)
+    details: Dict[str, object] = {
+        "requested_lariat": spec.tag if spec.raw else "lariat",
+        "explicit_positions_requested": spec.has_explicit_positions,
+        "explicit_positions_valid": spec.has_explicit_positions and not fallback_used,
+        "fallback_used": fallback_used,
+        "fallback_reason": fallback_reason if fallback_used else None,
+        "selection_rule": "explicit_positions" if spec.has_explicit_positions and not fallback_used else "maximum_ring",
+        "selected_lariat": f"lariat_{closure['kind']}:{closure['positions'][0]}-{closure['positions'][1]}",
+        "lariat_type": f"lariat_{closure['kind']}",
+        "lariat_positions": closure["positions"],
+        "closure_mode": closure_mode,
+    }
+    return (final_smiles, details) if return_details else final_smiles
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Lariat sequence -> SMILES (linear approx)")
+    parser = argparse.ArgumentParser(description="Lariat sequence -> SMILES")
     parser.add_argument("--input", type=Path, default=Path("seq2smi_lariat_input.txt"))
     parser.add_argument("--output", type=Path, default=Path("seq2smi_lariat_out.txt"))
     parser.add_argument("--lib", type=Path, default=DEFAULT_LIB)

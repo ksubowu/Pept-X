@@ -75,7 +75,7 @@ def main() -> None:
                     tokens[idx_res - 1] = seq_tokens[idx_res - 1]
             seq_final = ".".join(tokens) + (meta if meta else "|lariat")
             myseq.append(seq_final)
-            topo.append("lariat")
+            topo.append(seq_final.rsplit("|", 1)[-1].split(":", 1)[0])
         except Exception as exc:  # pylint: disable=broad-except
             myseq.append(f"ERROR: {exc}")
             topo.append(None)

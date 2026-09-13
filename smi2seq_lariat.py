@@ -6,7 +6,8 @@
 - 找到 iso-peptide 键（侧链 C(=O)–N）以及与 Ccap 相连的键；
 - 将肽键 + iso-peptide + Ccap 键全部切断，得到独立残基与帽基片段；
 - 对片段进行“补 OH / 去 dummy / 统一规范化”后与单体库精确匹配；
-- 输出序列，若存在 Ccap 则附加 `[C-cap:<smiles>]`，末尾加 `|lariat` 标签；
+- 输出序列，若存在 Ccap 则附加 `[C-cap:<smiles>]`，末尾加带残基位置的
+  ``|lariat_n:n1-n2`` 标签；
 - 未匹配的残基会记录并输出便于调试。
 """
 
@@ -24,8 +25,17 @@ from seq2smi import MonomerLib  # 单体库
 from utils import clean_smiles, get_backbone_atoms
 
 
-DEFAULT_LIB = Path("data/monomersFromHELMCoreLibrary.json")
-UNMATCHED_LOG = Path("smi2seq_lariat_unmatched.txt")
+BASE_DIR = Path(__file__).resolve().parent
+DEFAULT_LIB = BASE_DIR / "data" / "monomersFromHELMCoreLibrary.json"
+UNMATCHED_LOG = BASE_DIR / "smi2seq_lariat_unmatched.txt"
+
+
+def _format_lariat_tag(kind: int, first: int, second: int) -> str:
+    """Return the canonical explicit lariat tag."""
+
+    if kind not in (1, 2, 3):
+        raise ValueError(f"Unsupported lariat type: {kind}")
+    return f"lariat_{kind}:{first}-{second}"
 
 
 # ------------------------ 核心工具函数 ------------------------ #
@@ -476,6 +486,10 @@ def convert(
     tokens: List[str] = []
     unmatched: List[dict] = []
     residue_records: List[dict] = []
+    output_position_by_residue = {
+        residue_idx: output_position
+        for output_position, residue_idx in enumerate(order, start=1)
+    }
     for idx in order:
         ca = residues[idx]["CA"]
         frag_idx = ca_to_fragment[ca]
@@ -503,9 +517,11 @@ def convert(
                 if resolved.lower() in library.by_code:
                     code = resolved
         tokens.append(code)
+        output_position = len(tokens)
         residue_records.append(
             {
-                "index": idx + 1,
+                "index": output_position,
+                "source_backbone_index": idx + 1,
                 "code": code,
                 "canonical": canon,
                 "canonical_smiles": canon,
@@ -514,7 +530,8 @@ def convert(
         )
         if code == "X":
             unmatched.append({
-                "residue_index": idx + 1,
+                "residue_index": output_position,
+                "source_backbone_index": idx + 1,
                 "smiles": canon,
                 "atom_indices": sorted(atom_frags[frag_idx]),
             })
@@ -546,12 +563,38 @@ def convert(
             cap_token = f"[C-cap:{cap_smiles}]"
             seq_core += f".{cap_token}"
     lariat_tag = "lariat"
+    lariat_kind = None
+    lariat_positions = None
+    lariat_atoms = None
     if iso_peptide:
-        lariat_tag = "lariat_1"
+        backbone_n_residue, lariat_atoms = next(iter(iso_peptide.items()))
+        sidechain_residue = atom_to_residue.get(lariat_atoms[1])
+        if sidechain_residue is not None:
+            lariat_kind = 1
+            lariat_positions = [
+                output_position_by_residue[backbone_n_residue],
+                output_position_by_residue[sidechain_residue],
+            ]
     elif lactam_bonds:
-        lariat_tag = "lariat_2"
+        backbone_c_residue, lariat_atoms = next(iter(lactam_bonds.items()))
+        sidechain_residue = atom_to_residue.get(lariat_atoms[1])
+        if sidechain_residue is not None:
+            lariat_kind = 2
+            lariat_positions = [
+                output_position_by_residue[sidechain_residue],
+                output_position_by_residue[backbone_c_residue],
+            ]
     elif ester_bonds:
-        lariat_tag = "lariat_3"
+        backbone_c_residue, lariat_atoms = next(iter(ester_bonds.items()))
+        sidechain_residue = atom_to_residue.get(lariat_atoms[1])
+        if sidechain_residue is not None:
+            lariat_kind = 3
+            lariat_positions = [
+                output_position_by_residue[sidechain_residue],
+                output_position_by_residue[backbone_c_residue],
+            ]
+    if lariat_kind and lariat_positions:
+        lariat_tag = _format_lariat_tag(lariat_kind, *lariat_positions)
 
     if list_output:
         tokens_out: List[str] = []
@@ -571,6 +614,19 @@ def convert(
             details["c_cap_code"] = cap_code
     if iso_peptide:
         details["iso_peptide_bonds"] = iso_peptide
+    if lactam_bonds:
+        details["lactam_bonds"] = lactam_bonds
+    if ester_bonds:
+        details["ester_bonds"] = ester_bonds
+    if lariat_kind and lariat_positions:
+        details.update(
+            {
+                "lariat_type": f"lariat_{lariat_kind}",
+                "lariat_positions": lariat_positions,
+                "lariat_tag": lariat_tag,
+                "lariat_atom_indices": lariat_atoms,
+            }
+        )
 
     # 将未匹配片段落盘，便于后续扩展模板库
     if unmatched:

@@ -115,8 +115,10 @@ def seq2smi_cycle(sequence: str, lib: MonomerLib | None = None) -> str:
     remaining_meta = []
     for entry in metadata:
         lower = entry.lower()
-        if lower in {"head2tail", "lariat"}:
+        if lower == "head2tail":
             topology_tag = lower
+        elif lower == "lariat" or lower.startswith("lariat_"):
+            topology_tag = "lariat"
         else:
             remaining_meta.append(entry)
     core_seq, had_cyclo_suffix = _strip_cyclo_suffix(core_seq)

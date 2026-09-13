@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 from typing import Dict
 
-FRAG_LIB_PATH = Path("frag_smi.json")
+FRAG_LIB_PATH = Path(__file__).resolve().parent / "frag_smi.json"
 
 
 def load_fragment_library() -> Dict[str, str]:
@@ -24,4 +24,3 @@ def load_fragment_library() -> Dict[str, str]:
 def save_fragment_library(library: Dict[str, str]) -> None:
     with FRAG_LIB_PATH.open("w", encoding="utf-8") as handle:
         json.dump(dict(sorted(library.items())), handle, indent=2, ensure_ascii=False)
-

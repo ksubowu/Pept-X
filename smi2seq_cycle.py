@@ -143,7 +143,13 @@ def smi2seq_cycle(
     else:
         merged = {"details": details, "cycle_meta": meta}
     core, metadata = split_sequence_metadata(sequence)
-    metadata = [item for item in metadata if item.lower() not in {"head2tail", "lariat"}]
+    metadata = [
+        item
+        for item in metadata
+        if item.lower() != "head2tail"
+        and item.lower() != "lariat"
+        and not item.lower().startswith("lariat_")
+    ]
     metadata.append("lariat" if topology == "lariat" else "head2tail")
     annotated = merge_sequence_metadata(core, metadata)
     return annotated, merged

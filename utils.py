@@ -36,8 +36,14 @@ def get_backbone_atoms(mol: Chem.Mol) -> Tuple[Tuple[int, int, int], ...]:
     Side-chain amide branches are reported and skipped. The molecule is annotated with
     properties `_n_cap_is_H` and `_c_cap_is_H` indicating whether termini are hydrogen capped.
     """
-    pattern = Chem.MolFromSmarts("[N;$(NCC(=O))]-[C;$(C(N)C=O)]-[C;$(C=O)]")
-    raw_matches: List[Tuple[int, int, int]] = list(mol.GetSubstructMatches(pattern))
+    # Primary strict alpha-AA backbone pattern
+    pattern_strict = Chem.MolFromSmarts("[N;$(NCC(=O))]-[C;$(C(N)C=O)]-[C;$(C=O)]")
+    raw_matches: List[Tuple[int, int, int]] = list(mol.GetSubstructMatches(pattern_strict))
+    # Fallback broader pattern to include non-canonical backbone variants
+    # (e.g. O/N/S as backbone hetero and less constrained alpha carbon context).
+    if not raw_matches:
+        pattern_broad = Chem.MolFromSmarts("[N,O,S;!$([N,O,S]-C(=O))]-[C;X4]-[C;$(C=O)]")
+        raw_matches = list(mol.GetSubstructMatches(pattern_broad))
     if len(raw_matches) <= 1:
         _annotate_terminal_caps(mol, raw_matches)
         return tuple(raw_matches)

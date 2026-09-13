@@ -42,6 +42,7 @@ from typing import Dict, List, Optional, Sequence, Set, Tuple, Union
 from rdkit import Chem
 from rdkit import DataStructs
 from rdkit.Chem import rdmolops
+from rdkit.Chem import rdchem
 from rdkit.Chem.MolStandardize import rdMolStandardize
 from rdkit.Chem.rdFingerprintGenerator import GetMorganGenerator
 from rdkit.Chem import rdFMCS
@@ -74,7 +75,6 @@ from disulfide_utils import (
 
 
 @dataclass
-@dataclass
 class TemplateEntry:
     code: str
     mol: Chem.Mol
@@ -86,6 +86,11 @@ class TemplateEntry:
     components: Optional[List[str]] = None
     aliases: Optional[List[str]] = None
     canonical_variants: Optional[List[str]] = None
+    role: Optional[str] = None
+    backbone_paradigm: Optional[str] = None
+    backbone_path_len: Optional[int] = None
+    side_anchor_pos: Optional[int] = None
+    n_substituted: Optional[bool] = None
 
 
 @dataclass
@@ -191,7 +196,13 @@ def _canonical_smiles(smi: str) -> Optional[str]:
 class SMILES2Sequence:
     """Convert peptide SMILES strings back to sequence tokens."""
 
-    def __init__(self, lib_path: Optional[str] = None):
+    def __init__(
+        self,
+        lib_path: Optional[str] = None,
+        load_extend: bool = False,
+        auto_linker_detection: bool = False,
+        allow_fingerprint_fallback: bool = False,
+    ):
         self.lib_path = (
             Path(lib_path)
             if lib_path
@@ -203,9 +214,15 @@ class SMILES2Sequence:
         self.canonical_index_nostereo: Dict[str, List[str]] = {}
         self.fp_cache: List[TemplateEntry] = []
         self.standard_entries: List[TemplateEntry] = []
+        self.residue_entries: List[TemplateEntry] = []
+        # (path_len, side_anchor_pos, paradigm) parsed from anchor-mapped library smiles.
+        self.backbone_motifs: Set[Tuple[int, int, str]] = {(3, 1, "CA")}
         self.extend_path = Path("extend_lib.json")
         self.extend_entries_raw: Dict[str, Dict[str, str]] = {}
         self.extend_dirty = False
+        self.load_extend = load_extend
+        self.auto_linker_detection = auto_linker_detection
+        self.allow_fingerprint_fallback = allow_fingerprint_fallback
         self._linker_exclude_atoms: Set[int] = set()
         self.fragment_library: Dict[str, str] = load_fragment_library()
         self.fragment_dirty = False
@@ -222,6 +239,7 @@ class SMILES2Sequence:
         self._linker_hint_raw: Optional[str] = None
         self._linker_hint_entry: Optional[Dict[str, object]] = None
         self._linker_hint_query: Optional[Chem.Mol] = None
+        self._last_backbone_assignments: List[Dict[str, Union[int, str]]] = []
 
     # ---------------------------- public API -------------------------------- #
 
@@ -279,6 +297,754 @@ class SMILES2Sequence:
             },
         }
 
+    def _special_case_no_backbone_sequence(
+        self, mol: Chem.Mol
+    ) -> Optional[Tuple[str, Dict[str, object]]]:
+        """
+        Rescue small cyclic dimers built from noncanonical monomers that do not
+        expose a detectable peptide backbone motif (e.g. Mono103-107 pairs).
+        """
+        amide_bonds: List[int] = []
+        for bond in mol.GetBonds():
+            a1 = mol.GetAtomWithIdx(bond.GetBeginAtomIdx())
+            a2 = mol.GetAtomWithIdx(bond.GetEndAtomIdx())
+            for carbon, nitro in ((a1, a2), (a2, a1)):
+                if carbon.GetAtomicNum() != 6 or nitro.GetAtomicNum() != 7:
+                    continue
+                has_carbonyl = any(
+                    bb.GetBondType() == rdchem.BondType.DOUBLE
+                    and bb.GetOtherAtom(carbon).GetAtomicNum() == 8
+                    for bb in carbon.GetBonds()
+                )
+                if has_carbonyl:
+                    amide_bonds.append(bond.GetIdx())
+                    break
+        amide_bonds = sorted(set(amide_bonds))
+        if len(amide_bonds) != 2:
+            return None
+
+        fragmol = rdmolops.FragmentOnBonds(mol, amide_bonds, addDummies=True)
+        frags = Chem.GetMolFrags(fragmol, asMols=True, sanitizeFrags=False)
+        if len(frags) != 2:
+            return None
+
+        cleaned_frags: List[Chem.Mol] = []
+        for frag in frags:
+            rw = Chem.RWMol(frag)
+            for atom in rw.GetAtoms():
+                if atom.GetAtomicNum() == 0:
+                    atom.SetAtomicNum(1)
+                    atom.SetFormalCharge(0)
+                atom.SetAtomMapNum(0)
+                atom.SetIsotope(0)
+                atom.SetNoImplicit(False)
+            cleaned = rw.GetMol()
+            try:
+                Chem.SanitizeMol(cleaned)
+            except Exception:
+                return None
+            cleaned_frags.append(cleaned)
+
+        matches = self.match_fragments(cleaned_frags)
+        codes = [m.code for m in matches]
+        if any(code == "X" for code in codes):
+            return None
+        if not all(code.startswith("Mono10") or code.startswith("Mono") for code in codes):
+            # Keep this rescue path narrow; avoid hijacking standard peptides.
+            return None
+
+        sequence = ".".join(codes) + ".[Cyclo]"
+        details = {
+            "n_cap": None,
+            "c_cap": None,
+            "cyclized": True,
+            "staple_pose": None,
+            "staple_linker": None,
+            "residues": [
+                {
+                    "index": m.index,
+                    "code": m.code,
+                    "canonical": m.canonical,
+                    "ld": m.ld,
+                    "alternatives": m.alternatives,
+                    "score": m.score,
+                    "used_fallback": m.used_fallback,
+                    "components": m.components,
+                }
+                for m in matches
+            ],
+            "warnings": ["No-backbone special-case fragment matching applied."],
+            "backbone_assignments": [],
+        }
+        return sequence, details
+
+    def _looks_like_mono14_fused(self, canonical: str) -> bool:
+        """Heuristic for unresolved Mono14-like fused N-terminus fragment."""
+        if not canonical:
+            return False
+        text = canonical.replace("@", "")
+        return "c1nc(" in text and "cs1" in text and "C(=O)N" in text
+
+    def _infer_terminal_code_from_amide(self, canonical: str) -> Optional[str]:
+        """
+        Heuristic remap for ambiguous terminal '*-al' artifacts in cyclic/nonCA cases.
+        """
+        if not canonical:
+            return None
+        text = canonical.replace("@", "")
+        if "NC(=O)" not in text and "C(N)=O" not in text:
+            return None
+        if "1CCCN1" in text:
+            return "P"
+        if "Cc1ccccc1" in text:
+            return "F"
+        if "CC(C)C" in text:
+            return "L"
+        if "C)C(=O)N" in text:
+            return "A"
+        return None
+
+    def _infer_fused_head_next_code(self, canonical: str) -> Optional[str]:
+        """
+        For fused head residues (e.g., Mono14 swallowing residue#2), infer the
+        missing next residue token from an amide N-side fragment.
+        """
+        if not canonical:
+            return None
+        mol = Chem.MolFromSmiles(canonical)
+        if mol is None:
+            return None
+
+        def _is_head_carbonyl_carbon(atom: Chem.Atom) -> bool:
+            if atom.GetAtomicNum() != 6:
+                return False
+            has_dbl_o = any(
+                b.GetBondType() == rdchem.BondType.DOUBLE
+                and b.GetOtherAtom(atom).GetAtomicNum() == 8
+                for b in atom.GetBonds()
+            )
+            if not has_dbl_o:
+                return False
+            # Mono14-like fused carbonyl sits on aromatic heterocycle.
+            return any(nb.GetIsAromatic() for nb in atom.GetNeighbors())
+
+        candidates: List[str] = []
+        for bond in mol.GetBonds():
+            if bond.GetBondType() != rdchem.BondType.SINGLE:
+                continue
+            a = bond.GetBeginAtom()
+            b = bond.GetEndAtom()
+            if a.GetAtomicNum() == 6 and b.GetAtomicNum() == 7 and _is_head_carbonyl_carbon(a):
+                c_idx = a.GetIdx()
+                n_idx = b.GetIdx()
+            elif b.GetAtomicNum() == 6 and a.GetAtomicNum() == 7 and _is_head_carbonyl_carbon(b):
+                c_idx = b.GetIdx()
+                n_idx = a.GetIdx()
+            else:
+                continue
+
+            # Collect N-side atoms only (exclude head carbonyl side).
+            keep: Set[int] = set()
+            stack = [n_idx]
+            visited = {c_idx}
+            while stack:
+                cur = stack.pop()
+                if cur in visited:
+                    continue
+                visited.add(cur)
+                keep.add(cur)
+                atom = mol.GetAtomWithIdx(cur)
+                for nb in atom.GetNeighbors():
+                    nb_idx = nb.GetIdx()
+                    if nb_idx in visited:
+                        continue
+                    stack.append(nb_idx)
+            if len(keep) < 4:
+                continue
+            try:
+                frag_smiles = Chem.MolFragmentToSmiles(
+                    mol, atomsToUse=sorted(keep), isomericSmiles=True
+                )
+                frag = Chem.MolFromSmiles(frag_smiles)
+            except Exception:
+                continue
+            if frag is None:
+                continue
+            try:
+                Chem.SanitizeMol(frag)
+            except Exception:
+                continue
+            match = self._select_template_for_residue(
+                frag, frag, position=2, rs_hint=None
+            )
+            if match.code == "X" or match.used_fallback:
+                continue
+            if match.code in {"Mono14", "Mono13"}:
+                continue
+            candidates.append(match.code)
+
+        if not candidates:
+            return None
+        # Prefer shorter canonical token if multiple valid parses.
+        return sorted(candidates, key=lambda x: (len(x), x))[0]
+
+    def _infer_thiazole_fused_head_pair(
+        self, canonical: str
+    ) -> Optional[Tuple[str, str]]:
+        """
+        Resolve thiazole-like fused head residues by cutting the aromatic-side
+        carbonyl amide to the next residue, then matching both fragments.
+
+        This distinguishes Mono14 / Mono30 / Mono31 instead of hardcoding Mono14.
+        """
+        if not canonical:
+            return None
+        mol = Chem.MolFromSmiles(canonical)
+        if mol is None:
+            return None
+
+        preferred_heads = {
+            "Mono14",
+            "Mono17",
+            "Mono19",
+            "Mono30",
+            "Mono31",
+        }
+        candidates: List[Tuple[str, str, float]] = []
+
+        def _normalize_head_fragment_to_acid(fragment: Chem.Mol) -> Chem.Mol:
+            rw = Chem.RWMol(fragment)
+            carbonyl_candidates: List[int] = []
+            for atom in rw.GetAtoms():
+                if atom.GetAtomicNum() != 6:
+                    continue
+                double_oxygens = [
+                    bond.GetOtherAtom(atom)
+                    for bond in atom.GetBonds()
+                    if bond.GetBondType() == rdchem.BondType.DOUBLE
+                    and bond.GetOtherAtom(atom).GetAtomicNum() == 8
+                ]
+                if len(double_oxygens) != 1:
+                    continue
+                if not any(nb.GetIsAromatic() for nb in atom.GetNeighbors()):
+                    continue
+                single_neighbors = [
+                    bond.GetOtherAtom(atom)
+                    for bond in atom.GetBonds()
+                    if bond.GetBondType() == rdchem.BondType.SINGLE
+                ]
+                if len(single_neighbors) == 1:
+                    carbonyl_candidates.append(atom.GetIdx())
+            for idx in carbonyl_candidates:
+                oxygen = Chem.Atom(8)
+                oxygen.SetFormalCharge(0)
+                o_idx = rw.AddAtom(oxygen)
+                rw.AddBond(idx, o_idx, rdchem.BondType.SINGLE)
+            out = rw.GetMol()
+            Chem.SanitizeMol(out)
+            return out
+
+        for bond in mol.GetBonds():
+            if bond.GetBondType() != rdchem.BondType.SINGLE:
+                continue
+            a = bond.GetBeginAtom()
+            b = bond.GetEndAtom()
+            oriented = []
+            if a.GetAtomicNum() == 6 and b.GetAtomicNum() == 7:
+                oriented.append((a, b))
+            if b.GetAtomicNum() == 6 and a.GetAtomicNum() == 7:
+                oriented.append((b, a))
+            for carb, n_atom in oriented:
+                has_carbonyl = any(
+                    bb.GetBondType() == rdchem.BondType.DOUBLE
+                    and bb.GetOtherAtom(carb).GetAtomicNum() == 8
+                    for bb in carb.GetBonds()
+                )
+                if not has_carbonyl:
+                    continue
+                if not any(nb.GetIsAromatic() for nb in carb.GetNeighbors()):
+                    continue
+                rw = Chem.RWMol(mol)
+                rw.RemoveBond(carb.GetIdx(), n_atom.GetIdx())
+                try:
+                    split = rw.GetMol()
+                    Chem.SanitizeMol(split)
+                except Exception:
+                    continue
+                frags = Chem.GetMolFrags(split, asMols=True, sanitizeFrags=True)
+                if len(frags) != 2:
+                    continue
+
+                head_frag = None
+                next_frag = None
+                for frag in frags:
+                    frag_smi = Chem.MolToSmiles(frag, isomericSmiles=True)
+                    if "c1nc(" in frag_smi and "cs1" in frag_smi:
+                        head_frag = frag
+                    else:
+                        next_frag = frag
+                if head_frag is None or next_frag is None:
+                    continue
+
+                normalized_head = _normalize_head_fragment_to_acid(head_frag)
+                head_match = self._select_template_for_residue(
+                    normalized_head, normalized_head, position=1, rs_hint=None
+                )
+                next_match = self._select_template_for_residue(
+                    next_frag, next_frag, position=2, rs_hint=None
+                )
+                if head_match.code == "X" or next_match.code == "X":
+                    continue
+                if head_match.code not in preferred_heads:
+                    continue
+                score = float(head_match.score) + float(next_match.score)
+                candidates.append((head_match.code, next_match.code, score))
+
+        if not candidates:
+            return None
+        candidates.sort(key=lambda x: (-x[2], len(x[0]), x[0], x[1]))
+        return (candidates[0][0], candidates[0][1])
+
+    def _infer_noxy_fused_head_pair(
+        self, canonical: str
+    ) -> Optional[Tuple[str, str]]:
+        """
+        Detect and split fused N->O-like head residue connected to ring amide
+        (typically d(N->O)Leu.P / d(N->O)Gly(allyl).P patterns).
+        Returns (head_code, next_code) when confident.
+        """
+        if not canonical:
+            return None
+        mol = Chem.MolFromSmiles(canonical)
+        if mol is None:
+            return None
+        candidate_pairs: List[Tuple[str, str, float]] = []
+        for bond in mol.GetBonds():
+            if bond.GetBondType() != rdchem.BondType.SINGLE:
+                continue
+            a = bond.GetBeginAtom()
+            b = bond.GetEndAtom()
+            oriented = []
+            if a.GetAtomicNum() == 6 and b.GetAtomicNum() == 7:
+                oriented.append((a, b))
+            if b.GetAtomicNum() == 6 and a.GetAtomicNum() == 7:
+                oriented.append((b, a))
+            for carb, n_atom in oriented:
+                has_carbonyl = any(
+                    bb.GetBondType() == rdchem.BondType.DOUBLE
+                    and bb.GetOtherAtom(carb).GetAtomicNum() == 8
+                    for bb in carb.GetBonds()
+                )
+                if not has_carbonyl or not n_atom.IsInRing():
+                    continue
+                rw = Chem.RWMol(mol)
+                rw.RemoveBond(carb.GetIdx(), n_atom.GetIdx())
+                try:
+                    split = rw.GetMol()
+                    Chem.SanitizeMol(split)
+                except Exception:
+                    continue
+                frags = Chem.GetMolFrags(split, asMols=True, sanitizeFrags=True)
+                if len(frags) != 2:
+                    continue
+                frag_for_n = None
+                frag_for_c = None
+                for frag in frags:
+                    if any(
+                        at.GetAtomicNum() == 7 and at.IsInRing()
+                        for at in frag.GetAtoms()
+                    ):
+                        frag_for_n = frag
+                    else:
+                        frag_for_c = frag
+                if frag_for_n is None or frag_for_c is None:
+                    continue
+                n_match = self._select_template_for_residue(
+                    frag_for_n, frag_for_n, position=2, rs_hint=None
+                )
+                c_match = self._select_template_for_residue(
+                    frag_for_c, frag_for_c, position=1, rs_hint=None
+                )
+                c_can = Chem.MolToSmiles(frag_for_c, isomericSmiles=True)
+                head_code = c_match.code
+                # N->O special-case preference to avoid Leu over-calling on allyl/aromatic variants.
+                if "C=CC" in c_can and "d(N->O)Gly(allyl)" in self.templates:
+                    head_code = "d(N->O)Gly(allyl)"
+                elif "c1ccc(O)cc1" in c_can and "(N->O)Tyr" in self.templates:
+                    head_code = "(N->O)Tyr"
+                elif "CC(C)C" in c_can and "d(N->O)Leu" in self.templates:
+                    head_code = "d(N->O)Leu"
+                elif "CCC(C)" in c_can:
+                    if "d(N->O)aIle" in self.templates:
+                        head_code = "d(N->O)aIle"
+                    elif "(N->O)xiIle" in self.templates:
+                        head_code = "(N->O)xiIle"
+                next_code = n_match.code
+                if head_code == "X" or next_code == "X":
+                    continue
+                # Accept only special head + ring-AA pair to avoid overfitting.
+                if (
+                    ("N->O" in head_code)
+                    or (head_code in {"Mono67", "Mono68", "Mono69", "Mono77"})
+                ) and next_code in {"P", "Pip", "Oic"}:
+                    conf = float(c_match.score) + float(n_match.score)
+                    candidate_pairs.append((head_code, next_code, conf))
+        if not candidate_pairs:
+            return None
+        candidate_pairs.sort(key=lambda x: (-x[2], len(x[0]), x[0], x[1]))
+        return (candidate_pairs[0][0], candidate_pairs[0][1])
+
+    def _infer_fused_ring_head_pair(
+        self, canonical: str
+    ) -> Optional[Tuple[str, str]]:
+        """
+        Split a fused head residue attached to a ring-amino-acid amide.
+
+        This covers cases such as:
+        - Mono16.P...
+        - Mono13/Mono14 + P/Pip/Oic
+        """
+        if not canonical:
+            return None
+        mol = Chem.MolFromSmiles(canonical)
+        if mol is None:
+            return None
+
+        preferred_heads = {"Mono16", "Mono13", "Mono14", "Mono6", "Mono77"}
+        preferred_ring = {"P", "Pip", "Oic"}
+        candidates: List[Tuple[str, str, float]] = []
+
+        for bond in mol.GetBonds():
+            if bond.GetBondType() != rdchem.BondType.SINGLE:
+                continue
+            a = bond.GetBeginAtom()
+            b = bond.GetEndAtom()
+            oriented = []
+            if a.GetAtomicNum() == 6 and b.GetAtomicNum() == 7:
+                oriented.append((a, b))
+            if b.GetAtomicNum() == 6 and a.GetAtomicNum() == 7:
+                oriented.append((b, a))
+            for carb, n_atom in oriented:
+                has_carbonyl = any(
+                    bb.GetBondType() == rdchem.BondType.DOUBLE
+                    and bb.GetOtherAtom(carb).GetAtomicNum() == 8
+                    for bb in carb.GetBonds()
+                )
+                if not has_carbonyl or not n_atom.IsInRing():
+                    continue
+                rw = Chem.RWMol(mol)
+                rw.RemoveBond(carb.GetIdx(), n_atom.GetIdx())
+                try:
+                    split = rw.GetMol()
+                    Chem.SanitizeMol(split)
+                except Exception:
+                    continue
+                frags = Chem.GetMolFrags(split, asMols=True, sanitizeFrags=True)
+                if len(frags) != 2:
+                    continue
+
+                ring_frag = None
+                head_frag = None
+                for frag in frags:
+                    if any(at.GetAtomicNum() == 7 and at.IsInRing() for at in frag.GetAtoms()):
+                        ring_frag = frag
+                    else:
+                        head_frag = frag
+                if ring_frag is None or head_frag is None:
+                    continue
+
+                ring_match = self._select_template_for_residue(
+                    ring_frag, ring_frag, position=2, rs_hint=None
+                )
+                head_match = self._select_template_for_residue(
+                    head_frag, head_frag, position=1, rs_hint=None
+                )
+                if ring_match.code == "X" or head_match.code == "X":
+                    continue
+                if ring_match.code not in preferred_ring:
+                    continue
+                if head_match.code not in preferred_heads:
+                    continue
+                score = float(ring_match.score) + float(head_match.score)
+                candidates.append((head_match.code, ring_match.code, score))
+
+        if not candidates:
+            return None
+        candidates.sort(key=lambda x: (-x[2], len(x[0]), x[0], x[1]))
+        return (candidates[0][0], candidates[0][1])
+
+    def _residue_has_n_methyl(self, mol: Chem.Mol, residue: Dict[str, int]) -> bool:
+        """Return True when residue backbone N carries a simple alkyl substituent."""
+        n_idx = residue["N"]
+        ca_idx = residue["CA"]
+        c_idx = residue["C"]
+        n_atom = mol.GetAtomWithIdx(n_idx)
+        for nb in n_atom.GetNeighbors():
+            nb_idx = nb.GetIdx()
+            if nb_idx == ca_idx:
+                continue
+            if nb_idx == c_idx:
+                continue
+            if nb.GetAtomicNum() != 6:
+                continue
+            is_carbonyl = any(
+                b.GetBondType() == rdchem.BondType.DOUBLE
+                and b.GetOtherAtom(nb).GetAtomicNum() == 8
+                for b in nb.GetBonds()
+            )
+            if is_carbonyl:
+                continue
+            return True
+        return False
+
+    def _preferred_output_code(self, code: str) -> str:
+        """Normalize template code to the preferred token used in sequence output."""
+        if not code:
+            return code
+        entry = self.templates.get(code)
+        if not entry or not entry.aliases:
+            return code
+        noxy_aliases = [
+            alias
+            for alias in entry.aliases
+            if isinstance(alias, str) and "N->O" in alias
+        ]
+        if noxy_aliases:
+            noxy_aliases.sort(key=lambda x: (len(x), x))
+            return noxy_aliases[0]
+        return code
+
+    def _candidate_scission_bonds(
+        self, mol: Chem.Mol
+    ) -> List[Tuple[int, int, int]]:
+        """
+        Candidate backbone scission bonds: carbonyl C single-bonded to N or O.
+
+        This covers both amide and depsipeptide-style C(=O)-O links.
+        """
+        candidates: List[Tuple[int, int, int]] = []
+        for bond in mol.GetBonds():
+            if bond.GetBondType() != rdchem.BondType.SINGLE:
+                continue
+            a = bond.GetBeginAtom()
+            b = bond.GetEndAtom()
+            oriented = []
+            if a.GetAtomicNum() == 6 and b.GetAtomicNum() in {7, 8}:
+                oriented.append((a, b))
+            if b.GetAtomicNum() == 6 and a.GetAtomicNum() in {7, 8}:
+                oriented.append((b, a))
+            for carb, hetero in oriented:
+                has_carbonyl = any(
+                    bb.GetBondType() == rdchem.BondType.DOUBLE
+                    and bb.GetOtherAtom(carb).GetAtomicNum() == 8
+                    for bb in carb.GetBonds()
+                )
+                if not has_carbonyl:
+                    continue
+                candidates.append((bond.GetIdx(), carb.GetIdx(), hetero.GetIdx()))
+                break
+        return candidates
+
+    def _rescue_by_scission_fragmentation(
+        self, mol: Chem.Mol
+    ) -> Optional[Tuple[List[ResidueMatch], Dict[str, object]]]:
+        """
+        Rescue cyclic/noncanonical peptides by cutting all C(=O)-N/O bonds and
+        matching each resulting fragment directly against the monomer library.
+        """
+        candidate_bonds = self._candidate_scission_bonds(mol)
+        if len(candidate_bonds) < 2:
+            return None
+        def _evaluate_bond_subset(
+            subset_bonds: List[Tuple[int, int, int]]
+        ) -> Optional[Tuple[List[ResidueMatch], Dict[str, object]]]:
+            bond_indices = [bond_idx for bond_idx, _, _ in subset_bonds]
+            fragmol = rdmolops.FragmentOnBonds(mol, bond_indices, addDummies=True)
+            atom_frags = Chem.GetMolFrags(fragmol, asMols=False, sanitizeFrags=False)
+            if len(atom_frags) < 2:
+                return None
+
+            orig_atom_owner: Dict[int, int] = {}
+            for frag_idx, atom_ids in enumerate(atom_frags):
+                for atom_idx in atom_ids:
+                    if atom_idx < mol.GetNumAtoms():
+                        orig_atom_owner[atom_idx] = frag_idx
+
+            indeg = [0] * len(atom_frags)
+            outdeg = [0] * len(atom_frags)
+            next_map: Dict[int, int] = {}
+            prev_map: Dict[int, int] = {}
+            for _, carb_idx, hetero_idx in subset_bonds:
+                left = orig_atom_owner.get(carb_idx)
+                right = orig_atom_owner.get(hetero_idx)
+                if left is None or right is None or left == right:
+                    return None
+                if left in next_map and next_map[left] != right:
+                    return None
+                if right in prev_map and prev_map[right] != left:
+                    return None
+                next_map[left] = right
+                prev_map[right] = left
+                outdeg[left] += 1
+                indeg[right] += 1
+
+            residue_matches: List[ResidueMatch] = []
+            for frag_idx, atom_ids in enumerate(atom_frags, start=1):
+                atoms = set(atom_ids)
+                try:
+                    raw_mol = self._raw_residue_mol(fragmol, atoms)
+                    rs_hint = self._alpha_cip(raw_mol)
+                    norm_mol = self._normalized_residue_mol(
+                        fragmol, atoms, raw_reference=raw_mol
+                    )
+                    match = self._select_template_for_residue(
+                        norm_mol, raw_mol, frag_idx, rs_hint
+                    )
+                except Exception:
+                    return None
+                if match.code == "X":
+                    return None
+                match.code = self._preferred_output_code(match.code)
+                residue_matches.append(match)
+
+            frag_count = len(residue_matches)
+            order: List[int] = []
+            is_cycle = (
+                len(next_map) == frag_count
+                and all(v == 1 for v in indeg)
+                and all(v == 1 for v in outdeg)
+            )
+            if is_cycle:
+                start = min(range(frag_count))
+                seen: Set[int] = set()
+                cur = start
+                while cur not in seen:
+                    seen.add(cur)
+                    order.append(cur)
+                    cur = next_map.get(cur)
+                    if cur is None:
+                        return None
+                if len(order) != frag_count:
+                    return None
+            else:
+                starts = [idx for idx in range(frag_count) if indeg[idx] == 0]
+                if len(starts) != 1:
+                    return None
+                cur = starts[0]
+                while True:
+                    order.append(cur)
+                    nxt = next_map.get(cur)
+                    if nxt is None:
+                        break
+                    cur = nxt
+                if len(order) != frag_count:
+                    return None
+
+            ordered_matches = [residue_matches[idx] for idx in order]
+            for pos, match in enumerate(ordered_matches, start=1):
+                match.index = pos
+
+            cycle_meta = None
+            if is_cycle:
+                cycle_meta = {
+                    "annotation": "head2tail",
+                    "connections": [f"1:R1-{len(ordered_matches)}:R2"],
+                }
+            return ordered_matches, cycle_meta or {}
+
+        direct = _evaluate_bond_subset(candidate_bonds)
+        if direct is not None:
+            return direct
+
+        # Lariat-like / overconnected macrocycles can contain one extra C(=O)-N/O
+        # candidate that is not part of the main residue backbone. Try dropping
+        # each candidate once and keep the first fully resolved simple path/cycle.
+        if len(candidate_bonds) <= 16:
+            for drop_idx in range(len(candidate_bonds)):
+                subset = [
+                    bond for idx, bond in enumerate(candidate_bonds) if idx != drop_idx
+                ]
+                rescued = _evaluate_bond_subset(subset)
+                if rescued is not None:
+                    return rescued
+        return None
+
+    def _infer_cycle_meta(
+        self,
+        mol: Chem.Mol,
+        residues: List[Dict[str, int]],
+        residue_matches: List[ResidueMatch],
+        is_head_to_tail: bool,
+    ) -> Optional[Dict[str, object]]:
+        """
+        Infer macrocycle connection metadata directly from SMILES.
+
+        Returns dict with:
+        - annotation: topology label
+        - connections: list[str]
+        """
+        if not residues or not residue_matches:
+            return None
+        if is_head_to_tail:
+            return {
+                "annotation": "head2tail",
+                "connections": [f"1:R1-{len(residue_matches)}:R2"],
+            }
+
+        all_backbone = {
+            idx for res in residues for idx in (res["N"], res["CA"], res["C"])
+        }
+        residue_atom_sets: List[Set[int]] = [
+            self._residue_atom_indices(mol, res, all_backbone=all_backbone)
+            for res in residues
+        ]
+        owner: Dict[int, int] = {}
+        for idx, atom_set in enumerate(residue_atom_sets):
+            for atom_idx in atom_set:
+                owner.setdefault(atom_idx, idx)
+
+        residue_count = len(residue_matches)
+        connections: List[str] = []
+        for bond in mol.GetBonds():
+            a_idx = bond.GetBeginAtomIdx()
+            b_idx = bond.GetEndAtomIdx()
+            ai = owner.get(a_idx)
+            bi = owner.get(b_idx)
+            if ai is None or bi is None or ai == bi:
+                continue
+            ri = residues[ai]
+            rj = residues[bi]
+            if {a_idx, b_idx} == {ri["C"], rj["N"]} or {a_idx, b_idx} == {rj["C"], ri["N"]}:
+                continue
+
+            a_atom = mol.GetAtomWithIdx(a_idx)
+            b_atom = mol.GetAtomWithIdx(b_idx)
+            left_idx, left_res, left_match, left_atom = ai, ri, residue_matches[ai], a_atom
+            right_idx, right_res, right_match, right_atom = bi, rj, residue_matches[bi], b_atom
+            if right_atom.GetAtomicNum() == 8 and left_atom.GetAtomicNum() == 6:
+                left_idx, right_idx = right_idx, left_idx
+                left_res, right_res = right_res, left_res
+                left_match, right_match = right_match, left_match
+                left_atom, right_atom = right_atom, left_atom
+
+            if (
+                left_idx == 0
+                and right_idx == residue_count - 1
+                and left_atom.GetAtomicNum() == 8
+                and right_atom.GetIdx() == right_res["C"]
+            ):
+                if left_match.code == "Bmt" and self._residue_has_n_methyl(mol, left_res):
+                    left_match.code = "Me_Bmt(E)"
+                    left_match.used_fallback = False
+                connections.append(f"1:R3-{residue_count}:R2")
+
+        if not connections:
+            return None
+        return {
+            "annotation": "cyclic",
+            "connections": sorted(set(connections)),
+        }
+
     def convert(
         self,
         smiles: str,
@@ -323,37 +1089,46 @@ class SMILES2Sequence:
         backbone_atoms = {res["N"] for res in residues} | {res["CA"] for res in residues} | {res["C"] for res in residues}
         linker_source = Chem.Mol(mol)
         if not residues:
+            special = self._special_case_no_backbone_sequence(mol)
+            if special is not None:
+                sequence, details = special
+                if not return_details:
+                    return sequence, None
+                return sequence, details
             raise ValueError("No peptide backbone detected.")
 
-        if self._linker_hint_raw:
-            pruned_mol, staple_records = Chem.Mol(mol), []
-        else:
-            pruned_mol, staple_records = self._detach_sidechain_linkers(mol, residues)
-        if staple_records:
-            residues, cap_info = self._enumerate_residues(pruned_mol)
-            mol = pruned_mol
-        else:
-            mol = pruned_mol
+        staple_records: List[Dict[str, int]] = []
         generic_records: List[Dict[str, int]] = []
-        if not self._linker_hint_raw and len({rec["position"] for rec in staple_records}) < 2:
-            # try to detect additional linker attachments on the original molecule
-            generic_records = self._detect_generic_linker_records(Chem.Mol(mol), residues, cap_info)
-            if generic_records:
-                combined_records = staple_records + [
-                    rec for rec in generic_records
-                    if rec.get("bond_idx") not in {s.get("bond_idx") for s in staple_records}
-                ]
-                staple_records = combined_records
-                self._linker_exclude_atoms = self._collect_linker_atoms(mol, residues, combined_records)
+        if self.auto_linker_detection:
+            if self._linker_hint_raw:
+                pruned_mol, staple_records = Chem.Mol(mol), []
+            else:
+                pruned_mol, staple_records = self._detach_sidechain_linkers(mol, residues)
+            if staple_records:
+                residues, cap_info = self._enumerate_residues(pruned_mol)
+                mol = pruned_mol
+            else:
+                mol = pruned_mol
 
-        if not self._linker_exclude_atoms:
-            known_atoms = self._known_linker_atoms(mol)
-            if known_atoms:
-                self._linker_exclude_atoms = known_atoms
-        if not self._linker_exclude_atoms and self._linker_hint_raw:
-            hint_match = self._match_linker_hint_atoms(mol, residues)
-            if hint_match:
-                self._linker_exclude_atoms = hint_match[0]
+            if not self._linker_hint_raw and len({rec["position"] for rec in staple_records}) < 2:
+                # try to detect additional linker attachments on the original molecule
+                generic_records = self._detect_generic_linker_records(Chem.Mol(mol), residues, cap_info)
+                if generic_records:
+                    combined_records = staple_records + [
+                        rec for rec in generic_records
+                        if rec.get("bond_idx") not in {s.get("bond_idx") for s in staple_records}
+                    ]
+                    staple_records = combined_records
+                    self._linker_exclude_atoms = self._collect_linker_atoms(mol, residues, combined_records)
+
+            if not self._linker_exclude_atoms:
+                known_atoms = self._known_linker_atoms(mol)
+                if known_atoms:
+                    self._linker_exclude_atoms = known_atoms
+            if not self._linker_exclude_atoms and self._linker_hint_raw:
+                hint_match = self._match_linker_hint_atoms(mol, residues)
+                if hint_match:
+                    self._linker_exclude_atoms = hint_match[0]
 
         match_mol = mol
         if self._linker_exclude_atoms:
@@ -365,15 +1140,157 @@ class SMILES2Sequence:
                     rw.RemoveBond(a_idx, b_idx)
             match_mol = rw.GetMol()
             Chem.SanitizeMol(match_mol, catchErrors=True)
+        is_cyclo = self._has_head_to_tail_link(mol, residues)
         (
             residue_matches,
             n_cap_info,
             c_cap_info,
             warnings,
-        ) = self._match_residues_and_caps(match_mol, residues, cap_info)
+        ) = self._match_residues_and_caps(
+            match_mol,
+            residues,
+            cap_info,
+            use_terminal_caps=not is_cyclo,
+        )
+        fused_head_pair_applied = False
+        if any("Backbone fragmentation ambiguous" in w for w in warnings) and residue_matches:
+            first = residue_matches[0]
+            noxy_pair = None
+            if first.code in {"X", "Oic", "Mono77"} or first.used_fallback:
+                noxy_pair = self._infer_noxy_fused_head_pair(first.canonical)
+            if noxy_pair:
+                head_code, next_code = noxy_pair
+                first.code = head_code
+                first.used_fallback = False
+                ins = ResidueMatch(
+                    index=2,
+                    code=next_code,
+                    canonical="",
+                    ld=None,
+                    alternatives=[],
+                    score=1.0,
+                    used_fallback=False,
+                    approximate=False,
+                    components=None,
+                )
+                residue_matches.insert(1, ins)
+                for i, m in enumerate(residue_matches, start=1):
+                    m.index = i
+            mono_pair = None
+            if first.code == "X" and self._looks_like_mono14_fused(first.canonical):
+                mono_pair = self._infer_thiazole_fused_head_pair(first.canonical)
+            if mono_pair:
+                first.code = mono_pair[0]
+                first.used_fallback = False
+                inferred_next = mono_pair[1]
+                if inferred_next:
+                    ins = ResidueMatch(
+                        index=2,
+                        code=inferred_next,
+                        canonical="",
+                        ld=None,
+                        alternatives=[],
+                        score=1.0,
+                        used_fallback=False,
+                        approximate=False,
+                        components=None,
+                    )
+                    residue_matches.insert(1, ins)
+                    for i, m in enumerate(residue_matches, start=1):
+                        m.index = i
+            elif first.code == "X" and self._looks_like_mono14_fused(first.canonical):
+                first.code = "Mono14"
+                first.used_fallback = False
+                inferred_next = self._infer_fused_head_next_code(first.canonical)
+                if inferred_next:
+                    ins = ResidueMatch(
+                        index=2,
+                        code=inferred_next,
+                        canonical="",
+                        ld=None,
+                        alternatives=[],
+                        score=1.0,
+                        used_fallback=False,
+                        approximate=False,
+                        components=None,
+                    )
+                    residue_matches.insert(1, ins)
+                    for i, m in enumerate(residue_matches, start=1):
+                        m.index = i
+            fused_pair = None
+            if first.code == "X" or first.used_fallback:
+                fused_pair = self._infer_fused_ring_head_pair(first.canonical)
+            if fused_pair:
+                head_code, next_code = fused_pair
+                first.code = head_code
+                first.used_fallback = False
+                fused_head_pair_applied = True
+                ins = ResidueMatch(
+                    index=2,
+                    code=next_code,
+                    canonical="",
+                    ld=None,
+                    alternatives=[],
+                    score=1.0,
+                    used_fallback=False,
+                    approximate=False,
+                    components=None,
+                )
+                residue_matches.insert(1, ins)
+                for i, m in enumerate(residue_matches, start=1):
+                    m.index = i
+            last = residue_matches[-1]
+            if isinstance(last.code, str) and last.code.endswith("-al"):
+                inferred = self._infer_terminal_code_from_amide(last.canonical)
+                if inferred:
+                    last.code = inferred
+                    last.used_fallback = False
         self._linker_exclude_atoms = set()
 
-        is_cyclo = self._has_head_to_tail_link(mol, residues)
+        cycle_meta = self._infer_cycle_meta(mol, residues, residue_matches, is_cyclo)
+        if (
+            cycle_meta is None
+            and fused_head_pair_applied
+            and len(residue_matches) > len(residues)
+        ):
+            cycle_meta = {
+                "annotation": "head2tail",
+                "connections": [f"1:R1-{len(residue_matches)}:R2"],
+            }
+        if cycle_meta:
+            is_cyclo = True
+        needs_scission_rescue = (
+            any(match.code == "X" for match in residue_matches)
+            or any(match.used_fallback for match in residue_matches)
+            or len(residue_matches) <= 2
+            or any("Backbone fragmentation ambiguous" in w for w in warnings)
+        )
+        if needs_scission_rescue:
+            rescue = self._rescue_by_scission_fragmentation(mol)
+            if rescue is not None:
+                rescued_matches, rescued_cycle_meta = rescue
+                current_x = sum(1 for match in residue_matches if match.code == "X")
+                rescued_x = sum(1 for match in rescued_matches if match.code == "X")
+                current_fallback = sum(
+                    1 for match in residue_matches if match.used_fallback
+                )
+                rescued_fallback = sum(
+                    1 for match in rescued_matches if match.used_fallback
+                )
+                rescue_is_better = (
+                    len(rescued_matches) > len(residue_matches)
+                    or current_x > rescued_x
+                    or current_fallback > rescued_fallback
+                    or (not cycle_meta and bool(rescued_cycle_meta))
+                )
+                if rescue_is_better:
+                    residue_matches = rescued_matches
+                    warnings.append(
+                        "Scission-fragment rescue applied from C(=O)-N/O bond decomposition."
+                    )
+                    if rescued_cycle_meta:
+                        cycle_meta = rescued_cycle_meta
+                        is_cyclo = bool(cycle_meta)
 
         stapled_positions: List[int] = []
         mx_positions = [
@@ -397,9 +1314,7 @@ class SMILES2Sequence:
                 pose_entries = " ".join(str(pos) for pos in positions)
                 linker_smiles = known_linker
             else:
-                pose_entries = ",".join(
-                    f"{rec['position']} {rec['element']}" for rec in sorted(staple_records, key=lambda r: r["position"])
-                )
+                pose_entries = self._format_pose_entries(staple_records)
             n_cap_atoms = cap_info.get("n_cap", set()) if cap_info else set()
             c_cap_atoms = cap_info.get("c_cap", set()) if cap_info else set()
             peptide_atoms = self._collect_peptide_atoms(mol, residues, cap_info, include_caps=False)
@@ -412,6 +1327,7 @@ class SMILES2Sequence:
             )
             if not linker_smiles:
                 linker_smiles = linker_data.get("linker")
+            linker_smiles = self._prefer_linker_output(linker_smiles)
             if linker_data.get("n_cap_atoms"):
                 n_cap_smiles = linker_data.get("n_cap_smiles")
                 if not n_cap_smiles:
@@ -427,7 +1343,7 @@ class SMILES2Sequence:
                         linker_source, residues[-1]["C"], linker_data["c_cap_atoms"]
                     )
                 c_cap_info = {"code": "X_cap", "smiles": c_cap_smiles, "label": "C-cap"}
-        else:
+        elif self.auto_linker_detection:
             if self._linker_hint_raw:
                 known = self._detect_known_linker(mol, residues)
                 if known:
@@ -457,13 +1373,14 @@ class SMILES2Sequence:
                              "c": cap_info.get("c_cap", set()) if cap_info else set()},
                         )
                         linker_smiles = linker_data.get("linker")
+                        linker_smiles = self._prefer_linker_output(linker_smiles)
                 if not pose_entries or not linker_smiles:
                     known = self._detect_known_linker(mol, residues)
                     if known:
                         positions, known_linker = known
                         pose_entries = " ".join(str(pos) for pos in positions)
                         linker_smiles = known_linker
-        if not linker_smiles and not self._linker_hint_raw:
+        if self.auto_linker_detection and not linker_smiles and not self._linker_hint_raw:
             inferred = self._infer_linker_from_multi_backbone(match_mol, residues)
             if inferred:
                 positions, inferred_linker = inferred
@@ -471,6 +1388,7 @@ class SMILES2Sequence:
                 linker_smiles = inferred_linker
         if self._linker_hint_raw and not linker_smiles:
             linker_smiles = self._normalize_linker_hint(self._linker_hint_raw)
+        linker_smiles = self._prefer_linker_output(linker_smiles)
 
         if residue_matches:
             last = residue_matches[-1]
@@ -512,6 +1430,7 @@ class SMILES2Sequence:
                     match.used_fallback = False
             if match.code in STANDARD20:
                 match.used_fallback = False
+            match.code = self._preferred_output_code(match.code)
             code_out = "NLE" if match.code == "Nle" else match.code
             if match.used_fallback:
                 if match.code.startswith("X-"):
@@ -525,9 +1444,23 @@ class SMILES2Sequence:
                 tokens.append(f"[C-cap:{c_cap_info['smiles']}]")
             else:
                 tokens.append(c_cap_info["code"])
-        if is_cyclo:
+        emit_cycle_marker = bool(
+            is_cyclo
+            and (
+                not cycle_meta
+                or cycle_meta.get("annotation") not in {"head2tail"}
+            )
+        )
+        if emit_cycle_marker:
             tokens.append("[Cyclo]")
         sequence_core = ".".join(tokens)
+        emit_cycle_connections = bool(
+            cycle_meta
+            and cycle_meta.get("connections")
+            and cycle_meta.get("annotation") not in {"head2tail"}
+        )
+        if emit_cycle_connections:
+            sequence_core = f"{sequence_core}|conn:{';'.join(cycle_meta['connections'])}"
         if pose_entries:
             sequence_core = f"{sequence_core}|pose:{pose_entries}|linker:{linker_smiles}"
 
@@ -568,6 +1501,8 @@ class SMILES2Sequence:
                 for match in residue_matches
             ],
             "warnings": warnings,
+            "backbone_assignments": self._last_backbone_assignments,
+            "cycle_meta": cycle_meta,
         }
         return sequence, details
 
@@ -585,13 +1520,29 @@ class SMILES2Sequence:
     def _has_head_to_tail_link(
         self, mol: Chem.Mol, residues: List[Dict[str, int]]
     ) -> bool:
-        """Return True when the peptide contains an N-to-C terminal bond (cyclic)."""
-        if len(residues) < 2:
+        """
+        Return True when residue-level peptide graph forms a cycle.
+
+        More robust than first/last check: if every residue has one incoming
+        and one outgoing backbone edge and edge count equals residue count,
+        treat as cyclic.
+        """
+        n = len(residues)
+        if n < 2:
             return False
-        first_n = residues[0]["N"]
-        last_c = residues[-1]["C"]
-        bond = mol.GetBondBetweenAtoms(first_n, last_c)
-        return bond is not None
+        indeg = [0] * n
+        outdeg = [0] * n
+        edges = 0
+        for i, ri in enumerate(residues):
+            c_idx = ri["C"]
+            for j, rj in enumerate(residues):
+                if i == j:
+                    continue
+                if mol.GetBondBetweenAtoms(c_idx, rj["N"]):
+                    outdeg[i] += 1
+                    indeg[j] += 1
+                    edges += 1
+        return edges == n and all(v == 1 for v in indeg) and all(v == 1 for v in outdeg)
 
     def match_fragments(
         self, frags: Sequence[Union[str, Chem.Mol]]
@@ -846,19 +1797,6 @@ class SMILES2Sequence:
                         rw_part.RemoveAtom(idx)
                     linker_mol = rw_part.GetMol()
                     Chem.SanitizeMol(linker_mol, catchErrors=True)
-            # Remap placeholder indices to sequential [*:1..n] when positions are non-contiguous.
-            dummy_positions = {
-                atom.GetAtomMapNum()
-                for atom in linker_mol.GetAtoms()
-                if atom.GetAtomicNum() == 0 and atom.GetAtomMapNum() > 0
-            }
-            if dummy_positions:
-                ordered = sorted(dummy_positions)
-                if ordered != list(range(1, len(ordered) + 1)):
-                    mapping = {pos: idx + 1 for idx, pos in enumerate(ordered)}
-                    for atom in linker_mol.GetAtoms():
-                        if atom.GetAtomicNum() == 0 and atom.GetAtomMapNum() in mapping:
-                            atom.SetAtomMapNum(mapping[atom.GetAtomMapNum()])
             canonical = Chem.MolToSmiles(linker_mol, isomericSmiles=True)
             real_indices = {idx for idx in kept_orig_indices if idx >= 0}
             n_overlap = len(real_indices & n_cap_set) if real_indices else 0
@@ -937,6 +1875,9 @@ class SMILES2Sequence:
             tuple(sorted((residues[i]["C"], residues[i + 1]["N"])))
             for i in range(len(residues) - 1)
         }
+        # Head-to-tail cyclization is part of the peptide backbone, not a staple linker.
+        if residues:
+            peptide_bonds.add(tuple(sorted((residues[-1]["C"], residues[0]["N"]))))
         records: List[Dict[str, int]] = []
         for bond in mol.GetBonds():
             a_idx = bond.GetBeginAtomIdx()
@@ -970,6 +1911,21 @@ class SMILES2Sequence:
         if len({rec["position"] for rec in records}) < 2:
             return []
         return records
+
+    def _format_pose_entries(self, records: List[Dict[str, int]]) -> Optional[str]:
+        if not records:
+            return None
+        labels: List[str] = []
+        seen: Set[Tuple[int, Optional[str]]] = set()
+        for rec in sorted(records, key=lambda item: (item["position"], item.get("element") or "")):
+            position = rec["position"]
+            element = (rec.get("element") or "").strip()
+            key = (position, element or None)
+            if key in seen:
+                continue
+            seen.add(key)
+            labels.append(f"{position} {element}" if element else str(position))
+        return ",".join(labels) if labels else None
 
     def _match_linker_hint_atoms(
         self, mol: Chem.Mol, residues: List[Dict[str, int]]
@@ -1209,6 +2165,12 @@ class SMILES2Sequence:
         if hint_mol is None:
             return linker_hint
         return Chem.MolToSmiles(hint_mol, isomericSmiles=True)
+
+    def _prefer_linker_output(self, linker_smiles: Optional[str]) -> Optional[str]:
+        if not linker_smiles:
+            return linker_smiles
+        preferred = match_linker_hint(linker_smiles, self._linker_dict)
+        return preferred or linker_smiles
 
     def _infer_linker_from_multi_backbone(
         self, mol: Chem.Mol, residues: List[Dict[str, int]]
@@ -1603,7 +2565,80 @@ class SMILES2Sequence:
 
         for entry in data:
             self._register_template(entry)
-        self._load_extended_templates()
+        if self.load_extend:
+            self._load_extended_templates()
+
+    def _mapped_heavy_anchor(self, mol: Chem.Mol, map_num: int) -> Optional[int]:
+        """Return heavy-atom anchor index adjacent to mapped atom."""
+        for atom in mol.GetAtoms():
+            if atom.GetAtomMapNum() != map_num:
+                continue
+            if atom.GetAtomicNum() > 1:
+                return atom.GetIdx()
+            for nb in atom.GetNeighbors():
+                if nb.GetAtomicNum() > 1:
+                    return nb.GetIdx()
+        return None
+
+    def _infer_template_backbone_motif(
+        self, smiles: str
+    ) -> Optional[Tuple[int, int, str]]:
+        """
+        Infer backbone motif from mapped template smiles.
+
+        Returns (path_len, side_anchor_pos, paradigm) where paradigm in {CA, CB, N}.
+        """
+        params = Chem.SmilesParserParams()
+        params.removeHs = False
+        mol = Chem.MolFromSmiles(smiles, params)
+        if mol is None:
+            return None
+        n_idx = self._mapped_heavy_anchor(mol, 1)
+        c_idx = self._mapped_heavy_anchor(mol, 2)
+        map2_atom = None
+        for atom in mol.GetAtoms():
+            if atom.GetAtomMapNum() == 2:
+                map2_atom = atom
+                break
+        if map2_atom is not None and map2_atom.GetAtomicNum() in (7, 8, 16):
+            carbonyl_neighbors = []
+            for nb in map2_atom.GetNeighbors():
+                if nb.GetAtomicNum() != 6:
+                    continue
+                has_carbonyl = any(
+                    b.GetBondType() == rdchem.BondType.DOUBLE
+                    and b.GetOtherAtom(nb).GetAtomicNum() == 8
+                    for b in nb.GetBonds()
+                )
+                carbonyl_neighbors.append((has_carbonyl, nb.GetIdx()))
+            if carbonyl_neighbors:
+                carbonyl_neighbors.sort(reverse=True)
+                c_idx = carbonyl_neighbors[0][1]
+        if n_idx is None or c_idx is None:
+            return None
+        try:
+            path = list(Chem.rdmolops.GetShortestPath(mol, n_idx, c_idx))
+        except Exception:
+            return None
+        if len(path) < 3:
+            return None
+        side_pos = 1
+        r3_idx = self._mapped_heavy_anchor(mol, 3)
+        if r3_idx is not None:
+            if r3_idx in path:
+                side_pos = path.index(r3_idx)
+            elif r3_idx == n_idx:
+                side_pos = 0
+        elif len(path) > 3:
+            # No R3 anchor in template: for extended backbones, assume sidechain is closer to carbonyl side.
+            side_pos = len(path) - 2
+        if side_pos <= 0:
+            paradigm = "N"
+        elif side_pos == 1 and len(path) == 3:
+            paradigm = "CA"
+        else:
+            paradigm = "CB"
+        return (len(path), side_pos, paradigm)
 
     def _register_template(
         self, entry: Dict[str, str], allow_overwrite: bool = False
@@ -1623,7 +2658,10 @@ class SMILES2Sequence:
             return self.templates[code]
 
         variant_records = []
+        motif_info: Optional[Tuple[int, int, str]] = None
         for smiles in smiles_list:
+            if motif_info is None:
+                motif_info = self._infer_template_backbone_motif(smiles)
             cleaned = remove_atom_maps(smiles)
             mol = Chem.MolFromSmiles(cleaned)
             if mol is None:
@@ -1673,6 +2711,11 @@ class SMILES2Sequence:
             components=components,
             aliases=aliases if aliases else None,
             canonical_variants=canonical_variants,
+            role=entry.get("role"),
+            backbone_paradigm=(motif_info[2] if motif_info else None),
+            backbone_path_len=(motif_info[0] if motif_info else None),
+            side_anchor_pos=(motif_info[1] if motif_info else None),
+            n_substituted=self._is_n_substituted(mol),
         )
 
         if components:
@@ -1702,6 +2745,17 @@ class SMILES2Sequence:
         base = _base_code(code)
         if base and base in STANDARD20 and _is_standard_template_code(code):
             self.standard_entries.append(template)
+        role = (entry.get("role") or "").strip().lower()
+        if role not in {"ncap", "ccap", "terminal", "cap"}:
+            self.residue_entries.append(template)
+        if motif_info:
+            role_norm = (entry.get("role") or "").strip().lower()
+            # Keep only residue-like short backbones for motif driving.
+            if role_norm in {"", "aa"} and (
+                motif_info[0] in {3, 4}
+                or (motif_info[2] != "CA" and motif_info[0] == 5)
+            ):
+                self.backbone_motifs.add(motif_info)
         return template
 
     def _load_extended_templates(self) -> None:
@@ -1894,29 +2948,51 @@ class SMILES2Sequence:
 
         return side_atoms
 
-    def _residue_atom_indices(self, mol: Chem.Mol, residue: Dict[str, int]) -> Set[int]:
+    def _residue_atom_indices(
+        self,
+        mol: Chem.Mol,
+        residue: Dict[str, int],
+        all_backbone: Optional[Set[int]] = None,
+    ) -> Set[int]:
         """Return all atoms considered part of a residue (backbone + side chain)."""
         atoms: Set[int] = set()
         n_idx = residue["N"]
         ca_idx = residue["CA"]
         c_idx = residue["C"]
 
-        backbone_atoms: Set[int] = {n_idx, ca_idx, c_idx}
-        atoms.update(backbone_atoms)
+        backbone_atoms: Set[int] = (
+            set(all_backbone)
+            if all_backbone is not None
+            else {n_idx, ca_idx, c_idx}
+        )
+        atoms.update({n_idx, ca_idx, c_idx})
 
-        side_atoms = self._collect_sidechain_atoms(mol, ca_idx, set(backbone_atoms))
+        side_atoms = self._collect_sidechain_atoms(mol, ca_idx, backbone_atoms)
         atoms.update(side_atoms)
 
         carbonyl = mol.GetAtomWithIdx(c_idx)
         for nb in carbonyl.GetNeighbors():
             nb_idx = nb.GetIdx()
-            if nb_idx != ca_idx:
+            if nb_idx == ca_idx:
+                continue
+            # Keep carbonyl oxygens, but avoid pulling neighboring residue backbone atoms.
+            if nb.GetAtomicNum() == 8 or nb_idx not in backbone_atoms:
                 atoms.add(nb_idx)
 
         n_atom = mol.GetAtomWithIdx(n_idx)
         for nb in n_atom.GetNeighbors():
             nb_idx = nb.GetIdx()
-            if nb_idx != ca_idx:
+            # Keep only true N-substituents (e.g., N-methyl), not previous residue carbonyl carbon.
+            if nb_idx == ca_idx or nb_idx in backbone_atoms:
+                continue
+            if nb.GetAtomicNum() == 6:
+                is_carbonyl = any(
+                    bond.GetBondType() == rdchem.BondType.DOUBLE
+                    and bond.GetOtherAtom(nb).GetAtomicNum() == 8
+                    for bond in nb.GetBonds()
+                )
+                if is_carbonyl:
+                    continue
                 atoms.add(nb_idx)
 
         if self._linker_exclude_atoms:
@@ -1932,8 +3008,13 @@ class SMILES2Sequence:
     ) -> Set[int]:
         """Union of residue atoms and optionally detected cap atoms."""
         peptide_atoms: Set[int] = set()
+        all_backbone = {
+            idx for res in residues for idx in (res["N"], res["CA"], res["C"])
+        }
         for residue in residues:
-            peptide_atoms.update(self._residue_atom_indices(mol, residue))
+            peptide_atoms.update(
+                self._residue_atom_indices(mol, residue, all_backbone=all_backbone)
+            )
         if include_caps and cap_info:
             peptide_atoms.update(cap_info.get("n_cap", set()))
             peptide_atoms.update(cap_info.get("c_cap", set()))
@@ -1944,6 +3025,247 @@ class SMILES2Sequence:
 
     # ----------------------------- core logic -------------------------------- #
 
+    def _order_backbone_matches(
+        self, mol: Chem.Mol, raw_matches: Sequence[Tuple[int, int, int]]
+    ) -> List[Tuple[int, int, int]]:
+        """Order backbone matches along peptide-bond direction."""
+        if not raw_matches:
+            return []
+        if len(raw_matches) == 1:
+            return [raw_matches[0]]
+
+        def bond_connects(prev: Tuple[int, int, int], curr: Tuple[int, int, int]) -> bool:
+            bond = mol.GetBondBetweenAtoms(prev[2], curr[0])
+            if not bond or bond.GetBondType() != rdchem.BondType.SINGLE:
+                return False
+            carbon = mol.GetAtomWithIdx(prev[2])
+            return any(
+                b.GetBondType() == rdchem.BondType.DOUBLE
+                and b.GetOtherAtom(carbon).GetAtomicNum() == 8
+                for b in carbon.GetBonds()
+            )
+
+        backbone_atoms: Set[int] = {idx for m in raw_matches for idx in m}
+        match_by_n = {m[0]: m for m in raw_matches}
+
+        def is_n_terminal(match: Tuple[int, int, int]) -> bool:
+            n_atom = mol.GetAtomWithIdx(match[0])
+            neighbors = [
+                nb.GetIdx()
+                for nb in n_atom.GetNeighbors()
+                if nb.GetAtomicNum() > 1 and nb.GetIdx() in backbone_atoms
+            ]
+            return len(neighbors) == 1
+
+        n_terminal_candidates = [m for m in raw_matches if is_n_terminal(m)] or list(raw_matches)
+
+        def traverse(start: Tuple[int, int, int]) -> List[Tuple[int, int, int]]:
+            visited: Set[int] = set()
+            ordered: List[Tuple[int, int, int]] = []
+            current = start
+            while current:
+                n_idx = current[0]
+                if n_idx in visited:
+                    break
+                visited.add(n_idx)
+                ordered.append(current)
+                next_match = None
+                c_idx = current[2]
+                for nb in mol.GetAtomWithIdx(c_idx).GetNeighbors():
+                    cand = match_by_n.get(nb.GetIdx())
+                    if cand and cand[0] not in visited and bond_connects(current, cand):
+                        next_match = cand
+                        break
+                current = next_match
+            return ordered
+
+        best_chain: List[Tuple[int, int, int]] = []
+        for candidate in n_terminal_candidates:
+            chain = traverse(candidate)
+            if len(chain) >= len(best_chain):
+                best_chain = chain
+        return best_chain if best_chain else list(raw_matches)
+
+    def _strict_ca_backbone_matches(
+        self, mol: Chem.Mol
+    ) -> List[Tuple[int, int, int]]:
+        """CA paradigm backbone detection (legacy strict logic)."""
+        pattern = Chem.MolFromSmarts("[N;$(NCC(=O))]-[C;$(C(N)C=O)]-[C;$(C=O)]")
+        raw = list(mol.GetSubstructMatches(pattern))
+        return self._order_backbone_matches(mol, raw)
+
+    def _template_driven_backbone_matches(
+        self,
+        mol: Chem.Mol,
+        blocked_atoms: Optional[Set[int]] = None,
+        blocked_n: Optional[Set[int]] = None,
+        blocked_c: Optional[Set[int]] = None,
+    ) -> List[Tuple[int, int, int]]:
+        """
+        Template-driven backbone detection for non-CA paradigms.
+
+        Uses motif classes inferred from anchor-mapped monomer templates.
+        """
+        raw_matches: Set[Tuple[int, int, int]] = set()
+        blocked_atoms = blocked_atoms or set()
+        blocked_n = blocked_n or set()
+        blocked_c = blocked_c or set()
+        for path_len, side_pos, paradigm in sorted(self.backbone_motifs):
+            if paradigm == "CA":
+                continue
+            if path_len < 3 or path_len > 5:
+                continue
+            chain = "-".join(["[C;X4]"] * (path_len - 2))
+            smarts = f"[N]-{chain}-[C;$(C=O)]"
+            patt = Chem.MolFromSmarts(smarts)
+            if patt is None:
+                continue
+            for match in mol.GetSubstructMatches(patt):
+                if len(match) != path_len:
+                    continue
+                n_idx = match[0]
+                c_idx = match[-1]
+                if n_idx in blocked_n or c_idx in blocked_c:
+                    continue
+                if path_len == 5:
+                    # Keep long non-CA motifs conservative to avoid over-capturing CA residues.
+                    if mol.GetAtomWithIdx(n_idx).GetDegree() < 3:
+                        continue
+                if side_pos <= 0 or side_pos >= (path_len - 1):
+                    ca_idx = match[1]
+                else:
+                    ca_idx = match[side_pos]
+                if n_idx in blocked_atoms or ca_idx in blocked_atoms or c_idx in blocked_atoms:
+                    continue
+                # N should behave like peptide amide nitrogen (connected to a carbonyl carbon).
+                n_atom = mol.GetAtomWithIdx(n_idx)
+                has_amide_neighbor = False
+                for nb in n_atom.GetNeighbors():
+                    if nb.GetAtomicNum() != 6:
+                        continue
+                    if any(
+                        b.GetBondType() == rdchem.BondType.DOUBLE
+                        and b.GetOtherAtom(nb).GetAtomicNum() == 8
+                        for b in nb.GetBonds()
+                    ):
+                        has_amide_neighbor = True
+                        break
+                if not has_amide_neighbor:
+                    continue
+                raw_matches.add((n_idx, ca_idx, c_idx))
+        # Keep all non-CA candidates; do not collapse to a single chain here.
+        # Single-chain ordering at this stage can drop one cyclic terminal non-CA
+        # residue (e.g., Me_Bal ... Bal(3-Me) head-to-tail rings).
+        return sorted(raw_matches)
+
+    def _merge_backbone_matches_preferring_ca(
+        self,
+        mol: Chem.Mol,
+        matches_ca: List[Tuple[int, int, int]],
+        matches_nonca: List[Tuple[int, int, int]],
+    ) -> List[Tuple[int, int, int]]:
+        """
+        Merge backbone matches with CA paradigm priority.
+
+        Strategy:
+        1) keep all strict-CA matches
+        2) add non-CA matches only when they do not reuse N/C anchors
+           from already accepted residues
+        3) reorder merged result by peptide-bond connectivity
+        """
+        if not matches_ca and not matches_nonca:
+            return []
+        if not matches_nonca:
+            return matches_ca
+        if not matches_ca:
+            return matches_nonca
+
+        merged: List[Tuple[int, int, int]] = []
+        used_n: Set[int] = set()
+        used_c: Set[int] = set()
+
+        for m in matches_ca:
+            merged.append(m)
+            used_n.add(m[0])
+            used_c.add(m[2])
+
+        for m in matches_nonca:
+            n_idx, _, c_idx = m
+            if n_idx in used_n or c_idx in used_c:
+                continue
+            merged.append(m)
+            used_n.add(n_idx)
+            used_c.add(c_idx)
+
+        merged = self._optimize_nonca_terminal_connectivity(
+            mol, merged, matches_ca, matches_nonca
+        )
+        ordered = self._order_backbone_matches(mol, merged)
+        return ordered if len(ordered) >= len(matches_ca) else matches_ca
+
+    def _backbone_connectivity_score(
+        self, mol: Chem.Mol, matches: List[Tuple[int, int, int]]
+    ) -> Tuple[int, int, int]:
+        """Score by residue-level peptide connectivity: edges, cyclic_flag, count."""
+        if not matches:
+            return (0, 0, 0)
+        n = len(matches)
+        indeg = [0] * n
+        outdeg = [0] * n
+        edges = 0
+        for i, mi in enumerate(matches):
+            for j, mj in enumerate(matches):
+                if i == j:
+                    continue
+                if mol.GetBondBetweenAtoms(mi[2], mj[0]):
+                    outdeg[i] += 1
+                    indeg[j] += 1
+                    edges += 1
+        cyclic = 1 if (edges == n and all(v == 1 for v in indeg) and all(v == 1 for v in outdeg)) else 0
+        return (edges, cyclic, n)
+
+    def _optimize_nonca_terminal_connectivity(
+        self,
+        mol: Chem.Mol,
+        merged: List[Tuple[int, int, int]],
+        matches_ca: List[Tuple[int, int, int]],
+        matches_nonca: List[Tuple[int, int, int]],
+    ) -> List[Tuple[int, int, int]]:
+        """
+        Try replacing conflicting terminal CA picks with nonCA matches when
+        this improves residue-graph connectivity (common for nonCA-nonCA cyclization).
+        """
+        if not merged or not matches_nonca:
+            return merged
+        ca_set = set(matches_ca)
+        current = list(merged)
+        best_score = self._backbone_connectivity_score(mol, current)
+
+        improved = True
+        while improved:
+            improved = False
+            for m in matches_nonca:
+                if m in current:
+                    continue
+                n_idx, _, c_idx = m
+                conflicts = [
+                    x for x in current
+                    if (x[0] == n_idx or x[2] == c_idx) and x in ca_set
+                ]
+                if not conflicts and any((x[0] == n_idx or x[2] == c_idx) for x in current):
+                    # only conflict with existing nonCA -> skip
+                    continue
+                candidate = [x for x in current if x not in conflicts]
+                if m not in candidate:
+                    candidate.append(m)
+                cand_score = self._backbone_connectivity_score(mol, candidate)
+                if cand_score > best_score:
+                    current = candidate
+                    best_score = cand_score
+                    improved = True
+                    break
+        return current
+
     def _enumerate_residues(self, mol: Chem.Mol) -> Tuple[List[Dict[str, int]], Dict[str, Set[int]]]:
         """
         Return ordered residue descriptors and terminal cap atoms.
@@ -1951,8 +3273,24 @@ class SMILES2Sequence:
         Each descriptor is {'N': idx, 'CA': idx, 'C': idx}.
         Also returns cap_info containing sets of atoms for N and C caps.
         """
-        matches = list(get_backbone_atoms(mol))
+        matches_ca = self._strict_ca_backbone_matches(mol)
+        used_atoms_from_ca: Set[int] = {idx for m in matches_ca for idx in m}
+        used_n_from_ca: Set[int] = {m[0] for m in matches_ca}
+        used_c_from_ca: Set[int] = {m[2] for m in matches_ca}
+        matches_nonca = self._template_driven_backbone_matches(
+            mol,
+            blocked_atoms=set(),
+            blocked_n=used_n_from_ca,
+            blocked_c=used_c_from_ca,
+        )
+        matches = self._merge_backbone_matches_preferring_ca(
+            mol, matches_ca, matches_nonca
+        )
+        if not matches:
+            # Final fallback: keep legacy broad matcher for compatibility.
+            matches = list(get_backbone_atoms(mol))
         residues = [{"N": n, "CA": ca, "C": c} for (n, ca, c) in matches]
+        ca_set = set(matches_ca)
         if not residues:
             return [], {"n_cap": set(), "c_cap": set()}
         
@@ -2012,32 +3350,41 @@ class SMILES2Sequence:
                 if mol.GetBondBetweenAtoms(C, other["N"]):
                     next_map[idx] = jdx
 
-        # find N-terminus (no predecessor)
-        start_idx = None
-        for idx in range(len(residues)):
-            if idx not in prev_map:
-                start_idx = idx
+        # A linear peptide starts at the residue without a predecessor. A
+        # head-to-tail cycle has no such residue, so choose only the starting
+        # point deterministically and still follow directed C(=O)->N edges.
+        starts = [idx for idx in range(len(residues)) if idx not in prev_map]
+        start_idx = (
+            min(starts, key=lambda i: residues[i]["N"])
+            if starts
+            else min(range(len(residues)), key=lambda i: residues[i]["N"])
+        )
+        order = [start_idx]
+        seen = {start_idx}
+        while order[-1] in next_map:
+            nxt = next_map[order[-1]]
+            if nxt in seen:
                 break
-        if start_idx is None:
-            # fallback: order by nitrogen index
+            order.append(nxt)
+            seen.add(nxt)
+        if len(order) != len(residues):
+            # Keep deterministic behavior for genuinely fragmented residue
+            # graphs. Complete cycles must never use atom-index sorting.
             order = sorted(range(len(residues)), key=lambda i: residues[i]["N"])
-        else:
-            order = [start_idx]
-            seen = {start_idx}
-            while order[-1] in next_map:
-                nxt = next_map[order[-1]]
-                if nxt in seen:
-                    break
-                order.append(nxt)
-                seen.add(nxt)
-            if len(order) != len(residues):
-                # incomplete traversal; fallback to sorted order
-                order = sorted(
-                    range(len(residues)), key=lambda i: residues[i]["N"]
-                )
 
         # reorder residues in-place for downstream processing
         ordered_residues = [residues[i] for i in order]
+        ordered_matches = [matches[i] for i in order]
+        self._last_backbone_assignments = [
+            {
+                "seq_index": i + 1,
+                "paradigm": ("CA" if m in ca_set else "nonCA"),
+                "N_idx": m[0],
+                "CA_idx": m[1],
+                "C_idx": m[2],
+            }
+            for i, m in enumerate(ordered_matches)
+        ]
         return ordered_residues, {"n_cap": n_cap_atoms, "c_cap": c_cap_atoms}
 
     def  _match_residues_and_caps(
@@ -2045,19 +3392,23 @@ class SMILES2Sequence:
         mol: Chem.Mol,
         residues: List[Dict[str, int]],
         cap_info: Dict[str, Set[int]],
+        use_terminal_caps: bool = True,
     ) -> Tuple[List[ResidueMatch], Optional[Dict[str, object]], Optional[Dict[str, object]], List[str]]:
         """
         Fragment the molecule, detect caps, and match each residue to a template.
         Uses pre-detected cap atoms from _enumerate_residues.
         """
-        # fragment all peptide bonds at once
-        bond_indices = []
-        for idx in range(len(residues) - 1):
-            bond = mol.GetBondBetweenAtoms(
-                residues[idx]["C"], residues[idx + 1]["N"]
-            )
-            if bond:
-                bond_indices.append(bond.GetIdx())
+        # Fragment all backbone peptide bonds (including head-to-tail cyclization bond).
+        bond_indices: List[int] = []
+        for i, res_i in enumerate(residues):
+            c_idx = res_i["C"]
+            for j, res_j in enumerate(residues):
+                if i == j:
+                    continue
+                bond = mol.GetBondBetweenAtoms(c_idx, res_j["N"])
+                if bond:
+                    bond_indices.append(bond.GetIdx())
+        bond_indices = sorted(set(bond_indices))
         fragmol = (
             rdmolops.FragmentOnBonds(mol, bond_indices, addDummies=True)
             if bond_indices
@@ -2084,13 +3435,15 @@ class SMILES2Sequence:
         first_residue_atoms = first_residue_backbone | self._residue_ring_atoms(
             mol, residues[0]
         )
-        n_cap_atoms = self._candidate_cap_atoms(
-            mol,
-            anchor=residues[0]["N"],
-            avoid=residues[0]["CA"],
-            backbone=residues,
-            residue_atoms=first_residue_atoms,
-        )
+        n_cap_atoms: Set[int] = set()
+        if use_terminal_caps:
+            n_cap_atoms = self._candidate_cap_atoms(
+                mol,
+                anchor=residues[0]["N"],
+                avoid=residues[0]["CA"],
+                backbone=residues,
+                residue_atoms=first_residue_atoms,
+            )
 
         last_residue_backbone = {
             residues[-1]["N"],
@@ -2100,22 +3453,51 @@ class SMILES2Sequence:
         last_residue_atoms = last_residue_backbone | self._residue_ring_atoms(
             mol, residues[-1]
         )
-        c_cap_atoms = self._candidate_cap_atoms(
-            mol,
-            anchor=residues[-1]["C"],
-            avoid=residues[-1]["CA"],
-            backbone=residues,
-            residue_atoms=last_residue_atoms,
-        )
+        c_cap_atoms: Set[int] = set()
+        if use_terminal_caps:
+            c_cap_atoms = self._candidate_cap_atoms(
+                mol,
+                anchor=residues[-1]["C"],
+                avoid=residues[-1]["CA"],
+                backbone=residues,
+                residue_atoms=last_residue_atoms,
+            )
 
         residue_matches: List[ResidueMatch] = []
+        use_fragment_mapping = len(set(ca_to_fragment.values())) == len(residues)
+        all_backbone = {
+            idx for res in residues for idx in (res["N"], res["CA"], res["C"])
+        }
+        if not use_fragment_mapping:
+            warnings.append(
+                "Backbone fragmentation ambiguous; fallback to local residue extraction."
+            )
+            # Ambiguous residue fragmentation often appears in cyclic/nonCA end-cases.
+            # Treat as no terminal cap to avoid false cap stripping.
+            use_terminal_caps = False
+            n_cap_atoms = set()
+            c_cap_atoms = set()
         # We'll fill cap info once we confirm caps truly exist
         confirmed_n_cap: Optional[Set[int]] = None
         confirmed_c_cap: Optional[Set[int]] = None
 
         for pos, residue in enumerate(residues, start=1):
-            frag_idx = ca_to_fragment[residue["CA"]]
-            atoms = set(atom_frags[frag_idx])
+            if use_fragment_mapping:
+                frag_idx = ca_to_fragment[residue["CA"]]
+                atoms = set(atom_frags[frag_idx])
+                source_mol = fragmol
+            else:
+                atoms = self._residue_atom_indices(
+                    mol, residue, all_backbone=all_backbone
+                )
+                other_backbone = {
+                    idx
+                    for res_other in residues
+                    for idx in res_other.values()
+                    if idx not in {residue["N"], residue["CA"], residue["C"]}
+                }
+                atoms.difference_update(other_backbone)
+                source_mol = mol
             remove_n = (
                 n_cap_atoms.copy() if pos == 1 and n_cap_atoms else set()
             )
@@ -2126,7 +3508,7 @@ class SMILES2Sequence:
             )
 
             match, used_cap = self._match_single_residue(
-                fragmol,
+                source_mol,
                 residue,
                 atoms,
                 remove_n,
@@ -2149,16 +3531,19 @@ class SMILES2Sequence:
                         "C-terminus substitution did not match library; treating as no C-cap."
                     )
 
-        n_cap_info = self._build_cap_info(
-            mol, residues[0]["N"], confirmed_n_cap, self.n_cap_map, "N-cap"
-        )
-        c_cap_info = self._build_cap_info(
-            mol,
-            residues[-1]["C"],
-            confirmed_c_cap,
-            self.c_cap_map,
-            "C-cap",
-        )
+        n_cap_info = None
+        c_cap_info = None
+        if use_terminal_caps:
+            n_cap_info = self._build_cap_info(
+                mol, residues[0]["N"], confirmed_n_cap, self.n_cap_map, "N-cap"
+            )
+            c_cap_info = self._build_cap_info(
+                mol,
+                residues[-1]["C"],
+                confirmed_c_cap,
+                self.c_cap_map,
+                "C-cap",
+            )
 
         return residue_matches, n_cap_info, c_cap_info, warnings
 
@@ -2360,6 +3745,7 @@ class SMILES2Sequence:
         approximate = False
 
         if codes:
+            codes = self._filter_codes_by_anchor_constraints(codes, raw_mol)
             best_code = self._choose_code_with_orientation(codes, rs)
             alternatives = [
                 f"{code}@1.00" for code in codes if code != best_code
@@ -2371,9 +3757,9 @@ class SMILES2Sequence:
                 alternatives,
                 score,
                 approximate,
-            ) = self._mcs_fallback(residue_mol, rs)
+            ) = self._mcs_fallback(residue_mol, raw_mol, rs)
             used_fallback = approximate
-        if best_code == "X":
+        if best_code == "X" and self.allow_fingerprint_fallback:
             (
                 best_code,
                 alternatives,
@@ -2407,6 +3793,7 @@ class SMILES2Sequence:
     def _mcs_fallback(
         self,
         residue_mol: Chem.Mol,
+        raw_mol: Chem.Mol,
         rs_hint: Optional[str],
     ) -> Tuple[str, List[str], float, bool]:
         """Try maximum common substructure match before fingerprints."""
@@ -2415,7 +3802,7 @@ class SMILES2Sequence:
             return "X", [], 0.0, True
         best_score = 0.0
         best_entries: List[TemplateEntry] = []
-        candidates = self.standard_entries if self.standard_entries else self.fp_cache
+        candidates = self.residue_entries if self.residue_entries else self.fp_cache
         residue_has_aromatic = any(atom.GetIsAromatic() for atom in residue_mol.GetAtoms())
         for entry in candidates:
             tmpl = entry.mol
@@ -2447,8 +3834,17 @@ class SMILES2Sequence:
                 best_entries = [entry]
             elif abs(ratio - best_score) <= 0.01:
                 best_entries.append(entry)
-        if best_score < 0.9 or not best_entries:
+        if best_score < 0.92 or not best_entries:
             return "X", [], 0.0, True
+        filtered_codes = set(
+            self._filter_codes_by_anchor_constraints(
+                [e.code for e in best_entries], raw_mol
+            )
+        )
+        best_entries = [entry for entry in best_entries if entry.code in filtered_codes] or best_entries
+        if len(best_entries) > 1 and best_score < 0.97:
+            # ambiguous approximate hit: keep unknown instead of forcing wrong residue
+            return "X", [], best_score, True
         codes = [entry.code for entry in best_entries]
         best_code = self._choose_code_with_orientation(codes, rs_hint)
         alternatives = [
@@ -2467,6 +3863,42 @@ class SMILES2Sequence:
         ca_idx = matches[0][1]
         atom = mol.GetAtomWithIdx(ca_idx)
         return atom.GetProp("_CIPCode") if atom.HasProp("_CIPCode") else None
+
+    def _is_n_substituted(self, mol: Chem.Mol) -> Optional[bool]:
+        """
+        Infer whether backbone N has an extra heavy substituent beyond backbone.
+        True helps distinguish meX vs X templates.
+        """
+        try:
+            matches = list(get_backbone_atoms(mol))
+            if not matches:
+                return None
+            n_idx, ca_idx, _ = matches[0]
+            n_atom = mol.GetAtomWithIdx(n_idx)
+            extra = [
+                nb.GetIdx()
+                for nb in n_atom.GetNeighbors()
+                if nb.GetAtomicNum() > 1 and nb.GetIdx() != ca_idx
+            ]
+            return len(extra) > 0
+        except Exception:
+            return None
+
+    def _filter_codes_by_anchor_constraints(
+        self, codes: List[str], raw_mol: Chem.Mol
+    ) -> List[str]:
+        """Filter candidate codes by anchor-derived constraints from residue fragment."""
+        n_sub = self._is_n_substituted(raw_mol)
+        if n_sub is None or not codes:
+            return codes
+        filtered = []
+        for code in codes:
+            entry = self.templates.get(code)
+            if entry is None or entry.n_substituted is None:
+                continue
+            if entry.n_substituted == n_sub:
+                filtered.append(code)
+        return filtered if filtered else codes
 
     def _copy_alpha_chirality(
         self, source: Chem.Mol, target: Chem.Mol
@@ -2568,7 +4000,7 @@ class SMILES2Sequence:
         norm_fp = self.fpgen.GetFingerprint(normalized_mol)
 
         candidate_entries = (
-            self.standard_entries if self.standard_entries else self.fp_cache
+            self.residue_entries if self.residue_entries else self.fp_cache
         )
 
         for entry in candidate_entries:

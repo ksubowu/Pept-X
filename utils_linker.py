@@ -6,7 +6,7 @@ from typing import Dict, List, Optional, Tuple
 from rdkit import Chem
 from rdkit.Chem import rdFMCS
 
-DEFAULT_LINKER_DICT = Path("data/linker_dict.json")
+DEFAULT_LINKER_DICT = Path(__file__).resolve().parent / "data" / "linker_dict.json"
 
 
 def normalize_linker_key(smiles: str) -> str:

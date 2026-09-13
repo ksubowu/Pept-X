@@ -451,17 +451,19 @@ def anchors_and_leaving_from_helm(mol: Chem.Mol) -> Tuple[Dict[int, int], List[i
     leaving: List[int] = []
     for a in mol.GetAtoms():
         amap = a.GetAtomMapNum()
-        # print(amap)
-        if amap in [1,2]:#NOTE this version only considering backbone not sidechain, D has 3
+        if amap > 0:
             heavy_nbrs = [nb for nb in a.GetNeighbors() if nb.GetAtomicNum() > 1]
             if len(heavy_nbrs) != 1:
                 raise ValueError(
                     f"AtomMapNum={amap} 的离去原子需恰有 1 个重原子邻居；"
                     f"当前 {len(heavy_nbrs)} 个（atom idx={a.GetIdx()}, sym={a.GetSymbol()})"
-                )
+            )
             anchors[amap] = heavy_nbrs[0].GetIdx()
-            leaving.append(a.GetIdx())
-    # print(anchors,leaving)
+            # Backbone leaving groups are always consumed during linear assembly.
+            # Non-backbone anchors (e.g. R3) are removed only when that extra
+            # connection is actually used.
+            if amap in (1, 2):
+                leaving.append(a.GetIdx())
     if not anchors:
         raise ValueError("未发现任何 AtomMapNum>0 的原子；请确认单体为 HELM corelib 风格 SMILES")
     return anchors, leaving
@@ -534,6 +536,90 @@ def _helmify_backbone_smiles(smiles: str) -> Optional[str]:
         return None
     return Chem.MolToSmiles(helm_mol, isomericSmiles=True, canonical=False)
 
+def _augment_missing_backbone_maps(smiles: str) -> Optional[str]:
+    """
+    For partially mapped monomers (e.g. only [OH:2]), add missing [H:1] anchor
+    by finding the hetero atom attached to C-alpha.
+    """
+    if not smiles:
+        return None
+    params = Chem.SmilesParserParams()
+    params.removeHs = False
+    mol = Chem.MolFromSmiles(smiles, params)
+    if mol is None:
+        return None
+    try:
+        Chem.SanitizeMol(mol)
+    except Exception:
+        return None
+
+    map_nums = {a.GetAtomMapNum() for a in mol.GetAtoms() if a.GetAtomMapNum() > 0}
+    if 1 in map_nums and 2 in map_nums:
+        return Chem.MolToSmiles(mol, isomericSmiles=True, canonical=False)
+    if 2 not in map_nums:
+        return None
+
+    rw = Chem.RWMol(mol)
+    c_idx = None
+    for atom in rw.GetAtoms():
+        if atom.GetAtomMapNum() != 2:
+            continue
+        heavy_nbrs = [nb for nb in atom.GetNeighbors() if nb.GetAtomicNum() > 1]
+        if len(heavy_nbrs) == 1:
+            c_idx = heavy_nbrs[0].GetIdx()
+            break
+    if c_idx is None:
+        return None
+
+    ca_idx = None
+    c_atom = rw.GetAtomWithIdx(c_idx)
+    for nb in c_atom.GetNeighbors():
+        if nb.GetAtomicNum() == 6:
+            ca_idx = nb.GetIdx()
+            break
+    if ca_idx is None:
+        return None
+
+    if 1 not in map_nums:
+        ca_atom = rw.GetAtomWithIdx(ca_idx)
+        candidates = [
+            nb.GetIdx()
+            for nb in ca_atom.GetNeighbors()
+            if nb.GetIdx() != c_idx and nb.GetAtomicNum() in (7, 8, 16)
+        ]
+        if candidates:
+            candidates.sort(
+                key=lambda idx: {7: 0, 8: 1, 16: 2}.get(
+                    rw.GetAtomWithIdx(idx).GetAtomicNum(), 9
+                )
+            )
+            anchor_atom_idx = candidates[0]
+            anchor_atom = rw.GetAtomWithIdx(anchor_atom_idx)
+            explicit_h = next(
+                (nb.GetIdx() for nb in anchor_atom.GetNeighbors() if nb.GetAtomicNum() == 1),
+                None,
+            )
+            if explicit_h is not None:
+                h_atom = rw.GetAtomWithIdx(explicit_h)
+                h_atom.SetAtomMapNum(1)
+                h_atom.SetNoImplicit(True)
+            elif anchor_atom.GetTotalNumHs() > 0:
+                h_atom = Chem.Atom(1)
+                h_atom.SetNoImplicit(True)
+                h_atom.SetFormalCharge(0)
+                h_atom.SetAtomMapNum(1)
+                h_idx = rw.AddAtom(h_atom)
+                rw.AddBond(anchor_atom_idx, h_idx, Chem.BondType.SINGLE)
+            else:
+                anchor_atom.SetAtomMapNum(1)
+
+    out = rw.GetMol()
+    try:
+        Chem.SanitizeMol(out)
+    except Exception:
+        return None
+    return Chem.MolToSmiles(out, isomericSmiles=True, canonical=False)
+
 
 def _ensure_helm_smiles(entry: dict, want_D: bool) -> Optional[str]:
     """Pick a peptide/cap SMILES and upgrade to HELM anchors when possible."""
@@ -547,7 +633,10 @@ def _ensure_helm_smiles(entry: dict, want_D: bool) -> Optional[str]:
     if mol is None:
         return smi
     if any(atom.GetAtomMapNum() > 0 for atom in mol.GetAtoms()):
-        return smi
+        map_nums = {atom.GetAtomMapNum() for atom in mol.GetAtoms() if atom.GetAtomMapNum() > 0}
+        if 1 in map_nums and 2 in map_nums:
+            return smi
+        return _augment_missing_backbone_maps(smi) or smi
     return _helmify_backbone_smiles(smi) or smi
 
 def _infer_seq_separator(seq: str) -> str:
@@ -692,6 +781,84 @@ def _normalize_sequence_input(seq: str) -> Tuple[str, bool]:
         tokens = ".".join(list(upper))
         return tokens, True
     return seq, False
+
+
+def _split_helm_connection_block(seq: str) -> Tuple[str, str]:
+    """
+    Split HELM-like suffix from sequence core.
+    Example: "A.B.C$1:R1-3:R2$$$" -> ("A.B.C", "1:R1-3:R2")
+    """
+    if "$" not in seq:
+        return seq, ""
+    core, rest = seq.split("$", 1)
+    conn = rest.split("$$$", 1)[0]
+    conn = conn.strip()
+    return core.strip(), conn
+
+
+def _extract_helm_connections(conn_block: str) -> List[Tuple[int, int, int, int]]:
+    """
+    Parse connection tuples from HELM-like block:
+    i:Ra-j:Rb  -> (i, a, j, b)
+    """
+    if not conn_block:
+        return []
+    pattern = re.compile(r"(\d+)\s*:\s*R(\d+)\s*-\s*(\d+)\s*:\s*R(\d+)", re.IGNORECASE)
+    out: List[Tuple[int, int, int, int]] = []
+    for m in pattern.finditer(conn_block):
+        out.append((int(m.group(1)), int(m.group(2)), int(m.group(3)), int(m.group(4))))
+    return out
+
+
+def _apply_supported_helm_connections(
+    seq_core: str,
+) -> Tuple[str, List[str], List[Tuple[int, int, int, int]]]:
+    """
+    Apply supported HELM connection metadata to sequence core.
+    Currently supported:
+    - head-to-tail cyclization: 1:R1-n:R2 (or n:R2-1:R1)
+    Unsupported connections (e.g., involving R3) are reported via warnings.
+    """
+    core, conn_block = _split_helm_connection_block(seq_core)
+    if not conn_block:
+        return seq_core, [], []
+
+    warnings: List[str] = []
+    extra_connections: List[Tuple[int, int, int, int]] = []
+    tokens = _tokenize_preserve_brackets(core)
+    n_res = len(tokens)
+    conns = _extract_helm_connections(conn_block)
+    if not conns:
+        warnings.append(
+            f"Detected extra HELM connection metadata but no parseable connection rule: '{conn_block}'. Ignored."
+        )
+        return core, warnings, []
+
+    cyclo_added = False
+    for i, ra, j, rb in conns:
+        head_to_tail = (
+            (i == 1 and j == n_res and ra == 1 and rb == 2)
+            or (j == 1 and i == n_res and rb == 1 and ra == 2)
+        )
+        if head_to_tail:
+            if not cyclo_added:
+                core = f"{core}.[Cyclo]" if core else "[Cyclo]"
+                cyclo_added = True
+            continue
+
+        if i < 1 or j < 1 or i > n_res or j > n_res:
+            warnings.append(
+                f"HELM connection {i}:R{ra}-{j}:R{rb} has residue index out of range (1..{n_res}). Ignored."
+            )
+            continue
+        if ra <= 0 or rb <= 0:
+            warnings.append(
+                f"HELM connection {i}:R{ra}-{j}:R{rb} has invalid anchor number. Ignored."
+            )
+            continue
+        extra_connections.append((i, ra, j, rb))
+
+    return core, warnings, extra_connections
 
 def parse_sequence(seq: str, lib: MonomerLib) -> ParsedSeq:
     """Parse peptide sequence into residues and caps."""
@@ -870,6 +1037,16 @@ def _shift_indices_after_removal(
     return updated
 
 
+def _shift_single_index_after_removal(atom_idx: Optional[int], removed: List[int]) -> Optional[int]:
+    if atom_idx is None:
+        return None
+    removed_sorted = sorted(set(removed))
+    if atom_idx in removed_sorted:
+        return None
+    shift = sum(1 for r in removed_sorted if r < atom_idx)
+    return atom_idx - shift
+
+
 def _find_thiol_sulfur(mol: Chem.Mol) -> Optional[int]:
     for atom in mol.GetAtoms():
         if atom.GetAtomicNum() != 16:
@@ -912,15 +1089,23 @@ def _filter_terminal_leaving(mol: Chem.Mol, leaving_indices: List[int], keep_ter
     return [idx for idx in leaving_indices if idx not in keep]
 
 
-def _ensure_terminal_carboxyl(mol: Chem.Mol, c_cap_symbol: str) -> Chem.Mol:
+def _ensure_terminal_carboxyl(
+    mol: Chem.Mol, c_cap_symbol: str, terminal_c_idx: Optional[int] = None
+) -> Chem.Mol:
     if c_cap_symbol.lower() != "h":
         return mol
-    matches = get_backbone_atoms(mol)
-    if not matches:
+    c_idx = terminal_c_idx
+    if c_idx is None:
+        matches = get_backbone_atoms(mol)
+        if not matches:
+            return mol
+        _, _, c_idx = matches[-1]
+    if c_idx < 0 or c_idx >= mol.GetNumAtoms():
         return mol
-    _, _, c_idx = matches[-1]
     rw = Chem.RWMol(mol)
     carbon = rw.GetAtomWithIdx(c_idx)
+    if carbon.GetAtomicNum() != 6:
+        return mol
     single_oxygen_idx = None
     for bond in carbon.GetBonds():
         other = bond.GetOtherAtom(carbon)
@@ -950,6 +1135,9 @@ def seq2smi(
     linker_smiles: Optional[str] = None,
 ):
     seq_core, ss_pairs, extra_meta = extract_disulfide_pairs_from_sequence(seq)
+    seq_core, helm_conn_warnings, helm_extra_connections = _apply_supported_helm_connections(seq_core)
+    for note in helm_conn_warnings:
+        print(f"[seq2smi_v2] WARNING: {note}", file=sys.stderr)
     if extra_meta:
         for item in extra_meta:
             lower = item.lower()
@@ -1109,6 +1297,13 @@ def seq2smi(
         if first_map is None or last_map is None:
             raise ValueError("环化肽缺少必要的锚点信息。")
         cur_mol = _apply_head_tail_cyclization(cur_mol, first_map, last_map)
+    if helm_extra_connections:
+        cur_mol, extra_conn_warnings, extra_conn_leaving = _apply_additional_residue_connections(
+            cur_mol, residue_anchor_maps, helm_extra_connections
+        )
+        for note in extra_conn_warnings:
+            print(f"[seq2smi_v2] WARNING: {note}", file=sys.stderr)
+        leaving_all.extend(extra_conn_leaving)
     if staple_prefs and linker_smiles is not None:
         cur_mol, extra_leaving = _attach_linker_to_peptide(
             cur_mol,
@@ -1125,10 +1320,17 @@ def seq2smi(
         )
         leaving_all.extend(extra_leaving)
 
+    terminal_c_idx = None
+    if residue_anchor_maps and residue_anchor_maps[-1] and 2 in residue_anchor_maps[-1]:
+        terminal_c_idx = residue_anchor_maps[-1][2]
+
     residue_to_sulfur = _shift_indices_after_removal(residue_to_sulfur, leaving_all)
+    terminal_c_idx = _shift_single_index_after_removal(terminal_c_idx, leaving_all)
     cur_mol = remove_leaving_and_sanitize(cur_mol, leaving_all)
-    if not parsed.cyclo:
-        cur_mol = _ensure_terminal_carboxyl(cur_mol, parsed.c_cap.get("symbol", ""))
+    if not parsed.cyclo and not helm_extra_connections:
+        cur_mol = _ensure_terminal_carboxyl(
+            cur_mol, parsed.c_cap.get("symbol", ""), terminal_c_idx
+        )
     if ss_pairs and residue_to_sulfur:
         cur_mol = apply_disulfide_bonds_with_map(cur_mol, ss_pairs, residue_to_sulfur)
     else:
@@ -1156,6 +1358,55 @@ def _apply_head_tail_cyclization(
     rw = Chem.RWMol(mol)
     rw.AddBond(n_idx, c_idx, Chem.rdchem.BondType.SINGLE)
     return rw.GetMol()
+
+
+def _apply_additional_residue_connections(
+    mol: Chem.Mol,
+    residue_anchor_maps: List[Optional[Dict[int, int]]],
+    connections: List[Tuple[int, int, int, int]],
+) -> Tuple[Chem.Mol, List[str], List[int]]:
+    warnings: List[str] = []
+    extra_leaving: List[int] = []
+    if not connections:
+        return mol, warnings, extra_leaving
+    rw = Chem.RWMol(mol)
+
+    def _find_mapped_leaving(anchor_idx: int, map_num: int) -> Optional[int]:
+        atom = rw.GetAtomWithIdx(anchor_idx)
+        for nb in atom.GetNeighbors():
+            if nb.GetAtomMapNum() == map_num:
+                return nb.GetIdx()
+        return None
+
+    for i, ra, j, rb in connections:
+        if i < 1 or j < 1 or i > len(residue_anchor_maps) or j > len(residue_anchor_maps):
+            warnings.append(
+                f"Skipping HELM connection {i}:R{ra}-{j}:R{rb}: residue index out of range."
+            )
+            continue
+        amap_i = residue_anchor_maps[i - 1]
+        amap_j = residue_anchor_maps[j - 1]
+        if not amap_i or not amap_j:
+            warnings.append(
+                f"Skipping HELM connection {i}:R{ra}-{j}:R{rb}: residue anchors are unavailable."
+            )
+            continue
+        if ra not in amap_i or rb not in amap_j:
+            warnings.append(
+                f"Skipping HELM connection {i}:R{ra}-{j}:R{rb}: missing mapped anchor in monomer library."
+            )
+            continue
+        a_idx = amap_i[ra]
+        b_idx = amap_j[rb]
+        if rw.GetBondBetweenAtoms(a_idx, b_idx) is None:
+            rw.AddBond(a_idx, b_idx, Chem.rdchem.BondType.SINGLE)
+        leave_a = _find_mapped_leaving(a_idx, ra)
+        leave_b = _find_mapped_leaving(b_idx, rb)
+        if leave_a is not None:
+            extra_leaving.append(leave_a)
+        if leave_b is not None:
+            extra_leaving.append(leave_b)
+    return rw.GetMol(), warnings, extra_leaving
 
 
 def main():
