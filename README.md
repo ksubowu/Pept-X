@@ -2,7 +2,11 @@
 
 Bidirectional translation between peptide sequence expressions and isomeric SMILES, with registered monomers, terminal caps, cyclic peptides, lariats and side-chain linkers. Reverse candidates are accepted by the validation interface only after graph-equivalent reconstruction.
 
-This repository contains conversion algorithms, their runtime libraries and Python/CLI interfaces. Manuscript benchmark scripts, datasets, tests, figures and the web application are supplied separately from this algorithm distribution.
+This repository contains conversion algorithms, runtime libraries, Python/CLI interfaces, benchmark input data and representative conversion figures. Full evaluation scripts and per-record outputs accompany the manuscript.
+
+![Pept-X workflow: peptide expressions and molecular graphs connected by forward and reverse conversion, followed by graph reconstruction validation](docs/images/pept-x-overview.png)
+
+*Schematic overview of peptide expressions, mapped attachment sites and reconstruction-based graph validation.*
 
 ## Installation
 
@@ -47,6 +51,12 @@ Recommended expressions use periods between complete monomer codes:
 
 Hyphens within monomer names are preserved. Pept-X is not a complete HELM parser; selected HELM-like connection fields do not establish support for arbitrary HELM chemistry.
 
+### Representative conversions
+
+![Input and recovered peptide expressions beside molecular structures for a modified linear peptide, a head-to-tail cyclic peptide and a side-chain-stapled peptide](docs/images/linear-cyclic-stapled.png)
+
+*Executed examples of a capped linear peptide containing modified and D residues (A), a head-to-tail cycle (B), and a mapped side-chain linker (C). The input and recovered expressions reconstruct equivalent molecular graphs; aliases and cyclic starting positions can differ.*
+
 ## Dedicated lariat conversion
 
 Use the merged library that was used for the manuscript Lariat evaluation:
@@ -78,6 +88,10 @@ Lariat positions count AA/NCAA residues from one, excluding caps:
 Explicit positions select the requested compatible closure. Missing positions use the maximum-ring convention. Invalid explicit positions may trigger a warned fallback; inspect `explicit_positions_valid`, `fallback_used`, `fallback_reason`, `selection_rule` and `selected_lariat` when exact attachment semantics matter.
 
 The current lariat implementation preserves mapped monomer attachment sites, cap boundaries, aromatic N-H and source functional groups, restoring only cut-bond endpoints. Where ordinary peptide traversal is insufficient, stereochemical template matches and mapped attachment boundaries provide an alternative backbone inference path. Reverse prediction receives SMILES and a library, without reference sequence, HELM or expected positions.
+
+![Input and recovered expressions and chemical structures for lariat types 1, 2 and 3 with explicit closure positions](docs/images/lariat-topologies.png)
+
+*Three executed lariat examples: N-terminal amine to side-chain carboxyl (A), side-chain amine to the C-terminal carbonyl (B), and side-chain hydroxyl to the C-terminal carbonyl (C). Explicit residue positions identify each closure.*
 
 ## Side-chain linkers and attachment warnings
 
@@ -118,16 +132,21 @@ This oracle distinguishes assigned from unspecified stereochemistry but does not
 
 ## Manuscript validation scope
 
-The 2026-11-02 code-and-validation archive records the exact code, libraries, inputs and per-record outputs:
+The two original CycPeptMPDB CSVs in [`data/`](data/README.md) are **benchmark/test input datasets** for evaluating peptide-expression ⇄ SMILES conversion. They retain the source SMILES, sequence and HELM annotations. Reverse inference receives only SMILES and the monomer library; sequence/HELM annotations are used for scoring and separate forward assembly.
+
+The 2026-11-02 code-and-validation archive records the exact evaluation code, library configurations and per-record outputs:
 
 | Evaluation | Forward graph | Reverse graph | Complete reverse semantics |
 |---|---:|---:|---:|
-| Full local CycPeptMPDB Lariat CSV | 2936/2936 | 2936/2936 | 2936/2936 |
+| [CycPeptMPDB_Peptide_Shape_Circle.csv](data/CycPeptMPDB_Peptide_Shape_Circle.csv) | 5530/5530 | 5475/5530 | 5475/5530 |
+| [CycPeptMPDB_Peptide_Shape_Lariat.csv](data/CycPeptMPDB_Peptide_Shape_Lariat.csv) | 2936/2936 | 2936/2936 | 2936/2936 |
 | Previously displayed database lariat subset | 18/18 | 18/18 | 18/18 |
 | Independent synthetic lariats | 18/18 | 18/18 | 18/18 |
 
-The database contains 2,635 distinct raw SMILES in 2,936 retained records; the 18-case subset and original 32 repaired failures are contained in that full dataset. Complete lariat semantics compares ordered residue/cap template identities, lariat type and ordered positions, independently of graph equality. No closure fallback or unmatched residue occurred. This was a development/regression dataset; only two records are type 2. It does not establish universal unseen-chemistry performance.
+Circle contains 5,530 records and 5,384 distinct raw SMILES; Lariat contains 2,936 records and 2,635 distinct raw SMILES. Duplicates are retained as database records. The 18-case database lariat subset and original 32 repaired failures are contained in the full Lariat dataset.
 
-All eight independent synthetic cysteine-linker staples pass both automatic and mapped-hint graph/attachment checks. The historical Circle result remains 5,530 forward and 5,475 reverse graph matches using its separate frozen 597-entry registry, not the current merged Lariat registry. Benchmark inputs, tests and detailed validation evidence are provided in `Pept-X_code_validation_20261102.zip` and the historical reproduction archive accompanying the manuscript, outside this lightweight source repository.
+Complete reverse semantics is scored separately from graph equality. For Circle it requires residue identity, directed cyclic order modulo rotation, topology and attachment semantics. For Lariat it requires ordered residue/cap template identities, lariat type and ordered attachment positions. No closure fallback or unmatched residue occurred in the Lariat run. Lariat was a development/regression dataset; only two records are type 2. These results do not establish universal unseen-chemistry performance.
+
+All eight independent synthetic cysteine-linker staples pass both automatic and mapped-hint graph/attachment checks. The Circle row uses the separate frozen 597-entry registry supplied in the historical reproduction archive, with automatic linker detection and fingerprint fallback disabled. The Lariat row uses the current core + extension + custom registry described above. These configurations must be retained when reproducing the reported rates. Full evaluation scripts, tests and detailed evidence are provided in `Pept-X_code_validation_20261102.zip` and the historical reproduction archive accompanying the manuscript.
 
 MIT license. Citation: Tang et al., *Pept-X: Reversible Translation between Peptide Sequence Expressions and Molecular Graphs* (manuscript).

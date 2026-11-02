@@ -1,0 +1,2 @@
+# Preserve benchmark CSV bytes, including original CRLF line endings.
+data/CycPeptMPDB_Peptide_Shape_*.csv -text whitespace=cr-at-eol
