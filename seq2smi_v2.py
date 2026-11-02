@@ -11,6 +11,8 @@ Supports:
 """
 
 import json
+import warnings as python_warnings
+from attachment_utils import AttachmentSelectionWarning, select_sidechain_anchor
 import sys
 import ast
 from pathlib import Path
@@ -248,61 +250,15 @@ def _farthest_atom(
 
 
 def _determine_side_anchor(
-    fragment: Chem.Mol, prefer_element: Optional[str], residue_label: str, position: int
+    fragment: Chem.Mol, prefer_element: Optional[str], residue_label: str, position: int,
+    diagnostics: Optional[Dict] = None,
 ) -> Tuple[Optional[int], Optional[str]]:
-    """Return the atom index in fragment used for linker attachment."""
-    prefer_element = (prefer_element or "").upper() or None
-    matches = list(get_backbone_atoms(fragment))
-    if not matches:
-        return None, f"残基 {position} ({residue_label}) 缺少 backbone 匹配，无法定位装订位点。"
-    n_idx, ca_idx, c_idx = matches[0]
-    backbone_atoms: Set[int] = {n_idx, ca_idx, c_idx}
-    carbon = fragment.GetAtomWithIdx(c_idx)
-    for bond in carbon.GetBonds():
-        other = bond.GetOtherAtom(carbon)
-        if other.GetAtomicNum() == 8:
-            backbone_atoms.add(other.GetIdx())
-    for atom in fragment.GetAtoms():
-        if atom.GetAtomMapNum() > 0:
-            backbone_atoms.add(atom.GetIdx())
-    side_atoms = _collect_sidechain_atoms(fragment, ca_idx, backbone_atoms)
-    heavy_atoms = [
-        idx
-        for idx in side_atoms
-        if fragment.GetAtomWithIdx(idx).GetAtomicNum() > 1
-    ]
-    if not heavy_atoms:
-        if prefer_element:
-            return None, f"残基 {position} ({residue_label}) 侧链不含重原子，无法装订。"
-        return None, None
-    candidates = heavy_atoms
-    note = None
-    note: Optional[str] = None
-    prefer_matches = [
-        idx
-        for idx in heavy_atoms
-        if fragment.GetAtomWithIdx(idx).GetSymbol().upper() == prefer_element
-    ] if prefer_element else []
-    if prefer_element and not prefer_matches:
-        fallback_symbol = fragment.GetAtomWithIdx(heavy_atoms[0]).GetSymbol()
-        note = (
-            f"残基 {position} ({residue_label}) 侧链不含元素 {prefer_element}，"
-            f"已改用默认原子 {fallback_symbol}."
-        )
-
-    candidates = prefer_matches if prefer_matches else heavy_atoms
-    best_tuple = None
-    anchor_idx = candidates[0]
-    for idx in candidates:
-        atom = fragment.GetAtomWithIdx(idx)
-        degree = atom.GetDegree()
-        path = rdmolops.GetShortestPath(fragment, ca_idx, idx)
-        distance = len(path) - 1 if path else 0
-        priority = (degree, -distance, idx)
-        if best_tuple is None or priority < best_tuple:
-            best_tuple = priority
-            anchor_idx = idx
-    return anchor_idx, note
+    """Select a terminal heavy atom or an explicitly named template R-group."""
+    index, record = select_sidechain_anchor(fragment, prefer_element, residue_label,
+                                          position, get_backbone_atoms)
+    if diagnostics is not None:
+        diagnostics.update(record)
+    return index, " ".join(record["warnings"]) or None
 
 
 def _attach_linker_to_peptide(
@@ -321,6 +277,8 @@ def _attach_linker_to_peptide(
     for atom in linker.GetAtoms():
         amap = atom.GetAtomMapNum()
         if amap > 0:
+            if atom.GetAtomicNum() != 0:
+                raise ValueError("Linker attachment maps must label terminal dummy atoms [*:position].")
             if amap in map_to_idx:
                 raise ValueError(f"链接体中存在重复的占位符 [*: {amap}].")
             map_to_idx[amap] = atom.GetIdx()
@@ -332,7 +290,10 @@ def _attach_linker_to_peptide(
         if ordered_maps == list(range(1, len(ordered_maps) + 1)) and len(ordered_maps) == len(pose_positions):
             placeholder_map = {pos: ordered_maps[idx] for idx, pos in enumerate(pose_positions)}
 
-    missing = {placeholder_map[pos] for pos in pose_positions} - set(map_to_idx.keys())
+    expected_maps = {placeholder_map[pos] for pos in pose_positions}
+    if set(map_to_idx) != expected_maps:
+        raise ValueError("Linker placeholder labels do not match the specified residue positions.")
+    missing = expected_maps - set(map_to_idx.keys())
     if missing:
         missing_str = ", ".join(str(x) for x in sorted(missing))
         raise ValueError(f"链接体 SMILES 缺少占位符 [*:i] 对应残基位置: {missing_str}")
@@ -360,8 +321,8 @@ def _attach_linker_to_peptide(
 
         anchor_atom = rw.GetAtomWithIdx(anchor_idx)
         anchor_atom.SetNoImplicit(False)
-        anchor_atom.SetFormalCharge(0)
-        anchor_atom.SetNumExplicitHs(0)
+        if anchor_atom.GetNumExplicitHs():
+            anchor_atom.SetNumExplicitHs(anchor_atom.GetNumExplicitHs() - 1)
         h_neighbors = [nb.GetIdx() for nb in anchor_atom.GetNeighbors() if nb.GetAtomicNum() == 1]
         if h_neighbors:
             hydrogens_to_remove.append(h_neighbors[0])
@@ -416,8 +377,8 @@ def _attach_existing_placeholders(
 
         anchor_atom = rw.GetAtomWithIdx(anchor_idx)
         anchor_atom.SetNoImplicit(False)
-        anchor_atom.SetFormalCharge(0)
-        anchor_atom.SetNumExplicitHs(0)
+        if anchor_atom.GetNumExplicitHs():
+            anchor_atom.SetNumExplicitHs(anchor_atom.GetNumExplicitHs() - 1)
         h_neighbors = [nb.GetIdx() for nb in anchor_atom.GetNeighbors() if nb.GetAtomicNum() == 1]
         if h_neighbors:
             leaving_candidates.append(h_neighbors[0])
@@ -1133,6 +1094,7 @@ def seq2smi(
     lib: MonomerLib,
     staple_prefs: Optional[Dict[int, Optional[str]]] = None,
     linker_smiles: Optional[str] = None,
+    *, return_details: bool = False, strict_attachments: bool = False,
 ):
     seq_core, ss_pairs, extra_meta = extract_disulfide_pairs_from_sequence(seq)
     seq_core, helm_conn_warnings, helm_extra_connections = _apply_supported_helm_connections(seq_core)
@@ -1164,6 +1126,17 @@ def seq2smi(
         else:
             mapped = match_linker_hint(candidate, _LINKER_DICT)
             linker_smiles = mapped or candidate
+    pose_source = "explicit_pose"
+    if linker_smiles and not staple_prefs:
+        linker_mol = Chem.MolFromSmiles(linker_smiles)
+        if linker_mol is None:
+            raise ValueError("Cannot parse linker SMILES.")
+        dummies = [a for a in linker_mol.GetAtoms() if a.GetAtomicNum() == 0]
+        labels = [a.GetAtomMapNum() for a in dummies]
+        if len(labels) < 2 or any(i <= 0 for i in labels) or len(set(labels)) != len(labels):
+            raise ValueError("Without pose, linker requires unique [*:residue_position] placeholders.")
+        staple_prefs = {i: None for i in sorted(labels)}
+        pose_source = "linker_maps"
     parsed = parse_sequence(seq_core, lib)
     if not parsed.residues:
         raise ValueError("序列中未找到任何残基。")
@@ -1245,17 +1218,20 @@ def seq2smi(
         if s_idx is not None and res_pos is not None:
             residue_to_sulfur[res_pos] = s_idx
     residue_side_anchors: List[Optional[int]] = [None] * len(parsed.residues)
-    warnings: List[str] = []
+    warnings: List[str] = list(helm_conn_warnings)
+    attachment_sites: List[dict] = []
+    sidechain_leaving: List[int] = []
 
     if component_meta[0][0] == "residue":
         res_pos = component_meta[0][1]
-        prefer_atom = staple_prefs.get(res_pos)
-        side_anchor, note = _determine_side_anchor(cur_mol, prefer_atom, components[0][0]["code"], res_pos)
-        if res_pos in staple_prefs and side_anchor is None:
-            raise ValueError(f"无法在残基 {res_pos} 中定位用于装订的侧链原子。")
-        if note:
-            warnings.append(note)
-        if side_anchor is not None:
+        if res_pos in staple_prefs:
+            site = {}
+            side_anchor, note = _determine_side_anchor(cur_mol, staple_prefs[res_pos], components[0][0]["code"], res_pos, site)
+            attachment_sites.append(site)
+            sidechain_leaving.extend(site["leaving_template_atom_indices"])
+            if strict_attachments and site["warnings"]:
+                raise ValueError(" ".join(site["warnings"]))
+            warnings.extend(site["warnings"])
             residue_side_anchors[res_pos - 1] = side_anchor
 
     for comp_idx, (ent, want_d) in enumerate(components[1:], start=1):
@@ -1264,12 +1240,14 @@ def seq2smi(
         res_pos = None
         if component_meta[comp_idx][0] == "residue":
             res_pos = component_meta[comp_idx][1]
-            prefer_atom = staple_prefs.get(res_pos)
-            side_anchor_local, note = _determine_side_anchor(fragment, prefer_atom, ent["code"], res_pos)
-            if res_pos in staple_prefs and side_anchor_local is None:
-                raise ValueError(f"无法在残基 {res_pos} 中定位用于装订的侧链原子。")
-            if note:
-                warnings.append(note)
+            if res_pos in staple_prefs:
+                site = {}
+                side_anchor_local, note = _determine_side_anchor(fragment, staple_prefs[res_pos], ent["code"], res_pos, site)
+                attachment_sites.append(site)
+                sidechain_leaving.extend(cur_mol.GetNumAtoms() + i for i in site["leaving_template_atom_indices"])
+                if strict_attachments and site["warnings"]:
+                    raise ValueError(" ".join(site["warnings"]))
+                warnings.extend(site["warnings"])
         offset = cur_mol.GetNumAtoms()
         if component_meta[comp_idx][0] == "residue":
             res_pos = component_meta[comp_idx][1]
@@ -1304,6 +1282,7 @@ def seq2smi(
         for note in extra_conn_warnings:
             print(f"[seq2smi_v2] WARNING: {note}", file=sys.stderr)
         leaving_all.extend(extra_conn_leaving)
+    leaving_all.extend(sidechain_leaving)
     if staple_prefs and linker_smiles is not None:
         cur_mol, extra_leaving = _attach_linker_to_peptide(
             cur_mol,
@@ -1339,7 +1318,14 @@ def seq2smi(
 
     rd_smi = Chem.MolToSmiles(cur_mol, isomericSmiles=True)
     for note in warnings:
-        print(f"[seq2smi_v2] WARNING: {note}", file=sys.stderr)
+        python_warnings.warn(note, AttachmentSelectionWarning, stacklevel=2)
+    if return_details:
+        return rd_smi, {
+            "warnings": warnings,
+            "warning_records": [item for site in attachment_sites for item in site["warning_records"]],
+            "attachment_sites": attachment_sites,
+            "pose_source": pose_source if staple_prefs else None,
+        }
     return rd_smi
 
 
@@ -1469,8 +1455,6 @@ def main():
 
         if staple_prefs and not linker_defined:
             raise ValueError(f"检测到 pose 配置但缺少链接体 SMILES: '{line}'")
-        if linker_defined and not staple_prefs:
-            raise ValueError(f"提供了链接体但未指定 pose: '{line}'")
 
         if ss_entries:
             seq_line = "|".join([seq_line] + ss_entries)

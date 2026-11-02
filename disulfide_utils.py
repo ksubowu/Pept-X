@@ -197,18 +197,6 @@ def extract_disulfide_pairs_from_sequence(
     return core, pairs, remaining
 
 
-def _remove_thiol_hydrogens(rw: Chem.RWMol, atom_idx: int) -> None:
-    """Delete explicit hydrogens attached to the provided atom index."""
-    atom = rw.GetAtomWithIdx(atom_idx)
-    hydrogens = [nb.GetIdx() for nb in atom.GetNeighbors() if nb.GetAtomicNum() == 1]
-    for h_idx in sorted(hydrogens, reverse=True):
-        if h_idx < rw.GetNumAtoms():
-            rw.RemoveAtom(h_idx)
-    atom = rw.GetAtomWithIdx(atom_idx)
-    atom.SetNoImplicit(True)
-    atom.SetNumExplicitHs(0)
-
-
 def apply_disulfide_bonds(
     mol: Chem.Mol,
     residue_pairs: Sequence[Tuple[int, int]],
@@ -228,26 +216,7 @@ def apply_disulfide_bonds(
         if res_idx is None:
             continue
         residue_to_sulfur.setdefault(res_idx, atom.GetIdx())
-    rw = Chem.RWMol(mol)
-    seen_pairs: set[Tuple[int, int]] = set()
-    for a, b in residue_pairs:
-        if a == b:
-            continue
-        pair = tuple(sorted((a, b)))
-        if pair in seen_pairs:
-            continue
-        seen_pairs.add(pair)
-        s1 = residue_to_sulfur.get(pair[0])
-        s2 = residue_to_sulfur.get(pair[1])
-        if s1 is None or s2 is None:
-            raise ValueError(f"Unable to locate sulfur atoms for residues {pair}.")
-        _remove_thiol_hydrogens(rw, s1)
-        _remove_thiol_hydrogens(rw, s2)
-        if rw.GetBondBetweenAtoms(s1, s2) is None:
-            rw.AddBond(s1, s2, rdchem.BondType.SINGLE)
-    out = rw.GetMol()
-    Chem.SanitizeMol(out)
-    return out
+    return apply_disulfide_bonds_with_map(mol, residue_pairs, residue_to_sulfur)
 
 
 def apply_disulfide_bonds_with_map(
@@ -260,6 +229,7 @@ def apply_disulfide_bonds_with_map(
         return Chem.Mol(mol)
     rw = Chem.RWMol(mol)
     seen_pairs: set[Tuple[int, int]] = set()
+    hydrogens_to_remove: set[int] = set()
     for a, b in residue_pairs:
         if a == b:
             continue
@@ -271,10 +241,20 @@ def apply_disulfide_bonds_with_map(
         s2 = residue_to_sulfur.get(pair[1])
         if s1 is None or s2 is None:
             raise ValueError(f"Unable to locate sulfur atoms for residues {pair}.")
-        _remove_thiol_hydrogens(rw, s1)
-        _remove_thiol_hydrogens(rw, s2)
+        # Keep all original atom indices stable until every S-S edge is added.
+        # Mapped HELM templates can retain explicit thiol hydrogen atoms.
+        for sulfur_idx in (s1, s2):
+            sulfur = rw.GetAtomWithIdx(sulfur_idx)
+            if sulfur.GetAtomicNum() != 16:
+                raise ValueError("Disulfide attachment must refer to a sulfur atom.")
+            hydrogens_to_remove.update(nb.GetIdx() for nb in sulfur.GetNeighbors()
+                                       if nb.GetAtomicNum() == 1)
+            sulfur.SetNoImplicit(True)
+            sulfur.SetNumExplicitHs(0)
         if rw.GetBondBetweenAtoms(s1, s2) is None:
             rw.AddBond(s1, s2, rdchem.BondType.SINGLE)
+    for hydrogen_idx in sorted(hydrogens_to_remove, reverse=True):
+        rw.RemoveAtom(hydrogen_idx)
     out = rw.GetMol()
     Chem.SanitizeMol(out)
     return out

@@ -114,6 +114,10 @@ def _find_c_cap_bonds(
             if bond.GetBondType() == BondType.DOUBLE:
                 continue
             other = bond.GetOtherAtom(atom_c)
+            # A terminal carboxyl OH/O- belongs to the free backbone terminus,
+            # not to a separate C-cap monomer.
+            if other.GetAtomicNum() == 8 and other.GetDegree() == 1:
+                continue
             if other.GetIdx() not in bb_atoms:
                 if ester_bonds and res_idx in ester_bonds and other.GetIdx() in ester_bonds[res_idx]:
                     continue
@@ -209,67 +213,34 @@ def _order_residues(mol: Chem.Mol, backbone: Sequence[Tuple[int, int, int]]):
 
 
 def _cap_fragment(fragment: Chem.Mol) -> Chem.Mol:
-    """去掉 dummy，补单键 O（确保为 -C(=O)OH），规范化隐式 H。"""
+    """Restore only groups at cut bonds; retain all uncut side-chain chemistry.
+
+    A carbonyl at a cut amide/ester bond becomes COOH. An uncut aldehyde or
+    ketone stays unchanged; charged oxygens (e.g. nitro O-) are never protonated.
+    """
     rw = Chem.RWMol(fragment)
-    dummies = [a.GetIdx() for a in rw.GetAtoms() if a.GetAtomicNum() == 0]
-    for d_idx in sorted(dummies, reverse=True):
-        if d_idx >= rw.GetNumAtoms():
-            continue
-        neighs = list(rw.GetAtomWithIdx(d_idx).GetNeighbors())
-        rw.RemoveAtom(d_idx)
-        for n in neighs:
-            if n.GetAtomicNum() == 6:
-                has_single_o = any(
-                    nb.GetAtomicNum() == 8
-                    and rw.GetBondBetweenAtoms(n.GetIdx(), nb.GetIdx()).GetBondType() == BondType.SINGLE
-                    for nb in n.GetNeighbors()
-                )
-                if not has_single_o:
-                    o_atom = Chem.Atom(8)
-                    o_atom.SetNoImplicit(True)
-                    o_atom.SetNumExplicitHs(1)
-                    o_idx = rw.AddAtom(o_atom)
-                    rw.AddBond(n.GetIdx(), o_idx, Chem.BondType.SINGLE)
-            if n.GetAtomicNum() == 7:
-                n.SetNoImplicit(False)
-                n.SetNumExplicitHs(1 if len(n.GetNeighbors()) < 3 else 0)
-            else:
-                n.SetNoImplicit(True)
-                n.SetNumExplicitHs(0)
-    # 补全 sidechain 上的羟基（断键后可能缺 H）
+    boundaries = set()
+    for atom in rw.GetAtoms():
+        atom.SetIntProp("_fragment_original_index", atom.GetIdx())
+        if atom.GetAtomicNum() == 0:
+            boundaries.update(a.GetIdx() for a in atom.GetNeighbors())
+    for idx in sorted((a.GetIdx() for a in rw.GetAtoms() if a.GetAtomicNum() == 0), reverse=True):
+        rw.RemoveAtom(idx)
     for atom in list(rw.GetAtoms()):
-        if atom.GetAtomicNum() != 8:
+        if atom.GetIntProp("_fragment_original_index") not in boundaries:
             continue
-        if len(atom.GetNeighbors()) == 1 and atom.GetTotalNumHs() == 0:
-            bond = atom.GetBonds()[0] if atom.GetBonds() else None
-            if bond is not None and bond.GetBondType() != BondType.SINGLE:
-                continue
-            atom.SetNoImplicit(False)
-            atom.SetNumExplicitHs(1)
-    # 补全可能残留的醛基为羧酸：仅对 C(=O) 且仅连接碳/氢的情况加 OH
-    for atom in list(rw.GetAtoms()):
-        if atom.GetAtomicNum() != 6:
-            continue
-        has_double_o = False
-        has_single_o = False
-        has_single_hetero = False
-        for bond in atom.GetBonds():
-            other = bond.GetOtherAtom(atom)
-            if other.GetAtomicNum() == 8 and bond.GetBondType() == BondType.DOUBLE:
-                has_double_o = True
-                continue
-            if bond.GetBondType() == BondType.SINGLE:
-                if other.GetAtomicNum() == 8:
-                    has_single_o = True
-                elif other.GetAtomicNum() in (7, 8, 16):
-                    has_single_hetero = True
-        # only add OH for aldehyde-like carbonyls (no single hetero bond)
-        if has_double_o and not has_single_o and not has_single_hetero:
-            o_atom = Chem.Atom(8)
-            o_atom.SetNoImplicit(True)
-            o_atom.SetNumExplicitHs(1)
-            o_idx = rw.AddAtom(o_atom)
-            rw.AddBond(atom.GetIdx(), o_idx, Chem.BondType.SINGLE)
+        if atom.GetAtomicNum() == 6:
+            carbonyl = any(b.GetBondType() == BondType.DOUBLE and b.GetOtherAtom(atom).GetAtomicNum() == 8
+                           for b in atom.GetBonds())
+            if carbonyl:
+                oxygen = Chem.Atom(8)
+                oxygen.SetNumExplicitHs(1)
+                oxygen.SetNoImplicit(True)
+                idx = rw.AddAtom(oxygen)
+                rw.AddBond(atom.GetIdx(), idx, BondType.SINGLE)
+        atom.SetNoImplicit(False)
+        atom.SetNumExplicitHs(0)
+        atom.SetNumRadicalElectrons(0)
     capped = rw.GetMol()
     Chem.SanitizeMol(capped)
     return capped
@@ -362,19 +333,140 @@ def _normalize_c_cap_for_code(cap_mol: Chem.Mol) -> Optional[str]:
     return canon
 
 
-# ------------------------ 转换主流程 ------------------------ #
+def _template_backbone(mol: Chem.Mol, library) -> List[Tuple[int, int, int]]:
+    """Infer backbone endpoints from exact stereochemical template subgraphs.
+
+    This path handles beta backbones with amidated side chains and mixed
+    peptide/depsipeptide backbones. Unmatched graph boundaries are permitted
+    only at the registered attachment anchors; HELM/sequence references are
+    never supplied to inference.
+    """
+    from seq2smi_v2 import build_fragment
+
+    candidates = {}
+    for entry in library.by_code.values():
+        if str(entry.get("role", "")).lower() in {"ncap", "ccap"}:
+            continue
+        try:
+            fragment, anchors, _, _ = build_fragment(entry, False)
+        except (ValueError, RuntimeError, KeyError, TypeError):
+            continue
+        if not {1, 2} <= set(anchors):
+            continue
+        removed = {a.GetIdx() for a in fragment.GetAtoms()
+                   if a.GetAtomMapNum() > 0 or a.GetAtomicNum() == 1}
+        if any(idx in removed for idx in anchors.values()):
+            continue
+        remaining = [i for i in range(fragment.GetNumAtoms()) if i not in removed]
+        index = {old: new for new, old in enumerate(remaining)}
+        rw = Chem.RWMol(fragment)
+        for idx in sorted(removed, reverse=True):
+            rw.RemoveAtom(idx)
+        query = rw.GetMol()
+        query.UpdatePropertyCache(strict=False)
+        Chem.GetSymmSSSR(query)
+        n, c = index[anchors[1]], index[anchors[2]]
+        path = Chem.GetShortestPath(query, n, c)
+        if len(path) < 3:
+            continue
+        attachment_indices = {index[i] for i in anchors.values()}
+        matches = mol.GetSubstructMatches(query, useChirality=True, maxMatches=10000)
+        if len(matches) >= 10000:
+            raise ValueError("Template backbone matching reached the search limit.")
+        for match in matches:
+            atoms = set(match)
+            if any(any(nb.GetIdx() not in atoms for nb in mol.GetAtomWithIdx(target).GetNeighbors())
+                   for qidx, target in enumerate(match) if qidx not in attachment_indices):
+                continue
+            triple = (match[n], match[path[1]], match[c])
+            candidates[triple] = max(candidates.get(triple, 0), len(match))
+    if not candidates:
+        raise ValueError("No exact anchored monomer backbone matches.")
+    triples = sorted(candidates)
+    next_nodes = {bb: [other for other in triples if other != bb
+                      and mol.GetBondBetweenAtoms(bb[2], other[0]) is not None]
+                  for bb in triples}
+    best = []
+    best_score = (0, 0)
+    visits = 0
+
+    def visit(chain, used_n, used_c, coverage):
+        nonlocal best, best_score, visits
+        visits += 1
+        if visits > 100000:
+            raise ValueError("Ambiguous backbone traversal exceeded the search limit.")
+        score = (len(chain), coverage)
+        if score > best_score:
+            best, best_score = list(chain), score
+        for other in next_nodes[chain[-1]]:
+            if other[0] not in used_n and other[2] not in used_c:
+                visit(chain + [other], used_n | {other[0]}, used_c | {other[2]},
+                      coverage + candidates[other])
+    for bb in triples:
+        visit([bb], {bb[0]}, {bb[2]}, candidates[bb])
+    return best
+
+
 def convert(
     smiles: str,
     lib: Optional[MonomerLib] = None,
     lib_path: Path = DEFAULT_LIB,
     list_output: bool = False,
 ) -> Tuple[str, dict]:
+    """Recover a sequence from SMILES alone, with anchored-template inference
+    for backbones the primary peptide traversal cannot resolve.
+    """
+    library = lib if lib is not None else MonomerLib(str(lib_path))
+    initial = None
+    error = None
+    try:
+        initial = _convert_with_backbone(smiles, library, lib_path, list_output)
+        if not initial[1].get("unmatched") and initial[1].get("lariat_type"):
+            initial[1]["backbone_inference"] = "peptide_traversal"
+            return initial
+    except (ValueError, RuntimeError, KeyError) as exc:
+        error = exc
+    try:
+        # Match atom indices in exactly the same canonicalized molecule used
+        # by the fragment converter below.
+        mol = Chem.MolFromSmiles(clean_smiles(smiles))
+        if mol is None:
+            raise ValueError("Invalid SMILES")
+        backbone = _template_backbone(mol, library)
+        sequence, details = _convert_with_backbone(smiles, library, lib_path, list_output, backbone)
+        details["backbone_inference"] = "template_anchors"
+        if not details.get("unmatched") and details.get("lariat_type"):
+            return sequence, details
+    except (ValueError, RuntimeError, KeyError) as exc:
+        if initial is None:
+            raise
+        initial[1]["template_backbone_error"] = f"{type(exc).__name__}: {exc}"
+    if initial is not None:
+        initial[1]["backbone_inference"] = "peptide_traversal"
+        unmatched = initial[1].get("unmatched", [])
+        if unmatched:
+            lines = [f"{smiles}\tresidue={u['residue_index']}\tatoms={u['atom_indices']}\tsmiles={u['smiles']}"
+                     for u in unmatched]
+            with UNMATCHED_LOG.open("a", encoding="utf-8") as handle:
+                handle.write("\n".join(lines) + "\n")
+        return initial
+    raise error
+
+
+# ------------------------ 转换主流程 ------------------------ #
+def _convert_with_backbone(
+    smiles: str,
+    lib: Optional[MonomerLib] = None,
+    lib_path: Path = DEFAULT_LIB,
+    list_output: bool = False,
+    backbone_override=None,
+) -> Tuple[str, dict]:
     cleaned = clean_smiles(smiles)
     mol = Chem.MolFromSmiles(cleaned)
     if mol is None:
         raise ValueError("Invalid SMILES")
 
-    backbone = list(get_backbone_atoms(mol))
+    backbone = list(backbone_override) if backbone_override is not None else list(get_backbone_atoms(mol))
     if not backbone:
         raise ValueError("No peptide backbone detected")
 
@@ -449,11 +541,6 @@ def convert(
 
     # 序列顺序
     order = _order_residues(mol, backbone)
-    if lactam_head is not None and lactam_tail is not None and lactam_head in order and lactam_tail in order:
-        head_pos = order.index(lactam_head)
-        start_idx = order[head_pos - 1] if head_pos > 0 else order[-1]
-        while order[0] != start_idx:
-            order = order[1:] + order[:1]
     bb_atoms = {idx for triplet in backbone for idx in triplet}
     n_methylated: Dict[int, bool] = {}
     for res_idx, triplet in enumerate(backbone):
@@ -486,6 +573,7 @@ def convert(
     tokens: List[str] = []
     unmatched: List[dict] = []
     residue_records: List[dict] = []
+    # Lariat positions refer to AA/NCAA only; cap tokens never add an offset.
     output_position_by_residue = {
         residue_idx: output_position
         for output_position, residue_idx in enumerate(order, start=1)
@@ -628,14 +716,6 @@ def convert(
             }
         )
 
-    # 将未匹配片段落盘，便于后续扩展模板库
-    if unmatched:
-        lines = [
-            f"{smiles}\tresidue={u['residue_index']}\tatoms={u['atom_indices']}\tsmiles={u['smiles']}"
-            for u in unmatched
-        ]
-        with UNMATCHED_LOG.open("a", encoding="utf-8") as f:
-            f.write("\n".join(lines) + "\n")
     return sequence, details
 
 

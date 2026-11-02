@@ -62,6 +62,7 @@ from utils_linker import (
     match_linker_hint_entry,
     infer_linker_mapping_from_hint,
 )
+from attachment_utils import mapped_linker_match
 from frag_utils import load_fragment_library, save_fragment_library
 from disulfide_utils import (
     annotate_sequence_with_disulfides,
@@ -202,6 +203,7 @@ class SMILES2Sequence:
         load_extend: bool = False,
         auto_linker_detection: bool = False,
         allow_fingerprint_fallback: bool = False,
+        persist_updates: bool = False,
     ):
         self.lib_path = (
             Path(lib_path)
@@ -220,6 +222,7 @@ class SMILES2Sequence:
         self.extend_path = Path("extend_lib.json")
         self.extend_entries_raw: Dict[str, Dict[str, str]] = {}
         self.extend_dirty = False
+        self.persist_updates = persist_updates
         self.load_extend = load_extend
         self.auto_linker_detection = auto_linker_detection
         self.allow_fingerprint_fallback = allow_fingerprint_fallback
@@ -1070,6 +1073,9 @@ class SMILES2Sequence:
         """
         clean = clean_smiles(smiles)
         self._linker_hint_raw = linker_hint.strip() if isinstance(linker_hint, str) and linker_hint.strip() else None
+        detect_linkers = self.auto_linker_detection or bool(self._linker_hint_raw)
+        self._linker_exclude_atoms = set()
+        self._mapped_hint_details = None
         self._linker_hint_entry = None
         self._linker_hint_query = None
         self._linker_hint_mapped = None
@@ -1099,7 +1105,7 @@ class SMILES2Sequence:
 
         staple_records: List[Dict[str, int]] = []
         generic_records: List[Dict[str, int]] = []
-        if self.auto_linker_detection:
+        if detect_linkers:
             if self._linker_hint_raw:
                 pruned_mol, staple_records = Chem.Mol(mol), []
             else:
@@ -1121,7 +1127,11 @@ class SMILES2Sequence:
                     staple_records = combined_records
                     self._linker_exclude_atoms = self._collect_linker_atoms(mol, residues, combined_records)
 
-            if not self._linker_exclude_atoms:
+            if self._linker_hint_raw:
+                hint_match = self._match_linker_hint_atoms(mol, residues)
+                if hint_match:
+                    self._linker_exclude_atoms = hint_match[0]
+            if not self._linker_exclude_atoms and not self._linker_hint_raw:
                 known_atoms = self._known_linker_atoms(mol)
                 if known_atoms:
                     self._linker_exclude_atoms = known_atoms
@@ -1343,7 +1353,7 @@ class SMILES2Sequence:
                         linker_source, residues[-1]["C"], linker_data["c_cap_atoms"]
                     )
                 c_cap_info = {"code": "X_cap", "smiles": c_cap_smiles, "label": "C-cap"}
-        elif self.auto_linker_detection:
+        elif detect_linkers:
             if self._linker_hint_raw:
                 known = self._detect_known_linker(mol, residues)
                 if known:
@@ -1380,7 +1390,7 @@ class SMILES2Sequence:
                         positions, known_linker = known
                         pose_entries = " ".join(str(pos) for pos in positions)
                         linker_smiles = known_linker
-        if self.auto_linker_detection and not linker_smiles and not self._linker_hint_raw:
+        if detect_linkers and not linker_smiles and not self._linker_hint_raw:
             inferred = self._infer_linker_from_multi_backbone(match_mol, residues)
             if inferred:
                 positions, inferred_linker = inferred
@@ -1473,9 +1483,9 @@ class SMILES2Sequence:
             sequence, n_cap_info, c_cap_info, cysteine_indices, ss_pairs
         )
 
-        if self.extend_dirty:
+        if self.persist_updates and self.extend_dirty:
             self._save_extend_library()
-        if self.fragment_dirty:
+        if self.persist_updates and self.fragment_dirty:
             self._save_fragment_library()
 
         if not return_details:
@@ -1503,6 +1513,7 @@ class SMILES2Sequence:
             "warnings": warnings,
             "backbone_assignments": self._last_backbone_assignments,
             "cycle_meta": cycle_meta,
+            "linker_hint_details": self._mapped_hint_details,
         }
         return sequence, details
 
@@ -1932,6 +1943,11 @@ class SMILES2Sequence:
     ) -> Optional[Tuple[Set[int], List[int], str]]:
         if not self._linker_hint_raw:
             return None
+        hint = Chem.MolFromSmiles(self._linker_hint_raw)
+        if hint is not None and any(a.GetAtomicNum() == 0 for a in hint.GetAtoms()):
+            result, details = mapped_linker_match(mol, residues, self._linker_hint_raw)
+            self._mapped_hint_details = details
+            return result
         backbone_atoms = {res["N"] for res in residues} | {res["CA"] for res in residues} | {res["C"] for res in residues}
         # Assign atoms to nearest CA for position mapping.
         ca_indices = [res["CA"] for res in residues]

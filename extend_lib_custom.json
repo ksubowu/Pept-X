@@ -5,8 +5,14 @@
     "polymer_type": "PEPTIDE",
     "type": "PEPTIDE",
     "aliases": [
-      "cycle_hex"
-    ]
+      "cycle_hex",
+      "3-cyclohexyl-L-alanine"
+    ],
+    "official_helm_symbol": "Cha",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "3-Cyclohexylalanine",
+    "naturalAnalog": "A",
+    "naming_method": "official_HELMCoreLibrary"
   },
   {
     "code": "D_hPhe_3Cl_4CF3",
@@ -67,5 +73,2433 @@
     "aliases": [
       "mePhe_4Cl"
     ]
+  },
+  {
+    "code": "4Pal",
+    "smiles": "[H:1]N[C@@H](Cc1ccncc1)C([OH:2])=O",
+    "aliases": [
+      "3-(4-pyridyl)-L-alanine"
+    ],
+    "formula": "C8H10N2O2",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "4Pal",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "3-(4-Pyridyl)-alanine",
+    "naturalAnalog": "X",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "Aib",
+    "smiles": "CC(C)(N[H:1])C([OH:2])=O",
+    "aliases": [
+      "alpha-methyl-alanine"
+    ],
+    "formula": "C4H9NO2",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "Aib",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "Alpha-aminoisobutyric acid (2-aminoalanine)",
+    "naturalAnalog": "X",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "Bip",
+    "smiles": "[H:1]N[C@@H](Cc1ccc(cc1)-c1ccccc1)C([OH:2])=O",
+    "aliases": [
+      "(2S)-2-amino-3-{[1,1'-biphenyl]-4-yl}propanoic acid"
+    ],
+    "formula": "C15H15NO2",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "Bip",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "(2S)-2-amino-3-{[1,1'-biphenyl]-4-yl}propanoic acid",
+    "naturalAnalog": "X",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "Chg",
+    "smiles": "[H:1]N[C@H](C([OH:2])=O)C1CCCCC1",
+    "aliases": [
+      "L-cyclohexylglycine"
+    ],
+    "formula": "C8H15NO2",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "Chg",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "Alpha-cyclohexylglycine",
+    "naturalAnalog": "X",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "Hcy",
+    "smiles": "[H:1]N[C@@H](CCS[H:3])C([OH:2])=O",
+    "aliases": [
+      "Homocysteine"
+    ],
+    "formula": "C4H9NO2S",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "Hcy",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "Homocysteine",
+    "naturalAnalog": "C",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "Hhc",
+    "smiles": "SCCC[C@@H](C([OH:2])=O)N[H:1]",
+    "aliases": [
+      "Hhc(1:R3)"
+    ],
+    "formula": "C5H11NO2S",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Reviewed homologue of cysteine; source structure retained",
+    "mcs_parent_evidence": {
+      "selected_parent": "A",
+      "backbone_N_to_carbonyl_bonds": 2,
+      "parent_to_residue_atom_mapping": {
+        "0": 3,
+        "1": 4,
+        "2": 8,
+        "3": 5,
+        "4": 6,
+        "5": 7
+      },
+      "added_atoms": [
+        {
+          "index": 0,
+          "element": "S"
+        },
+        {
+          "index": 1,
+          "element": "C"
+        },
+        {
+          "index": 2,
+          "element": "C"
+        }
+      ],
+      "added_bonds": [
+        {
+          "atoms": [
+            0,
+            1
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            1,
+            2
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            2,
+            3
+          ],
+          "order": "SINGLE"
+        }
+      ],
+      "candidates": [
+        {
+          "parent": "A",
+          "matched_atoms": 6,
+          "matched_bonds": 5,
+          "parent_atoms": 6,
+          "full_parent": true,
+          "smarts": "[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "G",
+          "matched_atoms": 5,
+          "matched_bonds": 4,
+          "parent_atoms": 5,
+          "full_parent": true,
+          "smarts": "[#7]-[#6]-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "R",
+          "matched_atoms": 8,
+          "matched_bonds": 7,
+          "parent_atoms": 12,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "Q",
+          "matched_atoms": 8,
+          "matched_bonds": 7,
+          "parent_atoms": 10,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "E",
+          "matched_atoms": 8,
+          "matched_bonds": 7,
+          "parent_atoms": 10,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "I",
+          "matched_atoms": 8,
+          "matched_bonds": 7,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "L",
+          "matched_atoms": 8,
+          "matched_bonds": 7,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "K",
+          "matched_atoms": 8,
+          "matched_bonds": 7,
+          "parent_atoms": 10,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "P",
+          "matched_atoms": 8,
+          "matched_bonds": 7,
+          "parent_atoms": 8,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "N",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "D",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "H",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 11,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "M",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "F",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 12,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "T",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 8,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "W",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 15,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "Y",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 13,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "V",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 8,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "C",
+          "matched_atoms": 6,
+          "matched_bonds": 5,
+          "parent_atoms": 7,
+          "full_parent": false,
+          "smarts": "[#7]-[#6](-[#6])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "S",
+          "matched_atoms": 6,
+          "matched_bonds": 5,
+          "parent_atoms": 7,
+          "full_parent": false,
+          "smarts": "[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        }
+      ]
+    },
+    "parent_amino_acid": "A",
+    "naming_method": "MCS_parent_local"
+  },
+  {
+    "code": "Lys_Ac",
+    "smiles": "CC(=O)NCCCC[C@H](N[H:1])C([OH:2])=O",
+    "aliases": [
+      "(2S)-2-amino-6-acetamidohexanoic acid",
+      "Lys(Ac)",
+      "N6-acetyl-L-lysine"
+    ],
+    "formula": "C8H16N2O3",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "Lys_Ac",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "(2S)-2-amino-6-acetamidohexanoic acid",
+    "naturalAnalog": "K",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "Lys_Me3",
+    "smiles": "C[N+](C)(C)CCCC[C@H](N[H:1])C([OH:2])=O",
+    "aliases": [
+      "Epsilon-N-trimethyllysine"
+    ],
+    "formula": "C9H21N2O2+",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "Lys_Me3",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "Epsilon-N-trimethyllysine",
+    "naturalAnalog": "K",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "Nle",
+    "smiles": "CCCC[C@H](N[H:1])C([OH:2])=O",
+    "aliases": [
+      "Norleucine"
+    ],
+    "formula": "C6H13NO2",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "Nle",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "Norleucine",
+    "naturalAnalog": "L",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "Nva",
+    "smiles": "CCC[C@H](N[H:1])C([OH:2])=O",
+    "aliases": [
+      "Norvaline"
+    ],
+    "formula": "C5H11NO2",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "Nva",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "Norvaline",
+    "naturalAnalog": "V",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "Orn",
+    "smiles": "[H:1]N[C@@H](CCCN[H:3])C([OH:2])=O",
+    "aliases": [
+      "Ornithine"
+    ],
+    "formula": "C5H12N2O2",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "Orn",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "L-ornithine",
+    "naturalAnalog": "K",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "Phe_4F",
+    "smiles": "Fc1ccc(C[C@H](N[H:1])C([OH:2])=O)cc1",
+    "aliases": [
+      "(2S)-2-amino-3-(4-fluorophenyl)propanoic acid",
+      "4-fluoro-L-phenylalanine",
+      "Phe(4-F)"
+    ],
+    "formula": "C9H10FNO2",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "Phe_4F",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "(2S)-2-amino-3-(4-fluorophenyl)propanoic acid",
+    "naturalAnalog": "F",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "Phe_4Me",
+    "smiles": "Cc1ccc(C[C@H](N[H:1])C([OH:2])=O)cc1",
+    "aliases": [
+      "p-Methylphenylalanine"
+    ],
+    "formula": "C10H13NO2",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "Phe_4Me",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "p-Methylphenylalanine",
+    "naturalAnalog": "F",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "meG",
+    "smiles": "CN([H:1])CC([OH:2])=O",
+    "aliases": [
+      "Sarcosine",
+      "Sarcosine (N-Methyl-Glycine)",
+      "Sar",
+      "MeGly"
+    ],
+    "formula": "C3H7NO2",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "meG",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "Sarcosine (N-Methyl-Glycine)",
+    "naturalAnalog": "G",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "Ala_tBu",
+    "smiles": "CC(C)(C)[C@H](N[H:1])C([OH:2])=O",
+    "aliases": [
+      "2-tert-butyl-L-glycine",
+      "3-Methylvaline",
+      "tBuA",
+      "tBu_ALA",
+      "tBu_Ala",
+      "Tle"
+    ],
+    "formula": "C6H13NO2",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "Ala_tBu",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "3-Methylvaline",
+    "naturalAnalog": "A",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "dE",
+    "smiles": "[H:1]N[C@H](CCC([OH:3])=O)C([OH:2])=O",
+    "aliases": [
+      "D-Gamma glutamic acid",
+      "D-Glutamic acid",
+      "D-gGlu"
+    ],
+    "formula": "C5H9NO4",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "dE",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "D-Glutamic acid",
+    "naturalAnalog": "E",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "dK",
+    "smiles": "[H:1]N[C@H](CCCCN[H:3])C([OH:2])=O",
+    "aliases": [
+      "D-lysine"
+    ],
+    "formula": "C6H14N2O2",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "dK",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "D-Lysine",
+    "naturalAnalog": "K",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "dL",
+    "smiles": "CC(C)C[C@@H](N[H:1])C([OH:2])=O",
+    "aliases": [
+      "D-leucine"
+    ],
+    "formula": "C6H13NO2",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "dL",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "D-Leucine",
+    "naturalAnalog": "L",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "dR",
+    "smiles": "NC(=N)NCCC[C@@H](N[H:1])C([OH:2])=O",
+    "aliases": [
+      "D-arginine"
+    ],
+    "formula": "C6H14N4O2",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "dR",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "D-Arginine",
+    "naturalAnalog": "R",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "Bal_cycloC6",
+    "smiles": "C1(N([H:1]))CCCCC1C([OH:2])=O",
+    "aliases": [
+      "1-Aminocyclohexanecarboxylic acid",
+      "Achc"
+    ],
+    "formula": "C7H13NO2",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Cyclic beta-alanine scaffold; source leaves stereochemistry unspecified",
+    "mcs_parent_evidence": {
+      "selected_parent": "bAla",
+      "backbone_N_to_carbonyl_bonds": 3,
+      "parent_to_residue_atom_mapping": {
+        "0": 1,
+        "1": 0,
+        "2": 6,
+        "3": 7,
+        "4": 8,
+        "5": 9
+      },
+      "added_atoms": [
+        {
+          "index": 2,
+          "element": "C"
+        },
+        {
+          "index": 3,
+          "element": "C"
+        },
+        {
+          "index": 4,
+          "element": "C"
+        },
+        {
+          "index": 5,
+          "element": "C"
+        }
+      ],
+      "added_bonds": [
+        {
+          "atoms": [
+            0,
+            2
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            2,
+            3
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            3,
+            4
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            4,
+            5
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            5,
+            6
+          ],
+          "order": "SINGLE"
+        }
+      ],
+      "candidates": [
+        {
+          "parent": "bAla",
+          "matched_atoms": 6,
+          "matched_bonds": 5,
+          "parent_atoms": 6,
+          "full_parent": true,
+          "smarts": "[#7]-[#6]-[#6]-[#6](-[#8])=[#8]"
+        }
+      ]
+    },
+    "parent_amino_acid": "bAla",
+    "naming_method": "MCS_parent_local"
+  },
+  {
+    "code": "8-aminooctanoic",
+    "smiles": "N([H:1])CCCCCCCC([OH:2])=O",
+    "aliases": [
+      "8-aminooctanoic acid",
+      "Aoc"
+    ],
+    "formula": "C8H17NO2",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Descriptive name for an extended backbone; no shorter reviewed common symbol",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "Dab(Ac)",
+    "smiles": "CC(=O)NCC[C@H](N([H:1]))C([OH:2])=O",
+    "aliases": [
+      "Butanoic acid, 4-(acetylamino)-2-amino-",
+      "Dab_Acetyl"
+    ],
+    "formula": "C6H12N2O3",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Side-chain N acetylation",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "Glu(OMe)",
+    "smiles": "COC(=O)CC[C@H](N([H:1]))C([OH:2])=O",
+    "aliases": [
+      "Glutamic acid gamma-methyl ester",
+      "Glu_OMe"
+    ],
+    "formula": "C6H11NO4",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Side-chain methyl ester",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "Bal_3CH2COOH",
+    "smiles": "[H:1]NC(CC([OH:3])=O)CC([OH:2])=O",
+    "aliases": [
+      "Isoglutamic acid",
+      "IsoGlu"
+    ],
+    "formula": "C5H9NO4",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Existing reviewed local isoglutamic-acid structure; alpha/beta stereo unspecified",
+    "mcs_parent_evidence": {
+      "selected_parent": "bAla",
+      "backbone_N_to_carbonyl_bonds": 3,
+      "parent_to_residue_atom_mapping": {
+        "0": 0,
+        "1": 1,
+        "2": 6,
+        "3": 7,
+        "4": 8,
+        "5": 9
+      },
+      "added_atoms": [
+        {
+          "index": 2,
+          "element": "C"
+        },
+        {
+          "index": 3,
+          "element": "C"
+        },
+        {
+          "index": 4,
+          "element": "O"
+        },
+        {
+          "index": 5,
+          "element": "O"
+        }
+      ],
+      "added_bonds": [
+        {
+          "atoms": [
+            1,
+            2
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            2,
+            3
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            3,
+            4
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            3,
+            5
+          ],
+          "order": "DOUBLE"
+        }
+      ],
+      "candidates": [
+        {
+          "parent": "bAla",
+          "matched_atoms": 6,
+          "matched_bonds": 5,
+          "parent_atoms": 6,
+          "full_parent": true,
+          "smarts": "[#7]-[#6]-[#6]-[#6](-[#8])=[#8]"
+        }
+      ]
+    },
+    "parent_amino_acid": "bAla",
+    "naming_method": "MCS_parent_local"
+  },
+  {
+    "code": "Bal_cycloC6_3Me",
+    "smiles": "CC1(N([H:1]))CCCCC1C([OH:2])=O",
+    "aliases": [
+      "1-Methylcyclohexanecarboxylic acid",
+      "MeAchc"
+    ],
+    "formula": "C8H15NO2",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Cyclic beta-alanine scaffold; methyl at amino-bearing beta carbon; unspecified stereochemistry",
+    "mcs_parent_evidence": {
+      "selected_parent": "bAla",
+      "backbone_N_to_carbonyl_bonds": 3,
+      "parent_to_residue_atom_mapping": {
+        "0": 2,
+        "1": 1,
+        "2": 7,
+        "3": 8,
+        "4": 9,
+        "5": 10
+      },
+      "added_atoms": [
+        {
+          "index": 0,
+          "element": "C"
+        },
+        {
+          "index": 3,
+          "element": "C"
+        },
+        {
+          "index": 4,
+          "element": "C"
+        },
+        {
+          "index": 5,
+          "element": "C"
+        },
+        {
+          "index": 6,
+          "element": "C"
+        }
+      ],
+      "added_bonds": [
+        {
+          "atoms": [
+            0,
+            1
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            1,
+            3
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            3,
+            4
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            4,
+            5
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            5,
+            6
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            6,
+            7
+          ],
+          "order": "SINGLE"
+        }
+      ],
+      "candidates": [
+        {
+          "parent": "bAla",
+          "matched_atoms": 6,
+          "matched_bonds": 5,
+          "parent_atoms": 6,
+          "full_parent": true,
+          "smarts": "[#7]-[#6]-[#6]-[#6](-[#8])=[#8]"
+        }
+      ]
+    },
+    "parent_amino_acid": "bAla",
+    "naming_method": "MCS_parent_local"
+  },
+  {
+    "code": "meE",
+    "smiles": "CN([H:1])[C@@H](CCC([OH:3])=O)C([OH:2])=O",
+    "aliases": [
+      "N-methyl glutamic acid",
+      "NMe_Glu"
+    ],
+    "formula": "C6H11NO4",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "meE",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "N-Methyl-Glutamic acid",
+    "naturalAnalog": "E",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "2-aminohept-6-enoic",
+    "smiles": "[H:1]N[C@@H](CCCC=C)C([OH:2])=O",
+    "aliases": [
+      "2-Aminohept-6-enoic acid",
+      "O3S",
+      "Ahe",
+      "Ala(pent-4-enyl)"
+    ],
+    "formula": "C7H13NO2",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Same structure as O3S",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "2-amino-2-methylhept-6-enoic",
+    "smiles": "[H:1]N[C@@](C)(CCCC=C)C([OH:2])=O",
+    "aliases": [
+      "2,2-Dimethylhept-6-enoic acid",
+      "O3S_Me",
+      "aMeAla(pent-4-enyl)"
+    ],
+    "formula": "C8H15NO2",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Alpha methyl plus pent-4-enyl side chain",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "2-aminooct-7-enoic",
+    "smiles": "[H:1]N[C@@H](CCCCC=C)C([OH:2])=O",
+    "aliases": [
+      "2-Amino-7-octenoic acid",
+      "O4S",
+      "Ala(hex-5-enyl)"
+    ],
+    "formula": "C8H15NO2",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Alpha side-chain hex-5-enyl",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "Tyr(3-OMe,O-Me)",
+    "smiles": "[H:1]N[C@@H](Cc1cc(OC)c(OC)cc1)C([OH:2])=O",
+    "aliases": [
+      "2-Amino-3-(3,4-dimethoxyphenyl)propanoic acid",
+      "Phe_34diOMe",
+      "Tyr(3-OMe,4-OMe)"
+    ],
+    "formula": "C11H15NO4",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Largest natural core is Tyr; methoxy at aryl C3 and O-methyl at Tyr C4",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "Phe(4-CONH2)",
+    "smiles": "[H:1]N[C@@H](Cc1ccc(C(N)=O)cc1)C([OH:2])=O",
+    "aliases": [
+      "2-Amino-3-(4-carbamoylphenyl)propanoic acid",
+      "Phe_4CONH2"
+    ],
+    "formula": "C10H12N2O3",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Para carboxamide",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "Phe(4-COOH)",
+    "smiles": "[H:1]N[C@@H](Cc1ccc(C([OH:3])=O)cc1)C([OH:2])=O",
+    "aliases": [
+      "4-Carboxyphenylalanine",
+      "Phe_4COOH"
+    ],
+    "formula": "C10H11NO4",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Para carboxyl",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "Tyr_Me",
+    "smiles": "[H:1]N[C@@H](Cc1ccc(OC)cc1)C([OH:2])=O",
+    "aliases": [
+      "4'-methoxy phenylalanine",
+      "Phe_4OMe"
+    ],
+    "formula": "C10H13NO3",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "Tyr_Me",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "(2S)-2-amino-3-(4-methoxyphenyl)propanoic acid",
+    "naturalAnalog": "Y",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "Ser(O-Ph(4-CH2CH2NH2))",
+    "smiles": "[H:1]N[C@@H](COc1ccc(CCN([H:3]))cc1)C([OH:2])=O",
+    "aliases": [
+      "2-Amino-3-[4-(2-aminoethoxy)phenyl]propanoic acid",
+      "Phe_4_2ae"
+    ],
+    "formula": "C11H16N2O3",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Source STRUCTURE is an O-arylated Ser derivative, despite its Phe label",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "Phe(4-morpholinyl)",
+    "smiles": "[H:1]N[C@@H](Cc1ccc(N2CCOCC2)cc1)C([OH:2])=O",
+    "aliases": [
+      "4-(4-Morpholinyl)-phenylalanine",
+      "Phe_4_Morph"
+    ],
+    "formula": "C13H18N2O3",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Para N-morpholinyl",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "Ser(O-Ph(4-Pr))",
+    "smiles": "[H:1]N[C@@H](COc1ccc(CCC)cc1)C([OH:2])=O",
+    "aliases": [
+      "2-Amino-3-(4-propoxyphenyl)propanoic acid",
+      "Phe_4ad"
+    ],
+    "formula": "C12H17NO3",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Source STRUCTURE is O-(4-propylphenyl)Ser, despite its Phe label",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "Phe(4-tBu)",
+    "smiles": "[H:1]N[C@@H](Cc1ccc(C(C)(C)C)cc1)C([OH:2])=O",
+    "aliases": [
+      "4-tert-butylphenylalanine",
+      "Phe_4tBu"
+    ],
+    "formula": "C13H19NO2",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Para tert-butyl",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "Leu(4-Me)",
+    "smiles": "[H:1]N[C@@H](CC(C)(C)C)C([OH:2])=O",
+    "aliases": [
+      "2-Amino-3-tert-butylpropionic acid",
+      "Tba",
+      "Ala(neopentyl)"
+    ],
+    "formula": "C7H15NO2",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Alpha side-chain CH2-C(CH3)3",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "Ala(3-tetrazol-5-yl)",
+    "smiles": "[H:1]N[C@@H](Cc1nnn[nH]1)C([OH:2])=O",
+    "aliases": [
+      "2-amino-3-(5H-tetrazol-5-yl)propanoic acid",
+      "3-(5H-Tetrazol-5-yl)-alanine",
+      "Tet1",
+      "Ala(tetrazol-5-ylmethyl)"
+    ],
+    "formula": "C4H7N5O2",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Alpha side-chain CH2-tetrazol-5-yl",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "A_cycloC5O",
+    "smiles": "O1CCC(CC1)(C([OH:2])=O)N([H:1])",
+    "aliases": [
+      "4-aminotetrahydro-2H-pyran-4-carboxylic acid",
+      "Thp"
+    ],
+    "formula": "C6H11NO3",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Reviewed alanine-derived tetrahydropyran ring constraint",
+    "mcs_parent_evidence": {
+      "selected_parent": "A",
+      "backbone_N_to_carbonyl_bonds": 2,
+      "parent_to_residue_atom_mapping": {
+        "0": 2,
+        "1": 3,
+        "2": 9,
+        "3": 6,
+        "4": 7,
+        "5": 8
+      },
+      "added_atoms": [
+        {
+          "index": 0,
+          "element": "O"
+        },
+        {
+          "index": 1,
+          "element": "C"
+        },
+        {
+          "index": 4,
+          "element": "C"
+        },
+        {
+          "index": 5,
+          "element": "C"
+        }
+      ],
+      "added_bonds": [
+        {
+          "atoms": [
+            0,
+            1
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            1,
+            2
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            3,
+            4
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            4,
+            5
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            5,
+            0
+          ],
+          "order": "SINGLE"
+        }
+      ],
+      "candidates": [
+        {
+          "parent": "A",
+          "matched_atoms": 6,
+          "matched_bonds": 5,
+          "parent_atoms": 6,
+          "full_parent": true,
+          "smarts": "[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "G",
+          "matched_atoms": 5,
+          "matched_bonds": 4,
+          "parent_atoms": 5,
+          "full_parent": true,
+          "smarts": "[#7]-[#6]-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "D",
+          "matched_atoms": 8,
+          "matched_bonds": 7,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#7]-[#6](-[#6]-[#6]-[#8])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "R",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 12,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "N",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "Q",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 10,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "E",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 10,
+          "full_parent": false,
+          "smarts": "[#7]-[#6](-[#6]-[#6])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "H",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 11,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "I",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "L",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "K",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 10,
+          "full_parent": false,
+          "smarts": "[#7]-[#6](-[#6]-[#6])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "M",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "F",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 12,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "P",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 8,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "T",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 8,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "W",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 15,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "Y",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 13,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "V",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 8,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "C",
+          "matched_atoms": 6,
+          "matched_bonds": 5,
+          "parent_atoms": 7,
+          "full_parent": false,
+          "smarts": "[#7]-[#6](-[#6])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "S",
+          "matched_atoms": 6,
+          "matched_bonds": 5,
+          "parent_atoms": 7,
+          "full_parent": false,
+          "smarts": "[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        }
+      ]
+    },
+    "parent_amino_acid": "A",
+    "naming_method": "MCS_parent_local"
+  },
+  {
+    "code": "aMe4Pal",
+    "smiles": "[H:1]N[C@@](C)(Cc1ccncc1)C([OH:2])=O",
+    "aliases": [
+      "2-Amino-2-methyl-3-(pyridin-4-yl)propanoic acid",
+      "aMe_4Pal"
+    ],
+    "formula": "C9H12N2O2",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Alpha methyl derivative of common 4Pal parent",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "aMeAsp",
+    "smiles": "[H:1]N[C@@](C)(CC([OH:3])=O)C([OH:2])=O",
+    "aliases": [
+      "Alpha-methyl aspartic acid",
+      "aMe_Asp"
+    ],
+    "formula": "C5H9NO4",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Alpha methyl Asp",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "aMeGlu",
+    "smiles": "[H:1]N[C@@](C)(CCC([OH:3])=O)C([OH:2])=O",
+    "aliases": [
+      "Alpha-methyl glutamic acid",
+      "aMe_Glu"
+    ],
+    "formula": "C6H11NO4",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Alpha methyl Glu",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "aMeIle",
+    "smiles": "CC[C@H](C)[C@](C)(N([H:1]))C([OH:2])=O",
+    "aliases": [
+      "Alpha-methyl isoleucine",
+      "aMe_Ile"
+    ],
+    "formula": "C7H15NO2",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Alpha methyl Ile; source stereochemistry retained",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "aMeLeu",
+    "smiles": "[H:1]N[C@@](C)(CC(C)C)C([OH:2])=O",
+    "aliases": [
+      "Alpha-methyl Leucine",
+      "Alpha-methyl leucind",
+      "Alpha-methyl leucine",
+      "Alpha-methylleucine",
+      "alpha-methyl leucine",
+      "alpha-methyl-leucine",
+      "aMe_Leu"
+    ],
+    "formula": "C7H15NO2",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Alpha methyl Leu",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "aMeLys",
+    "smiles": "[H:1]N[C@@](C)(CCCCN([H:3]))C([OH:2])=O",
+    "aliases": [
+      "Alpha-methyl lysine",
+      "Alpha-methyllysine",
+      "alpha-methyl lysine",
+      "aMe_Lys"
+    ],
+    "formula": "C7H16N2O2",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Alpha methyl Lys",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "aMePhe",
+    "smiles": "[H:1]N[C@@](C)(Cc1ccccc1)C([OH:2])=O",
+    "aliases": [
+      "Alpha-methyl phenylalanine",
+      "Alpha-methyl phenylalnine",
+      "Alpha-methyl phnenylalanine",
+      "Alpha-methyl-phenylalanine",
+      "Alpha-methylphenylalanine",
+      "alpha-Methylphenylalanine",
+      "alpha-methyl phenylalanine",
+      "aMe_Phe"
+    ],
+    "formula": "C10H13NO2",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "aMePhe",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "(2S)-2-amino-2-methyl-3-phenylpropanoic acid",
+    "naturalAnalog": "F",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "aMePhe(3-F)",
+    "smiles": "[H:1]N[C@@](C)(Cc1cccc(F)c1)C([OH:2])=O",
+    "aliases": [
+      "2-Amino-3-(2-fluorophenyl)-2-methylpropanoic acid",
+      "2-fluoro-alpha-methylphenylalanine",
+      "aMe_Phe_2F"
+    ],
+    "formula": "C10H12FNO2",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Source SMILES has META fluorine, despite the source code 2F",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "aMeSer",
+    "smiles": "[H:1]N[C@@](C)(CO)C([OH:2])=O",
+    "aliases": [
+      "Alpha-methyl serine",
+      "alpha-methyl serine",
+      "alpha-methyl-serine",
+      "aMe_Ser"
+    ],
+    "formula": "C4H9NO3",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Alpha methyl Ser",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "aMeTyr",
+    "smiles": "[H:1]N[C@@](C)(Cc1ccc(O)cc1)C([OH:2])=O",
+    "aliases": [
+      "Alpha-methyl tyrosine",
+      "aMe_Tyr"
+    ],
+    "formula": "C10H13NO3",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "aMeTyr",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "(2S)-2-amino-3-(4-hydroxyphenyl)-2-methylpropanoic acid",
+    "naturalAnalog": "Y",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "aMeVal",
+    "smiles": "[H:1]N[C@@](C)(C(C)C)C([OH:2])=O",
+    "aliases": [
+      "Alpha-methyl valine",
+      "aMe_Val"
+    ],
+    "formula": "C6H13NO2",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Alpha methyl Val",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "2-aminoheptanoic",
+    "smiles": "[H:1]N[C@@H](CCCCC)C([OH:2])=O",
+    "aliases": [
+      "O3S_Reduced",
+      "Ala(pentyl)"
+    ],
+    "formula": "C7H15NO2",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Alpha n-pentyl side chain",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "Orn(Ac)",
+    "smiles": "CC(=O)NCCC[C@H](N([H:1]))C([OH:2])=O",
+    "aliases": [
+      "Orn_Acetyl"
+    ],
+    "formula": "C7H14N2O3",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Side-chain N acetylation",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "Phe(4-CF3)",
+    "smiles": "[H:1]N[C@@H](Cc1ccc(C(F)(F)F)cc1)C([OH:2])=O",
+    "aliases": [
+      "Phe_4CF3"
+    ],
+    "formula": "C10H10F3NO2",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Para trifluoromethyl",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "aMeLys(Ac)",
+    "smiles": "[H:1]N[C@@](C)(CCCCNC(=O)C)C([OH:2])=O",
+    "aliases": [
+      "aMe_Lys_Ac"
+    ],
+    "formula": "C9H18N2O3",
+    "formula_source": "json",
+    "source": "generated_service_style",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "data_other/20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Alpha methyl, side-chain N acetylation",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "N(CH2CF3)Tyr",
+    "smiles": "O=C([C@H](Cc1ccc(O)cc1)N(CC(F)(F)F)[H:1])[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "aliases": [
+      "RFQ_36be2e4a12",
+      "Y_NCCF3"
+    ],
+    "source": "20261017_Semi_Purified_Cyclic_Peptide_Synthesis_RFQ_AilsynBio.xlsx",
+    "source_row": 9,
+    "canonical_smiles": "O=C(O)[C@H](Cc1ccc(O)cc1)NCC(F)(F)F",
+    "legacy_code": "RFQ_36be2e4a12",
+    "parent_amino_acid": "Y",
+    "modification_description": "Backbone N-(2,2,2-trifluoroethyl); original alpha-S configuration",
+    "naming_method": "HELM_guidelines_local",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177"
+  },
+  {
+    "code": "Cys(CH2COOH)",
+    "smiles": "O=C([C@H](CSCC(=O)[OH:3])N[H:1])[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "aliases": [
+      "Cys_S_CH2COOH"
+    ],
+    "source": "20261017_Semi_Purified_Cyclic_Peptide_Synthesis_RFQ_AilsynBio.xlsx",
+    "source_row": 9,
+    "canonical_smiles": "N[C@@H](CSCC(=O)O)C(=O)O",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Side-chain S-carboxymethyl; R3 remains carboxyl OH",
+    "naming_method": "HELM_guidelines_local"
+  },
+  {
+    "code": "N(CH2CF3)His",
+    "smiles": "O=C([C@H](Cc1c[nH]cn1)N(CC(F)(F)F)[H:1])[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "aliases": [
+      "RFQ_ddaa97bf5f",
+      "H_NCCF3"
+    ],
+    "source": "20261017_Semi_Purified_Cyclic_Peptide_Synthesis_RFQ_AilsynBio.xlsx",
+    "source_row": 10,
+    "canonical_smiles": "O=C(O)[C@H](Cc1c[nH]cn1)NCC(F)(F)F",
+    "legacy_code": "RFQ_ddaa97bf5f",
+    "parent_amino_acid": "H",
+    "modification_description": "Backbone N-(2,2,2-trifluoroethyl); original alpha-S configuration",
+    "naming_method": "HELM_guidelines_local",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Backbone N-(2,2,2-trifluoroethyl)"
+  },
+  {
+    "code": "A_cycloC4",
+    "smiles": "O=C(C1(N[H:1])CCC1)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "aliases": [
+      "RFQ_32c61952d1"
+    ],
+    "source": "20261017_Semi_Purified_Cyclic_Peptide_Synthesis_RFQ_AilsynBio.xlsx",
+    "source_row": 12,
+    "canonical_smiles": "NC1(C(=O)O)CCC1",
+    "legacy_code": "RFQ_32c61952d1",
+    "parent_amino_acid": "A",
+    "modification_description": "Alanine-based alpha-carbon cyclobutane ring; 1-aminocyclobutane-1-carboxylic acid; achiral",
+    "naming_method": "MCS_parent_local",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Reviewed alanine-derived cyclobutane constraint",
+    "mcs_parent_evidence": {
+      "selected_parent": "A",
+      "backbone_N_to_carbonyl_bonds": 2,
+      "parent_to_residue_atom_mapping": {
+        "0": 4,
+        "1": 2,
+        "2": 3,
+        "3": 1,
+        "4": 7,
+        "5": 0
+      },
+      "added_atoms": [
+        {
+          "index": 5,
+          "element": "C"
+        },
+        {
+          "index": 6,
+          "element": "C"
+        }
+      ],
+      "added_bonds": [
+        {
+          "atoms": [
+            4,
+            5
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            5,
+            6
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            6,
+            2
+          ],
+          "order": "SINGLE"
+        }
+      ],
+      "candidates": [
+        {
+          "parent": "A",
+          "matched_atoms": 6,
+          "matched_bonds": 5,
+          "parent_atoms": 6,
+          "full_parent": true,
+          "smarts": "[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "G",
+          "matched_atoms": 5,
+          "matched_bonds": 4,
+          "parent_atoms": 5,
+          "full_parent": true,
+          "smarts": "[#7]-[#6]-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "R",
+          "matched_atoms": 8,
+          "matched_bonds": 7,
+          "parent_atoms": 12,
+          "full_parent": false,
+          "smarts": "[#8]=[#6](-[#6](-[#7])-[#6]-[#6]-[#6])-[#8]"
+        },
+        {
+          "parent": "Q",
+          "matched_atoms": 8,
+          "matched_bonds": 7,
+          "parent_atoms": 10,
+          "full_parent": false,
+          "smarts": "[#8]=[#6](-[#6](-[#7])-[#6]-[#6]-[#6])-[#8]"
+        },
+        {
+          "parent": "E",
+          "matched_atoms": 8,
+          "matched_bonds": 7,
+          "parent_atoms": 10,
+          "full_parent": false,
+          "smarts": "[#8]=[#6](-[#6](-[#7])-[#6]-[#6]-[#6])-[#8]"
+        },
+        {
+          "parent": "I",
+          "matched_atoms": 8,
+          "matched_bonds": 7,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#8]=[#6](-[#6](-[#7])-[#6]-[#6]-[#6])-[#8]"
+        },
+        {
+          "parent": "L",
+          "matched_atoms": 8,
+          "matched_bonds": 7,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#8]=[#6](-[#6](-[#7])-[#6]-[#6]-[#6])-[#8]"
+        },
+        {
+          "parent": "K",
+          "matched_atoms": 8,
+          "matched_bonds": 7,
+          "parent_atoms": 10,
+          "full_parent": false,
+          "smarts": "[#8]=[#6](-[#6](-[#7])-[#6]-[#6]-[#6])-[#8]"
+        },
+        {
+          "parent": "P",
+          "matched_atoms": 8,
+          "matched_bonds": 7,
+          "parent_atoms": 8,
+          "full_parent": false,
+          "smarts": "[#8]=[#6](-[#6](-[#7])-[#6]-[#6]-[#6])-[#8]"
+        },
+        {
+          "parent": "N",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#8]=[#6](-[#6](-[#7])-[#6]-[#6])-[#8]"
+        },
+        {
+          "parent": "D",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#8]=[#6](-[#6](-[#7])-[#6]-[#6])-[#8]"
+        },
+        {
+          "parent": "H",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 11,
+          "full_parent": false,
+          "smarts": "[#8]=[#6](-[#6](-[#7])-[#6]-[#6])-[#8]"
+        },
+        {
+          "parent": "M",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#8]=[#6](-[#6](-[#7])-[#6]-[#6])-[#8]"
+        },
+        {
+          "parent": "F",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 12,
+          "full_parent": false,
+          "smarts": "[#8]=[#6](-[#6](-[#7])-[#6]-[#6])-[#8]"
+        },
+        {
+          "parent": "T",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 8,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "W",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 15,
+          "full_parent": false,
+          "smarts": "[#8]=[#6](-[#6](-[#7])-[#6]-[#6])-[#8]"
+        },
+        {
+          "parent": "Y",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 13,
+          "full_parent": false,
+          "smarts": "[#8]=[#6](-[#6](-[#7])-[#6]-[#6])-[#8]"
+        },
+        {
+          "parent": "V",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 8,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "C",
+          "matched_atoms": 6,
+          "matched_bonds": 5,
+          "parent_atoms": 7,
+          "full_parent": false,
+          "smarts": "[#7]-[#6](-[#6])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "S",
+          "matched_atoms": 6,
+          "matched_bonds": 5,
+          "parent_atoms": 7,
+          "full_parent": false,
+          "smarts": "[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        }
+      ]
+    }
+  },
+  {
+    "code": "aMeGln",
+    "smiles": "C[C@@](CCC(N)=O)(N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "aliases": [
+      "RFQ_1d82e14c42",
+      "Q_aMe"
+    ],
+    "source": "20261017_Semi_Purified_Cyclic_Peptide_Synthesis_RFQ_AilsynBio.xlsx",
+    "source_row": 13,
+    "canonical_smiles": "C[C@](N)(CCC(N)=O)C(=O)O",
+    "legacy_code": "RFQ_1d82e14c42",
+    "parent_amino_acid": "Q",
+    "modification_description": "Alpha-methyl glutamine; original alpha-S configuration",
+    "naming_method": "HELM_guidelines_local",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Alpha methyl Gln"
+  },
+  {
+    "code": "Q_gammaLactam5_3S",
+    "smiles": "O=C1NCC[C@H]1C[C@H](N[H:1])C(=O)[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "aliases": [
+      "RFQ_d10a7e9cb4"
+    ],
+    "source": "20261017_Semi_Purified_Cyclic_Peptide_Synthesis_RFQ_AilsynBio.xlsx",
+    "source_row": 14,
+    "canonical_smiles": "N[C@@H](C[C@@H]1CCNC1=O)C(=O)O",
+    "legacy_code": "RFQ_d10a7e9cb4",
+    "parent_amino_acid": "Q",
+    "modification_description": "Glutamine side-chain gamma carbon to amide N joined by a two-carbon bridge, forming a 5-membered lactam; lactam C3-S, backbone alpha-S",
+    "naming_method": "MCS_parent_local",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Reviewed Gln-derived five-membered side-chain lactam, C3-S",
+    "mcs_parent_evidence": {
+      "selected_parent": "Q",
+      "backbone_N_to_carbonyl_bonds": 2,
+      "parent_to_residue_atom_mapping": {
+        "0": 2,
+        "1": 1,
+        "2": 0,
+        "3": 5,
+        "4": 6,
+        "5": 7,
+        "6": 8,
+        "7": 9,
+        "8": 11,
+        "9": 10
+      },
+      "added_atoms": [
+        {
+          "index": 3,
+          "element": "C"
+        },
+        {
+          "index": 4,
+          "element": "C"
+        }
+      ],
+      "added_bonds": [
+        {
+          "atoms": [
+            2,
+            3
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            3,
+            4
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            4,
+            5
+          ],
+          "order": "SINGLE"
+        }
+      ],
+      "candidates": [
+        {
+          "parent": "Q",
+          "matched_atoms": 10,
+          "matched_bonds": 9,
+          "parent_atoms": 10,
+          "full_parent": true,
+          "smarts": "[#7]-[#6](=[#8])-[#6]-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "K",
+          "matched_atoms": 10,
+          "matched_bonds": 9,
+          "parent_atoms": 10,
+          "full_parent": true,
+          "smarts": "[#7]-[#6](-[#6]-[#6]-[#6]-[#6]-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "L",
+          "matched_atoms": 9,
+          "matched_bonds": 8,
+          "parent_atoms": 9,
+          "full_parent": true,
+          "smarts": "[#6]-[#6](-[#6])-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "A",
+          "matched_atoms": 6,
+          "matched_bonds": 5,
+          "parent_atoms": 6,
+          "full_parent": true,
+          "smarts": "[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "G",
+          "matched_atoms": 5,
+          "matched_bonds": 4,
+          "parent_atoms": 5,
+          "full_parent": true,
+          "smarts": "[#7]-[#6]-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "R",
+          "matched_atoms": 10,
+          "matched_bonds": 9,
+          "parent_atoms": 12,
+          "full_parent": false,
+          "smarts": "[#6]-[#7]-[#6]-[#6]-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "E",
+          "matched_atoms": 9,
+          "matched_bonds": 8,
+          "parent_atoms": 10,
+          "full_parent": false,
+          "smarts": "[#7]-[#6](-[#6]-[#6]-[#6]=[#8])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "I",
+          "matched_atoms": 8,
+          "matched_bonds": 7,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "P",
+          "matched_atoms": 8,
+          "matched_bonds": 7,
+          "parent_atoms": 8,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6]-[#6](-[#6](-[#8])=[#8])-[#7]"
+        },
+        {
+          "parent": "N",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "D",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#7]-[#6](-[#6]-[#6])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "H",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 11,
+          "full_parent": false,
+          "smarts": "[#7]-[#6](-[#6]-[#6])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "M",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 9,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "F",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 12,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#7])-[#6](=[#8])-[#8]"
+        },
+        {
+          "parent": "T",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 8,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "W",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 15,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#7])-[#6](=[#8])-[#8]"
+        },
+        {
+          "parent": "Y",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 13,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#7])-[#6](=[#8])-[#8]"
+        },
+        {
+          "parent": "V",
+          "matched_atoms": 7,
+          "matched_bonds": 6,
+          "parent_atoms": 8,
+          "full_parent": false,
+          "smarts": "[#6]-[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "C",
+          "matched_atoms": 6,
+          "matched_bonds": 5,
+          "parent_atoms": 7,
+          "full_parent": false,
+          "smarts": "[#7]-[#6](-[#6])-[#6](-[#8])=[#8]"
+        },
+        {
+          "parent": "S",
+          "matched_atoms": 6,
+          "matched_bonds": 5,
+          "parent_atoms": 7,
+          "full_parent": false,
+          "smarts": "[#6]-[#6](-[#7])-[#6](-[#8])=[#8]"
+        }
+      ]
+    }
+  },
+  {
+    "code": "Bal_cycloC5_1S2S",
+    "smiles": "O=C([C@H]1CCC[C@@H]1N[H:1])[OH:2]",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "aliases": [
+      "RFQ_ca6ffda977"
+    ],
+    "source": "20261017_Semi_Purified_Cyclic_Peptide_Synthesis_RFQ_AilsynBio.xlsx",
+    "source_row": 16,
+    "canonical_smiles": "N[C@H]1CCC[C@@H]1C(=O)O",
+    "legacy_code": "RFQ_ca6ffda977",
+    "parent_amino_acid": "bAla",
+    "modification_description": "Beta-alanine scaffold constrained in cyclopentane; carboxyl-bearing ring C1-S, amino-bearing C2-S; beta backbone retained",
+    "naming_method": "MCS_parent_local",
+    "official_helm_symbol": "",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "naming_note": "Reviewed beta-alanine-derived cyclopentane, ring C1-S/C2-S",
+    "mcs_parent_evidence": {
+      "selected_parent": "bAla",
+      "backbone_N_to_carbonyl_bonds": 3,
+      "parent_to_residue_atom_mapping": {
+        "0": 7,
+        "1": 6,
+        "2": 2,
+        "3": 1,
+        "4": 8,
+        "5": 0
+      },
+      "added_atoms": [
+        {
+          "index": 3,
+          "element": "C"
+        },
+        {
+          "index": 4,
+          "element": "C"
+        },
+        {
+          "index": 5,
+          "element": "C"
+        }
+      ],
+      "added_bonds": [
+        {
+          "atoms": [
+            2,
+            3
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            3,
+            4
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            4,
+            5
+          ],
+          "order": "SINGLE"
+        },
+        {
+          "atoms": [
+            5,
+            6
+          ],
+          "order": "SINGLE"
+        }
+      ],
+      "candidates": [
+        {
+          "parent": "bAla",
+          "matched_atoms": 6,
+          "matched_bonds": 5,
+          "parent_atoms": 6,
+          "full_parent": true,
+          "smarts": "[#7]-[#6]-[#6]-[#6](-[#8])=[#8]"
+        }
+      ]
+    }
+  },
+  {
+    "code": "E",
+    "smiles": "[H:1]N[C@@H](CCC([OH:3])=O)C([OH:2])=O",
+    "aliases": [
+      "Gamma glutamic acid",
+      "Glutamic acid",
+      "gGlu",
+      "Glu"
+    ],
+    "formula": "C5H9NO4",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "E",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "Glutamic acid",
+    "naturalAnalog": "E",
+    "naming_method": "official_HELMCoreLibrary"
+  },
+  {
+    "code": "K",
+    "smiles": "[H:1]N[C@@H](CCCCN[H:3])C([OH:2])=O",
+    "aliases": [
+      "Lysine",
+      "Lys"
+    ],
+    "formula": "C6H14N2O2",
+    "formula_source": "rdkit_computed",
+    "source": "peptx_service",
+    "polymer_type": "PEPTIDE",
+    "type": "PEPTIDE",
+    "role": "AA",
+    "template_source": "20260914_peptx_templates.xlsx",
+    "official_helm_symbol": "K",
+    "official_helm_library_commit": "fecc972f4707bc4e0cc34b7de3713cdba559e177",
+    "official_helm_name": "Lysine",
+    "naturalAnalog": "K",
+    "naming_method": "official_HELMCoreLibrary"
   }
 ]

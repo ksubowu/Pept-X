@@ -39,6 +39,26 @@ def get_backbone_atoms(mol: Chem.Mol) -> Tuple[Tuple[int, int, int], ...]:
     # Primary strict alpha-AA backbone pattern
     pattern_strict = Chem.MolFromSmarts("[N;$(NCC(=O))]-[C;$(C(N)C=O)]-[C;$(C=O)]")
     raw_matches: List[Tuple[int, int, int]] = list(mol.GetSubstructMatches(pattern_strict))
+    # Also recognize beta amino acids such as N-methyl-beta-alanine, whose
+    # backbone is N-C-C-C(=O). Keep the same (N, anchor-C, carbonyl-C) tuple
+    # interface used by downstream lariat/peptide code. Only add candidates
+    # for nitrogens not already covered by an alpha-backbone match, preventing
+    # acidic side chains from being mistaken for extra backbone residues.
+    pattern_beta = Chem.MolFromSmarts("[N]-[C;X4]-[C;X4]-[C;$(C=O)]")
+    beta_matches = list(mol.GetSubstructMatches(pattern_beta))
+    # Some HELM libraries also encode gamma amino acids (for example Mono6)
+    # with three methylene atoms between the amine and the carbonyl.
+    pattern_gamma = Chem.MolFromSmarts("[N]-[C;X4]-[C;X4]-[C;X4]-[C;$(C=O)]")
+    gamma_matches = list(mol.GetSubstructMatches(pattern_gamma))
+    covered_n = {match[0] for match in raw_matches}
+    for n_idx, anchor_idx, _beta_idx, carbonyl_idx in beta_matches:
+        if n_idx not in covered_n:
+            raw_matches.append((n_idx, anchor_idx, carbonyl_idx))
+            covered_n.add(n_idx)
+    for n_idx, anchor_idx, _beta_idx, _gamma_idx, carbonyl_idx in gamma_matches:
+        if n_idx not in covered_n:
+            raw_matches.append((n_idx, anchor_idx, carbonyl_idx))
+            covered_n.add(n_idx)
     # Fallback broader pattern to include non-canonical backbone variants
     # (e.g. O/N/S as backbone hetero and less constrained alpha carbon context).
     if not raw_matches:
