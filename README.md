@@ -132,7 +132,7 @@ This oracle distinguishes assigned from unspecified stereochemistry but does not
 
 ## Manuscript validation scope
 
-The two original CycPeptMPDB CSVs in [`data/`](data/README.md) are **benchmark/test input datasets** for evaluating peptide-expression ⇄ SMILES conversion. They retain the source SMILES, sequence and HELM annotations. Reverse inference receives only SMILES and the monomer library; sequence/HELM annotations are used for scoring and separate forward assembly.
+The CSVs in [`data/`](data/README.md) are **benchmark/test input datasets** for evaluating peptide-expression ⇄ SMILES conversion: the two complete local CycPeptMPDB datasets, the fixed 18-case database lariat subset, and the 18 independent synthetic lariats. Database files retain source SMILES, sequence and HELM annotations; the smaller benchmark files also provide reference Pept-X expressions, topology classes and attachment positions. Reverse inference receives only SMILES and the monomer library; reference annotations are used for scoring and separate forward assembly.
 
 The 2026-11-02 code-and-validation archive records the exact evaluation code, library configurations and per-record outputs:
 
@@ -140,8 +140,8 @@ The 2026-11-02 code-and-validation archive records the exact evaluation code, li
 |---|---:|---:|---:|
 | [CycPeptMPDB_Peptide_Shape_Circle.csv](data/CycPeptMPDB_Peptide_Shape_Circle.csv) | 5530/5530 | 5475/5530 | 5475/5530 |
 | [CycPeptMPDB_Peptide_Shape_Lariat.csv](data/CycPeptMPDB_Peptide_Shape_Lariat.csv) | 2936/2936 | 2936/2936 | 2936/2936 |
-| Previously displayed database lariat subset | 18/18 | 18/18 | 18/18 |
-| Independent synthetic lariats | 18/18 | 18/18 | 18/18 |
+| [Previously displayed database lariat subset](data/CycPeptMPDB_Lariat_Manuscript_Subset.csv) | 18/18 | 18/18 | 18/18 |
+| [Independent synthetic lariats](data/Synthetic_Lariat_Benchmark.csv) | 18/18 | 18/18 | 18/18 |
 
 Circle contains 5,530 records and 5,384 distinct raw SMILES; Lariat contains 2,936 records and 2,635 distinct raw SMILES. Duplicates are retained as database records. The 18-case database lariat subset and original 32 repaired failures are contained in the full Lariat dataset.
 
