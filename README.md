@@ -42,12 +42,11 @@ Recommended expressions use periods between complete monomer codes:
 
 | Chemistry | Example |
 |---|---|
-| Linear with terminal caps | `ac.A.dV.G.am` |
-| Head-to-tail ring | `P.G.L.P.F.Y|head2tail` via `compile_expression` |
-| Raw V2 head-to-tail input | `P.G.L.P.F.Y.[Cyclo]` |
-| Disulfide | `C.A.G.C|S-S:1-4` |
-| Lariat | `A.S.G.T.G|lariat_3:4-5` |
-| Side-chain linker | `C.A.G.C|pose:1 S,4 S|linker:[*:1]CC[*:4]` |
+| Linear with terminal caps | ac.A.dV.G.am|
+| Head-to-tail ring | P.G.L.P\|head2tail 
+| Disulfide | `C.A.G.C\|S-S:1-4` 
+| Lariat | `A.S.G.T.G\|lariat_3:4-5` |
+| Side-chain linker | `C.A.G.C\|pose:1 S,4 S\|linker:[*:1]CC[*:4]` |
 
 Hyphens within monomer names are preserved. Pept-X is not a complete HELM parser; selected HELM-like connection fields do not establish support for arbitrary HELM chemistry.
 
