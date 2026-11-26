@@ -4,9 +4,9 @@ Bidirectional translation between peptide sequence expressions and isomeric SMIL
 
 This repository contains conversion algorithms, runtime libraries, Python/CLI interfaces, benchmark input data and representative conversion figures. Full evaluation scripts and per-record outputs accompany the manuscript.
 
-![Pept-X workflow: peptide expressions and molecular graphs connected by forward and reverse conversion, followed by graph reconstruction validation](docs/images/pept-x-overview.png)
 
-*Schematic overview of peptide expressions, mapped attachment sites and reconstruction-based graph validation.*
+
+
 
 ## Installation
 
