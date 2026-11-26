@@ -2,11 +2,7 @@
 
 Bidirectional translation between peptide sequence expressions and isomeric SMILES, with registered monomers, terminal caps, cyclic peptides, lariats and side-chain linkers. Reverse candidates are accepted by the validation interface only after graph-equivalent reconstruction.
 
-This repository contains conversion algorithms, runtime libraries, Python/CLI interfaces, benchmark input data and representative conversion figures. Full evaluation scripts and per-record outputs accompany the manuscript.
-
-
-
-
+This repository contains conversion algorithms, runtime libraries, Python/CLI interfaces and benchmark input data. Full evaluation scripts and per-record outputs accompany the manuscript.
 
 ## Installation
 
@@ -50,12 +46,6 @@ Recommended expressions use periods between complete monomer codes:
 
 Hyphens within monomer names are preserved. Pept-X is not a complete HELM parser; selected HELM-like connection fields do not establish support for arbitrary HELM chemistry.
 
-### Representative conversions
-
-![Input and recovered peptide expressions beside molecular structures for a modified linear peptide, a head-to-tail cyclic peptide and a side-chain-stapled peptide](docs/images/linear-cyclic-stapled.png)
-
-*Executed examples of a capped linear peptide containing modified and D residues (A), a head-to-tail cycle (B), and a mapped side-chain linker (C). The input and recovered expressions reconstruct equivalent molecular graphs; aliases and cyclic starting positions can differ.*
-
 ## Dedicated lariat conversion
 
 Use the merged library that was used for the manuscript Lariat evaluation:
@@ -87,10 +77,6 @@ Lariat positions count AA/NCAA residues from one, excluding caps:
 Explicit positions select the requested compatible closure. Missing positions use the maximum-ring convention. Invalid explicit positions may trigger a warned fallback; inspect `explicit_positions_valid`, `fallback_used`, `fallback_reason`, `selection_rule` and `selected_lariat` when exact attachment semantics matter.
 
 The current lariat implementation preserves mapped monomer attachment sites, cap boundaries, aromatic N-H and source functional groups, restoring only cut-bond endpoints. Where ordinary peptide traversal is insufficient, stereochemical template matches and mapped attachment boundaries provide an alternative backbone inference path. Reverse prediction receives SMILES and a library, without reference sequence, HELM or expected positions.
-
-![Input and recovered expressions and chemical structures for lariat types 1, 2 and 3 with explicit closure positions](docs/images/lariat-topologies.png)
-
-*Three executed lariat examples: N-terminal amine to side-chain carboxyl (A), side-chain amine to the C-terminal carbonyl (B), and side-chain hydroxyl to the C-terminal carbonyl (C). Explicit residue positions identify each closure.*
 
 ## Side-chain linkers and attachment warnings
 
